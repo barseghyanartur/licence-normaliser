@@ -32,6 +32,10 @@ Comprehensive license normalsation with a three-level hierarchy.
    :target: https://github.com/barseghyanartur/license-normaliser/#License
    :alt: MIT
 
+.. image:: https://coveralls.io/repos/github/barseghyanartur/license-normaliser/badge.svg?branch=main&service=github
+    :target: https://coveralls.io/github/barseghyanartur/license-normaliser?branch=main
+    :alt: Coverage
+
 ``license-normaliser`` is a comprehensive license normalisation library that
 maps any license representation (SPDX tokens, URLs, prose descriptions) to a
 canonical three-level hierarchy.
