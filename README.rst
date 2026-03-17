@@ -3,7 +3,7 @@ license-normaliser
 ==================
 
 .. image:: https://raw.githubusercontent.com/barseghyanartur/license-normaliser/main/docs/_static/license_normaliser_logo.webp
-   :alt: License Normaliser Logo
+   :alt: license-normaliser logo
    :align: center
 
 Comprehensive license normalsation with a three-level hierarchy.
@@ -23,6 +23,10 @@ Comprehensive license normalsation with a three-level hierarchy.
 .. image:: https://readthedocs.org/projects/license-normaliser/badge/?version=latest
     :target: http://license-normaliser.readthedocs.io
     :alt: Documentation Status
+
+.. image:: https://img.shields.io/badge/docs-llms.txt-blue
+    :target: https://license-normaliser.readthedocs.io/en/latest/llms.txt
+    :alt: llms.txt - documentation for LLMs
 
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://github.com/barseghyanartur/license-normaliser/#License
@@ -78,9 +82,9 @@ Quick start
     from license_normaliser import normalise_license
 
     v = normalise_license("CC BY-NC-ND 4.0")
-    str(v)                 # "cc-by-nc-nd-4.0"  ← LicenseVersion
-    str(v.license)         # "cc-by-nc-nd"      ← LicenseName
-    str(v.license.family)  # "cc"               ← LicenseFamily
+    str(v)                  # "cc-by-nc-nd-4.0"   ← LicenseVersion
+    str(v.license)          # "cc-by-nc-nd"       ← LicenseName
+    str(v.license.family)   # "cc"                ← LicenseFamily
 
 Resolution pipeline (first match wins)
 ======================================
