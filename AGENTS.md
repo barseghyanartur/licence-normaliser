@@ -17,7 +17,7 @@ and **developing/extending** the package itself.
 
 - Maps any license representation to canonical three-level hierarchy
 - Supports SPDX tokens, URLs, and prose descriptions
-- Minimal dependencies (only pydantic)
+- No dependencies (only optional dependencies for testing, development, documentation and building)
 - LRU caching for performance
 
 ---
