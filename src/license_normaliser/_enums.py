@@ -1,4 +1,9 @@
-"""License name enums for type-safe license checking."""
+"""License enums - source of truth for all license data.
+
+Every LicenseFamilyEnum, LicenseNameEnum, and LicenseVersionEnum value is
+defined here.  No other module should define license data - everything is
+derived from these enums.
+"""
 
 from enum import Enum
 from typing import Optional
@@ -42,18 +47,18 @@ class LicenseNameEnum(Enum):
         family: "LicenseFamilyEnum",
     ) -> "LicenseNameEnum":
         obj = object.__new__(cls)
-        obj._value_ = key  # enables LicenseNameEnum("cc-by")
+        obj._value_ = key
         obj.family_enum = family  # type: ignore[attr-defined]
         return obj
 
     # ------------------------------------------------------------------
-    # Creative Commons – public domain
+    # Creative Commons - public domain
     # ------------------------------------------------------------------
     CC0 = ("cc0", LicenseFamilyEnum.CC0)
     CC_PDM = ("cc-pdm", LicenseFamilyEnum.PUBLIC_DOMAIN)
 
     # ------------------------------------------------------------------
-    # Creative Commons – standard variants
+    # Creative Commons - standard variants
     # ------------------------------------------------------------------
     CC_BY = ("cc-by", LicenseFamilyEnum.CC)
     CC_BY_SA = ("cc-by-sa", LicenseFamilyEnum.CC)
@@ -63,7 +68,7 @@ class LicenseNameEnum(Enum):
     CC_BY_NC_ND = ("cc-by-nc-nd", LicenseFamilyEnum.CC)
 
     # ------------------------------------------------------------------
-    # Creative Commons – IGO sub-variants
+    # Creative Commons - IGO sub-variants
     # ------------------------------------------------------------------
     CC_BY_IGO = ("cc-by-igo", LicenseFamilyEnum.CC)
     CC_BY_SA_IGO = ("cc-by-sa-igo", LicenseFamilyEnum.CC)
@@ -220,10 +225,6 @@ class LicenseNameEnum(Enum):
     NO_REUSE = ("no-reuse", LicenseFamilyEnum.PUBLISHER_PROPRIETARY)
     UNKNOWN = ("unknown", LicenseFamilyEnum.UNKNOWN)
 
-    # ------------------------------------------------------------------
-    # Convenience property
-    # ------------------------------------------------------------------
-
     @property
     def family(self) -> LicenseFamilyEnum:
         """Return the :class:`LicenseFamilyEnum` for this license name."""
@@ -245,7 +246,7 @@ class LicenseVersionEnum(Enum):
         name: "LicenseNameEnum",
     ) -> "LicenseVersionEnum":
         obj = object.__new__(cls)
-        obj._value_ = key  # enables LicenseVersionEnum("cc-by-4.0")
+        obj._value_ = key
         obj.url = url  # type: ignore[attr-defined]
         obj.license_name = name  # type: ignore[attr-defined]
         return obj
@@ -450,8 +451,6 @@ class LicenseVersionEnum(Enum):
 
     # ------------------------------------------------------------------
     # CC IGO variants
-    # CC did not publish a BY 4.0 IGO or BY-NC-ND 4.0 IGO URL, so those
-    # intentionally reuse the standard 4.0 URL.
     # ------------------------------------------------------------------
     CC_BY_3_0_IGO = (
         "cc-by-3.0-igo",
@@ -460,7 +459,7 @@ class LicenseVersionEnum(Enum):
     )
     CC_BY_4_0_IGO = (
         "cc-by-4.0-igo",
-        "https://creativecommons.org/licenses/by/4.0/",  # no IGO variant for 4.0
+        "https://creativecommons.org/licenses/by/4.0/",
         LicenseNameEnum.CC_BY_IGO,
     )
     CC_BY_NC_SA_3_0_IGO = (
@@ -475,7 +474,7 @@ class LicenseVersionEnum(Enum):
     )
     CC_BY_NC_ND_4_0_IGO = (
         "cc-by-nc-nd-4.0-igo",
-        "https://creativecommons.org/licenses/by-nc-nd/4.0/",  # no IGO variant for 4.0
+        "https://creativecommons.org/licenses/by-nc-nd/4.0/",
         LicenseNameEnum.CC_BY_NC_ND_IGO,
     )
 
@@ -706,8 +705,8 @@ class LicenseVersionEnum(Enum):
     )
     ACS_AUTHORCHOICE_NIH = (
         "acs-authorchoice-nih",
-        "https://pubs.acs.org/page/policy/acs_authorchoice_with_nih_"
-        "addendum_termsofuse.html",
+        "https://pubs.acs.org/page/policy/"
+        "acs_authorchoice_with_nih_addendum_termsofuse.html",
         LicenseNameEnum.ACS_AUTHORCHOICE_NIH,
     )
 
@@ -875,10 +874,6 @@ class LicenseVersionEnum(Enum):
         None,
         LicenseNameEnum.UNKNOWN,
     )
-
-    # ------------------------------------------------------------------
-    # Convenience properties
-    # ------------------------------------------------------------------
 
     @property
     def name_enum(self) -> LicenseNameEnum:

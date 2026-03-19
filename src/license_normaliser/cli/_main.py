@@ -1,4 +1,4 @@
-"""license-normaliser CLI — license normalisation from the command line."""
+"""license-normaliser CLI - license normalisation from the command line."""
 
 import argparse
 import sys
@@ -14,17 +14,17 @@ __all__ = ("main",)
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="license-normaliser",
-        description="Comprehensive license normalisation — three-level hierarchy.",
+        description="Comprehensive license normalisation - three-level hierarchy.",
     )
     parser.add_argument(
         "--version",
         action="version",
-        version=f"%(prog)s {_version()}",
+        version=f"%(prog)s {__version__}",
     )
 
     sub = parser.add_subparsers(dest="command", required=True)
 
-    # Normalise command
+    # normalise command
     norm = sub.add_parser("normalise", help="Normalise a license string.")
     norm.add_argument(
         "license",
@@ -36,7 +36,7 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Show full details (key, URL, license name, family).",
     )
 
-    # Batch normalise command
+    # batch command
     batch = sub.add_parser("batch", help="Normalise multiple license strings.")
     batch.add_argument(
         "licenses",
@@ -45,10 +45,6 @@ def _build_parser() -> argparse.ArgumentParser:
     )
 
     return parser
-
-
-def _version() -> str:
-    return __version__
 
 
 def _cmd_normalise(args: argparse.Namespace) -> int:
