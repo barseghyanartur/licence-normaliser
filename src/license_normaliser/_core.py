@@ -30,7 +30,6 @@ __all__ = (
 # Level 1 – LicenseFamily
 # ===========================================================================
 
-# Map enum value to LicenseFamilyEnum for internal use
 _FAMILY_ENUMS: dict[str, LicenseFamilyEnum] = {e.value: e for e in LicenseFamilyEnum}
 
 
@@ -79,7 +78,6 @@ def _fam(key: str) -> LicenseFamily:
 # Level 2 – LicenseName  (version-stripped, IGO-collapsed)
 # ===========================================================================
 
-# Map enum value to LicenseNameEnum for internal use
 _NAME_ENUMS: dict[str, LicenseNameEnum] = {e.value: e for e in LicenseNameEnum}
 
 
@@ -115,107 +113,17 @@ class LicenseName:
 
 
 # Registry: name enum -> family enum
+# Derived entirely from LicenseNameEnum – no manual duplication.
 _NAME_REGISTRY: dict[LicenseNameEnum, LicenseFamilyEnum] = {
-    # Creative Commons – public domain
-    LicenseNameEnum.CC0: LicenseFamilyEnum.CC0,
-    LicenseNameEnum.CC_PDM: LicenseFamilyEnum.PUBLIC_DOMAIN,
-    # Creative Commons – standard variants
-    LicenseNameEnum.CC_BY: LicenseFamilyEnum.CC,
-    LicenseNameEnum.CC_BY_SA: LicenseFamilyEnum.CC,
-    LicenseNameEnum.CC_BY_ND: LicenseFamilyEnum.CC,
-    LicenseNameEnum.CC_BY_NC: LicenseFamilyEnum.CC,
-    LicenseNameEnum.CC_BY_NC_SA: LicenseFamilyEnum.CC,
-    LicenseNameEnum.CC_BY_NC_ND: LicenseFamilyEnum.CC,
-    # Creative Commons – IGO sub-variants
-    LicenseNameEnum.CC_BY_IGO: LicenseFamilyEnum.CC,
-    LicenseNameEnum.CC_BY_SA_IGO: LicenseFamilyEnum.CC,
-    LicenseNameEnum.CC_BY_ND_IGO: LicenseFamilyEnum.CC,
-    LicenseNameEnum.CC_BY_NC_IGO: LicenseFamilyEnum.CC,
-    LicenseNameEnum.CC_BY_NC_SA_IGO: LicenseFamilyEnum.CC,
-    LicenseNameEnum.CC_BY_NC_ND_IGO: LicenseFamilyEnum.CC,
-    # OSI permissive
-    LicenseNameEnum.MIT: LicenseFamilyEnum.OSI,
-    LicenseNameEnum.APACHE: LicenseFamilyEnum.OSI,
-    LicenseNameEnum.BSD_2_CLAUSE: LicenseFamilyEnum.OSI,
-    LicenseNameEnum.BSD_3_CLAUSE: LicenseFamilyEnum.OSI,
-    LicenseNameEnum.ISC: LicenseFamilyEnum.OSI,
-    LicenseNameEnum.MPL: LicenseFamilyEnum.OSI,
-    # Copyleft
-    LicenseNameEnum.GPL_2: LicenseFamilyEnum.COPYLEFT,
-    LicenseNameEnum.GPL_3: LicenseFamilyEnum.COPYLEFT,
-    LicenseNameEnum.AGPL_3: LicenseFamilyEnum.COPYLEFT,
-    LicenseNameEnum.LGPL_2_1: LicenseFamilyEnum.COPYLEFT,
-    LicenseNameEnum.LGPL_3: LicenseFamilyEnum.COPYLEFT,
-    # Open Data
-    LicenseNameEnum.ODBL: LicenseFamilyEnum.OPEN_DATA,
-    LicenseNameEnum.ODC_BY: LicenseFamilyEnum.OPEN_DATA,
-    LicenseNameEnum.PDDL: LicenseFamilyEnum.OPEN_DATA,
-    LicenseNameEnum.FAL: LicenseFamilyEnum.OTHER_OA,
-    # Publisher proprietary – Elsevier
-    LicenseNameEnum.ELSEVIER_OA: LicenseFamilyEnum.PUBLISHER_OA,
-    LicenseNameEnum.ELSEVIER_TDM: LicenseFamilyEnum.PUBLISHER_TDM,
-    # Publisher proprietary – Wiley
-    LicenseNameEnum.WILEY_TDM: LicenseFamilyEnum.PUBLISHER_TDM,
-    LicenseNameEnum.WILEY_VOR: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    LicenseNameEnum.WILEY_AM: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    LicenseNameEnum.WILEY_TERMS: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – Springer Nature
-    LicenseNameEnum.SPRINGER_TDM: LicenseFamilyEnum.PUBLISHER_TDM,
-    LicenseNameEnum.SPRINGERNATURE_TDM: LicenseFamilyEnum.PUBLISHER_TDM,
-    # Publisher proprietary – Taylor & Francis
-    LicenseNameEnum.TANDF_TERMS: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – OUP
-    LicenseNameEnum.OUP_CHORUS: LicenseFamilyEnum.PUBLISHER_OA,
-    LicenseNameEnum.OUP_TERMS: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – SAGE
-    LicenseNameEnum.SAGE_PERMISSIONS: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – ACS
-    LicenseNameEnum.ACS_AUTHORCHOICE: LicenseFamilyEnum.PUBLISHER_OA,
-    LicenseNameEnum.ACS_AUTHORCHOICE_CCBY: LicenseFamilyEnum.PUBLISHER_OA,
-    LicenseNameEnum.ACS_AUTHORCHOICE_CCBNYCND: LicenseFamilyEnum.PUBLISHER_OA,
-    LicenseNameEnum.ACS_AUTHORCHOICE_NIH: LicenseFamilyEnum.PUBLISHER_OA,
-    # Publisher proprietary – RSC
-    LicenseNameEnum.RSC_TERMS: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – IOP
-    LicenseNameEnum.IOP_TDM: LicenseFamilyEnum.PUBLISHER_TDM,
-    LicenseNameEnum.IOP_COPYRIGHT: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – BMJ
-    LicenseNameEnum.BMJ_COPYRIGHT: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – AAAS / Science
-    LicenseNameEnum.AAAS_AUTHOR_REUSE: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – PNAS
-    LicenseNameEnum.PNAS_LICENSES: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – APS
-    LicenseNameEnum.APS_DEFAULT: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    LicenseNameEnum.APS_TDM: LicenseFamilyEnum.PUBLISHER_TDM,
-    # Publisher proprietary – Cambridge
-    LicenseNameEnum.CUP_TERMS: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – AIP
-    LicenseNameEnum.AIP_RIGHTS: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – JAMA
-    LicenseNameEnum.JAMA_CC_BY: LicenseFamilyEnum.PUBLISHER_OA,
-    # Publisher proprietary – De Gruyter
-    LicenseNameEnum.DEGRUYTER_TERMS: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    # Publisher proprietary – Thieme
-    LicenseNameEnum.THIEME_NLM: LicenseFamilyEnum.PUBLISHER_OA,
-    # Catch-all
-    LicenseNameEnum.PUBLIC_DOMAIN_MARK: LicenseFamilyEnum.PUBLIC_DOMAIN,
-    LicenseNameEnum.OTHER_OA: LicenseFamilyEnum.OTHER_OA,
-    LicenseNameEnum.PUBLISHER_SPECIFIC_OA: LicenseFamilyEnum.PUBLISHER_OA,
-    LicenseNameEnum.UNSPECIFIED_OA: LicenseFamilyEnum.OTHER_OA,
-    LicenseNameEnum.OPEN_ACCESS: LicenseFamilyEnum.OTHER_OA,
-    LicenseNameEnum.IMPLIED_OA: LicenseFamilyEnum.PUBLISHER_OA,
-    LicenseNameEnum.AUTHOR_MANUSCRIPT: LicenseFamilyEnum.PUBLISHER_OA,
-    LicenseNameEnum.ALL_RIGHTS_RESERVED: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    LicenseNameEnum.NO_REUSE: LicenseFamilyEnum.PUBLISHER_PROPRIETARY,
-    LicenseNameEnum.UNKNOWN: LicenseFamilyEnum.UNKNOWN,
+    e: e.family_enum
+    for e in LicenseNameEnum  # type: ignore[attr-defined]
 }
 
 
 @lru_cache(maxsize=512)
 def _get_license_name(key: str) -> LicenseName:
     """Get LicenseName by key string, with caching."""
-    name_enum = LicenseNameEnum(key)
+    name_enum = _NAME_ENUMS.get(key, LicenseNameEnum.UNKNOWN)
     fam_enum = _NAME_REGISTRY.get(name_enum, LicenseFamilyEnum.UNKNOWN)
     return LicenseName(key=key, family=_fam(fam_enum.value))
 
@@ -224,370 +132,13 @@ def _get_license_name(key: str) -> LicenseName:
 # Level 3 – LicenseVersion  (the fully resolved leaf node)
 # ===========================================================================
 
-# Map enum value to LicenseVersionEnum for internal use
 _VERSION_ENUMS: dict[str, LicenseVersionEnum] = {e.value: e for e in LicenseVersionEnum}
 
 # Registry: version key -> (canonical_url, name_enum)
+# Derived entirely from LicenseVersionEnum – no manual duplication.
 _VERSION_REGISTRY: dict[str, tuple[Optional[str], LicenseNameEnum]] = {
-    # CC Zero
-    "cc0": ("https://creativecommons.org/publicdomain/zero/1.0/", LicenseNameEnum.CC0),
-    "cc0-1.0": (
-        "https://creativecommons.org/publicdomain/zero/1.0/",
-        LicenseNameEnum.CC0,
-    ),
-    "cc-zero": (
-        "https://creativecommons.org/publicdomain/zero/1.0/",
-        LicenseNameEnum.CC0,
-    ),
-    "cc-pdm": (
-        "https://creativecommons.org/publicdomain/mark/1.0/",
-        LicenseNameEnum.CC_PDM,
-    ),
-    # CC BY
-    "cc-by": ("https://creativecommons.org/licenses/by/4.0/", LicenseNameEnum.CC_BY),
-    "cc-by-4.0": (
-        "https://creativecommons.org/licenses/by/4.0/",
-        LicenseNameEnum.CC_BY,
-    ),
-    "cc-by-3.0": (
-        "https://creativecommons.org/licenses/by/3.0/",
-        LicenseNameEnum.CC_BY,
-    ),
-    "cc-by-2.5": (
-        "https://creativecommons.org/licenses/by/2.5/",
-        LicenseNameEnum.CC_BY,
-    ),
-    "cc-by-2.0": (
-        "https://creativecommons.org/licenses/by/2.0/",
-        LicenseNameEnum.CC_BY,
-    ),
-    "cc-by-1.0": (
-        "https://creativecommons.org/licenses/by/1.0/",
-        LicenseNameEnum.CC_BY,
-    ),
-    # CC BY-SA
-    "cc-by-sa": (
-        "https://creativecommons.org/licenses/by-sa/4.0/",
-        LicenseNameEnum.CC_BY_SA,
-    ),
-    "cc-by-sa-4.0": (
-        "https://creativecommons.org/licenses/by-sa/4.0/",
-        LicenseNameEnum.CC_BY_SA,
-    ),
-    "cc-by-sa-3.0": (
-        "https://creativecommons.org/licenses/by-sa/3.0/",
-        LicenseNameEnum.CC_BY_SA,
-    ),
-    "cc-by-sa-2.5": (
-        "https://creativecommons.org/licenses/by-sa/2.5/",
-        LicenseNameEnum.CC_BY_SA,
-    ),
-    "cc-by-sa-2.0": (
-        "https://creativecommons.org/licenses/by-sa/2.0/",
-        LicenseNameEnum.CC_BY_SA,
-    ),
-    # CC BY-ND
-    "cc-by-nd": (
-        "https://creativecommons.org/licenses/by-nd/4.0/",
-        LicenseNameEnum.CC_BY_ND,
-    ),
-    "cc-by-nd-4.0": (
-        "https://creativecommons.org/licenses/by-nd/4.0/",
-        LicenseNameEnum.CC_BY_ND,
-    ),
-    "cc-by-nd-3.0": (
-        "https://creativecommons.org/licenses/by-nd/3.0/",
-        LicenseNameEnum.CC_BY_ND,
-    ),
-    "cc-by-nd-2.0": (
-        "https://creativecommons.org/licenses/by-nd/2.0/",
-        LicenseNameEnum.CC_BY_ND,
-    ),
-    # CC BY-NC
-    "cc-by-nc": (
-        "https://creativecommons.org/licenses/by-nc/4.0/",
-        LicenseNameEnum.CC_BY_NC,
-    ),
-    "cc-by-nc-4.0": (
-        "https://creativecommons.org/licenses/by-nc/4.0/",
-        LicenseNameEnum.CC_BY_NC,
-    ),
-    "cc-by-nc-3.0": (
-        "https://creativecommons.org/licenses/by-nc/3.0/",
-        LicenseNameEnum.CC_BY_NC,
-    ),
-    "cc-by-nc-2.5": (
-        "https://creativecommons.org/licenses/by-nc/2.5/",
-        LicenseNameEnum.CC_BY_NC,
-    ),
-    "cc-by-nc-2.0": (
-        "https://creativecommons.org/licenses/by-nc/2.0/",
-        LicenseNameEnum.CC_BY_NC,
-    ),
-    # CC BY-NC-SA
-    "cc-by-nc-sa": (
-        "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-        LicenseNameEnum.CC_BY_NC_SA,
-    ),
-    "cc-by-nc-sa-4.0": (
-        "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-        LicenseNameEnum.CC_BY_NC_SA,
-    ),
-    "cc-by-nc-sa-3.0": (
-        "https://creativecommons.org/licenses/by-nc-sa/3.0/",
-        LicenseNameEnum.CC_BY_NC_SA,
-    ),
-    "cc-by-nc-sa-2.5": (
-        "https://creativecommons.org/licenses/by-nc-sa/2.5/",
-        LicenseNameEnum.CC_BY_NC_SA,
-    ),
-    "cc-by-nc-sa-2.0": (
-        "https://creativecommons.org/licenses/by-nc-sa/2.0/",
-        LicenseNameEnum.CC_BY_NC_SA,
-    ),
-    # CC BY-NC-ND
-    "cc-by-nc-nd": (
-        "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-        LicenseNameEnum.CC_BY_NC_ND,
-    ),
-    "cc-by-nc-nd-4.0": (
-        "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-        LicenseNameEnum.CC_BY_NC_ND,
-    ),
-    "cc-by-nc-nd-3.0": (
-        "https://creativecommons.org/licenses/by-nc-nd/3.0/",
-        LicenseNameEnum.CC_BY_NC_ND,
-    ),
-    "cc-by-nc-nd-2.5": (
-        "https://creativecommons.org/licenses/by-nc-nd/2.5/",
-        LicenseNameEnum.CC_BY_NC_ND,
-    ),
-    "cc-by-nc-nd-2.0": (
-        "https://creativecommons.org/licenses/by-nc-nd/2.0/",
-        LicenseNameEnum.CC_BY_NC_ND,
-    ),
-    # CC IGO variants
-    "cc-by-3.0-igo": (
-        "https://creativecommons.org/licenses/by/3.0/igo/",
-        LicenseNameEnum.CC_BY_IGO,
-    ),
-    "cc-by-4.0-igo": (
-        "https://creativecommons.org/licenses/by/4.0/",
-        LicenseNameEnum.CC_BY_IGO,
-    ),
-    "cc-by-nc-sa-3.0-igo": (
-        "https://creativecommons.org/licenses/by-nc-sa/3.0/igo/",
-        LicenseNameEnum.CC_BY_NC_SA_IGO,
-    ),
-    "cc-by-nc-nd-3.0-igo": (
-        "https://creativecommons.org/licenses/by-nc-nd/3.0/igo/",
-        LicenseNameEnum.CC_BY_NC_ND_IGO,
-    ),
-    "cc-by-nc-nd-4.0-igo": (
-        "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-        LicenseNameEnum.CC_BY_NC_ND_IGO,
-    ),
-    # OSI permissive
-    "mit": ("https://opensource.org/licenses/MIT", LicenseNameEnum.MIT),
-    "apache-2.0": (
-        "https://www.apache.org/licenses/LICENSE-2.0",
-        LicenseNameEnum.APACHE,
-    ),
-    "bsd-2-clause": (
-        "https://opensource.org/licenses/BSD-2-Clause",
-        LicenseNameEnum.BSD_2_CLAUSE,
-    ),
-    "bsd-3-clause": (
-        "https://opensource.org/licenses/BSD-3-Clause",
-        LicenseNameEnum.BSD_3_CLAUSE,
-    ),
-    "isc": ("https://opensource.org/licenses/ISC", LicenseNameEnum.ISC),
-    "mpl-2.0": ("https://www.mozilla.org/en-US/MPL/2.0/", LicenseNameEnum.MPL),
-    # Copyleft
-    "gpl-2.0": (
-        "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
-        LicenseNameEnum.GPL_2,
-    ),
-    "gpl-2.0-only": (
-        "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
-        LicenseNameEnum.GPL_2,
-    ),
-    "gpl-3.0": ("https://www.gnu.org/licenses/gpl-3.0.html", LicenseNameEnum.GPL_3),
-    "gpl-3.0-only": (
-        "https://www.gnu.org/licenses/gpl-3.0.html",
-        LicenseNameEnum.GPL_3,
-    ),
-    "agpl-3.0": ("https://www.gnu.org/licenses/agpl-3.0.html", LicenseNameEnum.AGPL_3),
-    "agpl-3.0-only": (
-        "https://www.gnu.org/licenses/agpl-3.0.html",
-        LicenseNameEnum.AGPL_3,
-    ),
-    "lgpl-2.1": (
-        "https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html",
-        LicenseNameEnum.LGPL_2_1,
-    ),
-    "lgpl-2.1-only": (
-        "https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html",
-        LicenseNameEnum.LGPL_2_1,
-    ),
-    "lgpl-3.0": ("https://www.gnu.org/licenses/lgpl-3.0.html", LicenseNameEnum.LGPL_3),
-    "lgpl-3.0-only": (
-        "https://www.gnu.org/licenses/lgpl-3.0.html",
-        LicenseNameEnum.LGPL_3,
-    ),
-    # Open Data
-    "odbl": ("https://opendatacommons.org/licenses/odbl/1-0/", LicenseNameEnum.ODBL),
-    "odc-by": ("https://opendatacommons.org/licenses/by/1-0/", LicenseNameEnum.ODC_BY),
-    "pddl": ("https://opendatacommons.org/licenses/pddl/1-0/", LicenseNameEnum.PDDL),
-    "fal": ("https://artlibre.org/licence/lal/en/", LicenseNameEnum.FAL),
-    "fldl": ("https://artlibre.org/licence/lal/en/", LicenseNameEnum.FAL),
-    # Publisher - Elsevier
-    "elsevier-oa": (
-        "https://www.elsevier.com/open-access/userlicense/1.0/",
-        LicenseNameEnum.ELSEVIER_OA,
-    ),
-    "elsevier-tdm": (
-        "https://www.elsevier.com/tdm/userlicense/1.0/",
-        LicenseNameEnum.ELSEVIER_TDM,
-    ),
-    # Publisher - Wiley
-    "wiley-tdm": (
-        "http://doi.wiley.com/10.1002/tdm_license_1",
-        LicenseNameEnum.WILEY_TDM,
-    ),
-    "wiley-tdm-1.1": (
-        "http://doi.wiley.com/10.1002/tdm_license_1.1",
-        LicenseNameEnum.WILEY_TDM,
-    ),
-    "wiley-vor": (
-        "http://onlinelibrary.wiley.com/termsAndConditions#vor",
-        LicenseNameEnum.WILEY_VOR,
-    ),
-    "wiley-am": (
-        "http://onlinelibrary.wiley.com/termsAndConditions#am",
-        LicenseNameEnum.WILEY_AM,
-    ),
-    "wiley-terms": (
-        "https://onlinelibrary.wiley.com/terms-and-conditions",
-        LicenseNameEnum.WILEY_TERMS,
-    ),
-    # Publisher - Springer
-    "springer-tdm": ("https://www.springer.com/tdm", LicenseNameEnum.SPRINGER_TDM),
-    "springernature-tdm": (
-        "https://www.springernature.com/gp/researchers/text-and-data-mining",
-        LicenseNameEnum.SPRINGERNATURE_TDM,
-    ),
-    # Publisher - Taylor & Francis
-    "tandf-terms": (
-        "https://www.tandfonline.com/action/showCopyRight",
-        LicenseNameEnum.TANDF_TERMS,
-    ),
-    # Publisher - OUP
-    "oup-chorus": (
-        "https://academic.oup.com/journals/pages/open_access/funder_policies/"
-        "chorus/standard_publication_model",
-        LicenseNameEnum.OUP_CHORUS,
-    ),
-    "oup-terms": (
-        "https://academic.oup.com/pages/standard-publication-reuse-rights",
-        LicenseNameEnum.OUP_TERMS,
-    ),
-    # Publisher - SAGE
-    "sage-permissions": (
-        "https://us.sagepub.com/en-us/nam/journals-permissions",
-        LicenseNameEnum.SAGE_PERMISSIONS,
-    ),
-    # Publisher - ACS
-    "acs-authorchoice-ccby": (
-        "https://pubs.acs.org/page/policy/authorchoice_ccby_termsofuse.html",
-        LicenseNameEnum.ACS_AUTHORCHOICE_CCBY,
-    ),
-    "acs-authorchoice-ccbyncnd": (
-        "https://pubs.acs.org/page/policy/authorchoice_ccbyncnd_termsofuse.html",
-        LicenseNameEnum.ACS_AUTHORCHOICE_CCBNYCND,
-    ),
-    "acs-authorchoice": (
-        "https://pubs.acs.org/page/policy/authorchoice_termsofuse.html",
-        LicenseNameEnum.ACS_AUTHORCHOICE,
-    ),
-    "acs-authorchoice-nih": (
-        "https://pubs.acs.org/page/policy/acs_authorchoice_with_nih_"
-        "addendum_termsofuse.html",
-        LicenseNameEnum.ACS_AUTHORCHOICE_NIH,
-    ),
-    # Publisher - RSC
-    "rsc-terms": (
-        "https://www.rsc.org/journals-books-databases/journal-authors-reviewers/"
-        "licences-copyright-permissions/",
-        LicenseNameEnum.RSC_TERMS,
-    ),
-    # Publisher - IOP
-    "iop-tdm": (
-        "https://iopscience.iop.org/info/page/text-and-data-mining",
-        LicenseNameEnum.IOP_TDM,
-    ),
-    "iop-copyright": (
-        "https://iopscience.iop.org/page/copyright",
-        LicenseNameEnum.IOP_COPYRIGHT,
-    ),
-    # Publisher - BMJ
-    "bmj-copyright": (
-        "https://www.bmj.com/company/legal-stuff/copyright-notice/",
-        LicenseNameEnum.BMJ_COPYRIGHT,
-    ),
-    # Publisher - AAAS
-    "aaas-author-reuse": (
-        "https://www.science.org/content/page/science-licenses-journal-article-reuse",
-        LicenseNameEnum.AAAS_AUTHOR_REUSE,
-    ),
-    # Publisher - PNAS
-    "pnas-licenses": (
-        "https://www.pnas.org/site/aboutpnas/licenses.xhtml",
-        LicenseNameEnum.PNAS_LICENSES,
-    ),
-    # Publisher - APS
-    "aps-default": (
-        "https://link.aps.org/licenses/aps-default-license",
-        LicenseNameEnum.APS_DEFAULT,
-    ),
-    "aps-tdm": (
-        "https://link.aps.org/licenses/aps-default-text-mining-license",
-        LicenseNameEnum.APS_TDM,
-    ),
-    # Publisher - Cambridge
-    "cup-terms": ("https://www.cambridge.org/core/terms", LicenseNameEnum.CUP_TERMS),
-    # Publisher - AIP
-    "aip-rights": (
-        "https://publishing.aip.org/authors/rights-and-permissions",
-        LicenseNameEnum.AIP_RIGHTS,
-    ),
-    # Publisher - JAMA
-    "jama-cc-by": (
-        "https://jamanetwork.com/pages/cc-by-license-permissions",
-        LicenseNameEnum.JAMA_CC_BY,
-    ),
-    # Publisher - De Gruyter
-    "degruyter-terms": (
-        "https://www.degruyter.com/dg/page/496",
-        LicenseNameEnum.DEGRUYTER_TERMS,
-    ),
-    # Publisher - Thieme
-    "thieme-nlm": (
-        "https://www.thieme.de/statics/dokumente/thieme/final/de/dokumente/"
-        "sw_oa/nlm_license_terms_thieme.pdf",
-        LicenseNameEnum.THIEME_NLM,
-    ),
-    # Catch-all
-    "public-domain": (None, LicenseNameEnum.PUBLIC_DOMAIN_MARK),
-    "other-oa": (None, LicenseNameEnum.OTHER_OA),
-    "publisher-specific-oa": (None, LicenseNameEnum.PUBLISHER_SPECIFIC_OA),
-    "unspecified-oa": (None, LicenseNameEnum.UNSPECIFIED_OA),
-    "open-access": (None, LicenseNameEnum.OPEN_ACCESS),
-    "implied-oa": (None, LicenseNameEnum.IMPLIED_OA),
-    "author-manuscript": (None, LicenseNameEnum.AUTHOR_MANUSCRIPT),
-    "all-rights-reserved": (None, LicenseNameEnum.ALL_RIGHTS_RESERVED),
-    "no-reuse": (None, LicenseNameEnum.NO_REUSE),
-    "unknown": (None, LicenseNameEnum.UNKNOWN),
+    e.value: (e.url, e.license_name)
+    for e in LicenseVersionEnum  # type: ignore[attr-defined]
 }
 
 
@@ -667,10 +218,7 @@ def _make_unknown(raw_key: str) -> LicenseVersion:
 
 def _make_synthetic(version_key: str, url: str, name_key: str) -> LicenseVersion:
     """For CC URLs not explicitly listed – synthesised at runtime."""
-    try:
-        name_enum = LicenseNameEnum(name_key)
-    except ValueError:
-        name_enum = LicenseNameEnum.UNKNOWN
+    name_enum = _NAME_ENUMS.get(name_key, LicenseNameEnum.UNKNOWN)
     if name_enum not in _NAME_REGISTRY:
         _NAME_REGISTRY[name_enum] = LicenseFamilyEnum.CC
         _get_license_name.cache_clear()
@@ -1011,6 +559,8 @@ def _key_from_cc_url(raw: str) -> Optional[tuple[str, str, str]]:
 # Prose keyword scan
 # ===========================================================================
 
+_WHITESPACE_RE = re.compile(r"\s+")
+
 _PROSE_PATTERNS: list[tuple[re.Pattern, str]] = [
     (re.compile(r"cc\s*by-nc-nd\s*4\.0", re.I), "cc-by-nc-nd-4.0"),
     (re.compile(r"cc\s*by-nc-nd\s*3\.0", re.I), "cc-by-nc-nd-3.0"),
@@ -1056,6 +606,11 @@ _PROSE_PATTERNS: list[tuple[re.Pattern, str]] = [
     (re.compile(r"open\s*access", re.I), "other-oa"),
 ]
 
+# Minimum cleaned string length before prose scanning is attempted.
+# Short strings that reach this step are almost certainly unknown tokens,
+# not prose sentences, so skipping them avoids false positives.
+_PROSE_MIN_LEN = 20
+
 
 # ===========================================================================
 # Public API
@@ -1063,7 +618,7 @@ _PROSE_PATTERNS: list[tuple[re.Pattern, str]] = [
 
 
 def _clean(raw: str) -> str:
-    return re.sub(r"\s+", " ", raw.strip().rstrip("/")).lower()
+    return _WHITESPACE_RE.sub(" ", raw.strip().rstrip("/")).lower()
 
 
 @lru_cache(maxsize=8192)
@@ -1111,7 +666,7 @@ def normalise_license(raw: str) -> LicenseVersion:
             return _make_synthetic(vk, url, nk)
 
     # 5 – prose keyword scan
-    if len(cleaned) > 20:
+    if len(cleaned) > _PROSE_MIN_LEN:
         for pattern, vkey in _PROSE_PATTERNS:
             if pattern.search(cleaned) and vkey in _VERSION_REGISTRY:
                 return _make(vkey)
