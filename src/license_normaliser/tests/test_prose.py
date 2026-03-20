@@ -21,7 +21,7 @@ class TestProsePatternMatching:
 
     def test_attribution_prose(self):
         v = normalise_license(
-            "the article is made available under the attribution license terms"
+            "this content is made available under creative commons by license"
         )
         assert v.key == "cc-by"
         assert v.family.key == "cc"

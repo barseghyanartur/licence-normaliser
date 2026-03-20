@@ -31,8 +31,8 @@
 
 ### Resolution Pipeline
 
-1. **Direct registry lookup** - cleaned lowercase key matches `REGISTRY`
-2. **Alias table** - hit in `ALIASES` dict (loaded from `data/aliases/aliases.json`)
+1. **Alias table** - cleaned lowercase key matches `ALIASES` (loaded from `data/aliases/aliases.json`)
+2. **Direct registry lookup** - hit in `REGISTRY` (SPDX, OpenDefinition, OSI, CC, ScanCode license keys)
 3. **URL map** - hit in `URL_MAP` (loaded from SPDX + OpenDefinition + publisher data)
 4. **Prose pattern scan** - regex patterns from `data/prose/prose_patterns.json` (for strings >20 chars)
 5. **Fallback** - key = cleaned string, family = unknown
@@ -216,14 +216,13 @@ uv run pytest path/to/test_something.py  # run specific test
 ```
 src/license_normaliser/tests/
     test_integration.py    - public API only (survives any rewrite)
-    test_cache.py          - caching, cleaning, strict mode
-    test_exceptions.py     - exception hierarchy and strict mode
-    test_cli.py            - CLI commands including update-data
-    test_models.py         - LicenseFamily, LicenseName, LicenseVersion
-    test_core.py           - end-to-end pipeline tests
-    test_aliases.py        - non-CC aliases (Apache, MIT, BSD, GPL, etc.)
+    test_core.py          - end-to-end pipeline tests
+    test_exceptions.py    - exception hierarchy and strict mode
+    test_cli.py           - CLI commands including update-data
+    test_models.py        - LicenseFamily, LicenseName, LicenseVersion
+    test_aliases.py       - non-CC aliases (Apache, MIT, BSD, GPL, etc.)
     test_publisher.py      - publisher URLs and shorthand aliases
-    test_prose.py          - prose pattern matching
+    test_prose.py         - prose pattern matching
 ```
 
 ---

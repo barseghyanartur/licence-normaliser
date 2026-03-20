@@ -30,7 +30,7 @@
   {"pattern": "attribution.{0,30}non.?commercial", "version_key": "cc-by-nc", "name_key": "cc-by-nc", "family_key": "cc"},
   {"pattern": "attribution.{0,30}no.?deriv", "version_key": "cc-by-nd", "name_key": "cc-by-nd", "family_key": "cc"},
   {"pattern": "attribution.{0,30}share.?alike", "version_key": "cc-by-sa", "name_key": "cc-by-sa", "family_key": "cc"},
-  {"pattern": "\\battribution\\b", "version_key": "cc-by", "name_key": "cc-by", "family_key": "cc"},
+
   {"pattern": "elsevier.*tdm|tdm.*elsevier", "version_key": "elsevier-tdm", "name_key": "elsevier-tdm", "family_key": "publisher-tdm"},
   {"pattern": "elsevier.*user\\s*licen", "version_key": "elsevier-oa", "name_key": "elsevier-oa", "family_key": "publisher-oa"},
   {"pattern": "wiley.*tdm|tdm.*wiley", "version_key": "wiley-tdm", "name_key": "wiley-tdm", "family_key": "publisher-tdm"},

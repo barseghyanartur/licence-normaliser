@@ -77,6 +77,8 @@
   "pd": {"version_key": "cc0-1.0", "name_key": "cc0", "family_key": "cc0"},
   "public-domain": {"version_key": "public-domain", "name_key": "public-domain", "family_key": "public-domain"},
   "cc-zero": {"version_key": "cc0", "name_key": "cc0", "family_key": "cc0"},
+  "cc0": {"version_key": "cc0-1.0", "name_key": "cc0", "family_key": "cc0"},
+  "cc-pdm": {"version_key": "cc-pdm-1.0", "name_key": "cc-pdm", "family_key": "public-domain"},
   "author manuscript": {"version_key": "author-manuscript", "name_key": "author-manuscript", "family_key": "publisher-oa"},
   "all rights reserved": {"version_key": "all-rights-reserved", "name_key": "all-rights-reserved", "family_key": "publisher-proprietary"},
   "no reuse": {"version_key": "no-reuse", "name_key": "no-reuse", "family_key": "publisher-proprietary"},
