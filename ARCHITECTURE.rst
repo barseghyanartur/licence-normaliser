@@ -104,7 +104,8 @@ Step 1 -- Direct registry lookup
 The ``VERSION_REGISTRY`` is a dict mapping every known version key to a
 metadata dict.  Example::
 
-    "mit" → {"url": "https://opensource.org/licenses/MIT", "name_key": "mit", "family_key": "osi"}
+    "mit" → {"url": "https://opensource.org/licenses/MIT",
+              "name_key": "mit", "family_key": "osi"}
 
 It is built at import time from all registered data sources (see
 Registry Architecture below).
@@ -180,7 +181,7 @@ The three lookup tables are assembled from multiple data sources:
 
 ``VERSION_REGISTRY: dict[str, dict[str, str]]``
     Version key → ``{"url": str, "name_key": str, "family_key": str}``.
-    ``url`` is the canonical URL (may be ``""`` when no URL is known).
+    ``url`` is the canonical URL (may be empty when no URL is known).
 
 ``ALIASES: dict[str, str]``
     Cleaned string → version key.
@@ -209,7 +210,7 @@ JSON files.  The table covers common prefixes:
 ``springernature*`` → ``publisher-tdm``, ``acs*`` → ``publisher-oa``,
 ``rsc*`` → ``publisher-proprietary``, ``iop*`` → ``publisher-tdm``,
 ``bmj*`` → ``publisher-proprietary``, ``cup*`` → ``publisher-proprietary``,
-``aip*`` → ``publisher-proprietary``, ``pnas*`` → ``publisher-proprietary``,
+``aip*``, ``pnas*`` → ``publisher-proprietary``,
 ``aps*`` → ``publisher-proprietary``, ``jama*`` → ``publisher-oa``,
 ``degruyter*`` → ``publisher-proprietary``, ``thieme*`` → ``publisher-oa``,
 ``tandf*`` → ``publisher-proprietary``, ``oup*`` → ``publisher-oa``,
@@ -218,7 +219,8 @@ JSON files.  The table covers common prefixes:
 ``all-rights-reserved`` → ``publisher-proprietary``,
 ``author-manuscript`` → ``publisher-oa``, ``implied-oa`` → ``publisher-oa``,
 ``open-access`` → ``other-oa``, ``unspecified-oa`` → ``other-oa``,
-``publisher-specific-oa`` → ``publisher-oa``, ``other-oa`` → ``other-oa``.
+``publisher-specific-oa`` → ``publisher-oa``,
+``other-oa`` → ``other-oa``.
 
 Factory functions
 -----------------
