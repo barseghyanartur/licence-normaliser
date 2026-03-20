@@ -32,6 +32,8 @@ def _infer_family(key: str) -> str:
 
 def _infer_name(key: str) -> str:
     k = key.lower()
+    if k.startswith("cc0"):
+        return "cc0"
     if k.startswith("cc-"):
         parts = k.split("-")
         for i, part in enumerate(parts):
@@ -92,6 +94,7 @@ def _build_aliases() -> None:
         ("creative commons cc0 1.0", "cc0-1.0"),
         ("creative commons zero 1.0", "cc0-1.0"),
         ("public domain", "cc0-1.0"),
+        ("cc by", "cc-by"),
     ]
     ALIASES = dict(_cc_forms)
 

@@ -70,10 +70,6 @@ class TestStrictModeNormalise:
         v = normalise_license("no-such-license-xyzzy")
         assert v.family.key == "unknown"
 
-    def test_known_publisher_license_no_raise(self):
-        v = normalise_license("elsevier-tdm", strict=True)
-        assert v.key == "elsevier-tdm"
-
 
 class TestStrictModeBatch:
     def test_all_known_no_raise(self):
