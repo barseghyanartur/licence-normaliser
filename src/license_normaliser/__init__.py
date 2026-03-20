@@ -11,7 +11,7 @@ from ._exceptions import LicenseNormalisationError
 from .exceptions import LicenseNotFoundError
 
 __title__ = "license-normaliser"
-__version__ = "0.3.0"
+__version__ = "0.2"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
 __license__ = "MIT"
