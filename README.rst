@@ -2,15 +2,39 @@
 license-normaliser
 ==================
 
-Comprehensive license normalisation with a three-level hierarchy.
+.. image:: https://raw.githubusercontent.com/barseghyanartur/license-normaliser/main/docs/_static/license_normaliser_logo.webp
+   :alt: license-normaliser logo
+   :align: center
+
+Comprehensive license normalsation with a three-level hierarchy.
 
 .. image:: https://img.shields.io/pypi/v/license-normaliser.svg
    :target: https://pypi.python.org/pypi/license-normaliser
    :alt: PyPI Version
 
+.. image:: https://img.shields.io/pypi/pyversions/license-normaliser.svg
+   :target: https://pypi.python.org/pypi/license-normaliser/
+   :alt: Supported Python versions
+
+.. image:: https://github.com/barseghyanartur/license-normaliser/actions/workflows/test.yml/badge.svg?branch=main
+   :target: https://github.com/barseghyanartur/license-normaliser/actions
+   :alt: Build Status
+
+.. image:: https://readthedocs.org/projects/license-normaliser/badge/?version=latest
+    :target: http://license-normaliser.readthedocs.io
+    :alt: Documentation Status
+
+.. image:: https://img.shields.io/badge/docs-llms.txt-blue
+    :target: https://license-normaliser.readthedocs.io/en/latest/llms.txt
+    :alt: llms.txt - documentation for LLMs
+
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://github.com/barseghyanartur/license-normaliser/#License
    :alt: MIT
+
+.. image:: https://coveralls.io/repos/github/barseghyanartur/license-normaliser/badge.svg?branch=main&service=github
+    :target: https://coveralls.io/github/barseghyanartur/license-normaliser?branch=main
+    :alt: Coverage
 
 ``license-normaliser`` is a comprehensive license normalisation library that
 maps any license representation (SPDX tokens, URLs, prose descriptions) to a
