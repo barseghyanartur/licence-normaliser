@@ -60,15 +60,16 @@ def _load_entry(
     key: str,
 ) -> tuple[str, VersionMetadata] | None:
     """Parse a single url_map.json entry. Returns (version_key, metadata) or None."""
+    if key.startswith("_comment"):
+        return None
     if isinstance(raw_value, str):
-        if not key.startswith("_comment"):
-            logger.warning(
-                "Entry %r has a bare string value; expected a dict with "
-                "version_key, name_key, family_key. "
-                "Update %r to the new dict format.",
-                key,
-                _URL_MAP_FILE,
-            )
+        logger.warning(
+            "Entry %r has a bare string value; expected a dict with "
+            "version_key, name_key, family_key. "
+            "Update %r to the new dict format.",
+            key,
+            _URL_MAP_FILE,
+        )
         return str(raw_value), {
             "name_key": "",
             "family_key": "",
@@ -89,6 +90,7 @@ def _load_entry(
         str(vkey),  # type: ignore[arg-type]
         {
             "name_key": str(name_key),
+            "family_key": str(family_key),
             "url": _canonicalise(key),
         },
     )

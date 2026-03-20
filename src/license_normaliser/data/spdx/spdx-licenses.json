@@ -48,7 +48,7 @@
     {"licenseId": "CC-BY-NC-ND-3.0", "name": "Creative Commons Attribution Non Commercial No Derivatives 3.0 Unported", "seeAlso": ["https://creativecommons.org/licenses/by-nc-nd/3.0/legalcode"], "isOsiApproved": false, "isDeprecatedLicenseId": false},
     {"licenseId": "CC-BY-NC-ND-4.0", "name": "Creative Commons Attribution Non Commercial No Derivatives 4.0 International", "seeAlso": ["https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode"], "isOsiApproved": false, "isDeprecatedLicenseId": false},
     {"licenseId": "CC0-1.0", "name": "Creative Commons Zero v1.0 Universal", "seeAlso": ["https://creativecommons.org/publicdomain/zero/1.0/legalcode"], "isOsiApproved": false, "isDeprecatedLicenseId": false},
-    {"licenseId": "ODbL-1.0", "name": "Open Data Commons Open Database License v1.0", "seeAlso": ["http://www.opendatacommons.org/licenses/odbl/1.0/", "https://opendatacommons.org/licenses/odbl/1-0/"], "isOsiApproved": false, "isDeprecatedLicenseId": false},
+    {"licenseId": "ODbL-1.0", "name": "Open Data Commons Open Database License v1.0", "seeAlso": [], "isOsiApproved": false, "isDeprecatedLicenseId": false},
     {"licenseId": "ODC-By-1.0", "name": "Open Data Commons Attribution License v1.0", "seeAlso": ["https://opendatacommons.org/licenses/by/1.0/"], "isOsiApproved": false, "isDeprecatedLicenseId": false},
     {"licenseId": "PDDL-1.0", "name": "Open Data Commons Public Domain Dedication & License 1.0", "seeAlso": ["http://opendatacommons.org/licenses/pddl/1.0/", "https://opendatacommons.org/licenses/pddl/"], "isOsiApproved": false, "isDeprecatedLicenseId": false},
     {"licenseId": "Unlicense", "name": "The Unlicense", "seeAlso": ["https://unlicense.org/"], "isOsiApproved": true, "isDeprecatedLicenseId": false},

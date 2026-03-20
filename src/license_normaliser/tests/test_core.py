@@ -133,7 +133,8 @@ class TestUrlLookup:
 
     def test_cc0_url(self):
         v = normalise_license("https://creativecommons.org/publicdomain/zero/1.0/")
-        assert v.key == "cc0-1.0"
+        assert v.key == "cc0"
+        assert v.family.key == "cc0"
 
     def test_elsevier_oa_url(self):
         v = normalise_license("http://www.elsevier.com/open-access/userlicense/1.0/")

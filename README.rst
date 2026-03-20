@@ -87,6 +87,7 @@ Quick start
 ===========
 
 .. code-block:: python
+    :name: test_quick_start
 
     from license_normaliser import normalise_license
 
@@ -102,6 +103,7 @@ By default, unresolvable inputs return an ``"unknown"`` result.  Pass
 ``strict=True`` to raise ``LicenseNotFoundError`` instead:
 
 .. code-block:: python
+    :name: test_strict_mode
 
     from license_normaliser import normalise_license
     from license_normaliser.exceptions import LicenseNotFoundError
@@ -121,6 +123,7 @@ Batch normalisation
 ===================
 
 .. code-block:: python
+    :name: test_batch_normalisation
 
     from license_normaliser import normalise_licenses
 
@@ -197,6 +200,7 @@ Exceptions
 ==========
 
 .. code-block:: python
+    :name: test_exceptions
 
     from license_normaliser.exceptions import (
         LicenseNormaliserError,   # base class

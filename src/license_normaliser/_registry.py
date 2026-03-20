@@ -100,6 +100,9 @@ _FAMILY_PATTERNS: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r"^unspecified-oa"), "other-oa"),
     (re.compile(r"^publisher-specific-oa"), "publisher-oa"),
     (re.compile(r"^other-oa"), "other-oa"),
+    (re.compile(r"^unlicense$"), "public-domain"),
+    (re.compile(r"^wtfpl$"), "public-domain"),
+    (re.compile(r"^zlib$"), "osi"),
 ]
 
 
