@@ -1,6 +1,5 @@
 # AGENTS.md - license-normaliser
 
-**Package version**: 0.3.0
 **Repository**: https://github.com/barseghyanartur/license-normaliser
 **Maintainer**: Artur Barseghyan <artur.barseghyan@gmail.com>
 
