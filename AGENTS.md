@@ -25,7 +25,7 @@
 ### Three-Level Hierarchy
 
 | Level | Class | Example |
-|-------|-------|---------|
+| ----- | ----- | ------- |
 | **Family** | `LicenseFamily` | `"cc"`, `"osi"`, `"copyleft"`, `"data"` |
 | **Name** | `LicenseName` | `"cc-by"`, `"mit"`, `"gpl-3.0-only"` |
 | **Version** | `LicenseVersion` | `"cc-by-4.0"`, `"mit"`, `"gpl-3.0-only"` |
@@ -40,7 +40,7 @@
 ### Key Files
 
 | File | Purpose |
-|------|---------|
+| ---- | ------- |
 | `src/license_normaliser/_models.py` | Frozen dataclass hierarchy |
 | `src/license_normaliser/_registry.py` | REGISTRY, URL_MAP, ALIASES built from parsers |
 | `src/license_normaliser/_cache.py` | LRU caching + strict mode |
