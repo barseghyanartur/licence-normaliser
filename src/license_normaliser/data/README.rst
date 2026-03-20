@@ -10,17 +10,25 @@ Structure
 
 ::
 
-   data/
-   ├── aliases/
-   │   └── aliases.json              # Prose/SPDX/short-form → metadata dict
-   ├── urls/
-   │   └── url_map.json              # Canonical URL → metadata dict
-   ├── prose/
-   │   └── prose_patterns.json        # Ordered regex patterns for long text scanning
-   ├── spdx/
-   │   └── spdx-licenses.json        # SPDX license list (optional)
-   └── opendefinition/
-       └── opendefinition_licenses_all.json   # OD license list (optional)
+    data/
+    ├── aliases/
+    │   └── aliases.json             # Alias string → metadata dict
+    ├── urls/
+    │   └── url_map.json             # Canonical URL → metadata dict
+    ├── prose/
+    │   └── prose_patterns.json      # Ordered regex patterns for long text scanning
+    ├── publishers/
+    │   └── publishers.json          # Publisher URLs and shorthand aliases
+    ├── spdx/
+    │   └── spdx.json                # SPDX license list (auto-refreshed)
+    ├── opendefinition/
+    │   └── opendefinition.json      # Open Definition list (auto-refreshed)
+    ├── osi/
+    │   └── osi.json                 # OSI license list (auto-refreshed)
+    ├── creativecommons/
+    │   └── creativecommons.json     # CC licenses (scraped from creativecommons.org)
+    └── scancode_licensedb/
+        └── scancode_licensedb.json  # ScanCode license DB (auto-refreshed)
 
 Entry Format
 ------------
@@ -29,10 +37,10 @@ Every entry maps a **lookup key** (alias string, URL, or prose pattern)
 to a metadata dict with three required fields:
 
 - ``version_key`` – the canonical version-level identifier
-  (e.g. ``"cc-by-4.0"``)
+  (e.g. ``"cc-by-4.0"``)
 - ``name_key`` – the name-level identifier without version suffix
-  (e.g. ``"cc-by"``)
-- ``family_key`` – the family-level identifier (e.g. ``"cc"``)
+  (e.g. ``"cc-by"``)
+- ``family_key`` – the family-level identifier (e.g. ``"cc"``)
 
 URLs are stored separately in the ``url`` field of the metadata dict.
 
@@ -53,6 +61,29 @@ Edit ``aliases/aliases.json``:
 
 The key must be **lowercase and whitespace-collapsed**.
 
+How to Add a Publisher URL or Shorthand
+---------------------------------------
+
+Edit ``publishers/publishers.json``:
+
+.. code:: json
+
+   {
+     "urls": {
+       "https://example.com/my-license/": {
+         "version_key": "my-license",
+         "name_key": "my-license",
+         "family_key": "publisher-oa"
+       }
+     },
+     "shorthand_aliases": {
+       "my shorthand alias": "my-license"
+     }
+   }
+
+Both ``http://`` and ``https://`` URL variants may be listed; they are
+normalised at lookup time (http→https, trailing slash stripped).
+
 How to Add a New URL Mapping
 ----------------------------
 
@@ -68,9 +99,6 @@ Edit ``urls/url_map.json``:
      }
    }
 
-Both ``http://`` and ``https://`` variants may be listed; the loader
-normalises them (converts http→https, strips/preserves trailing slash).
-
 How to Add a New Prose Pattern
 ------------------------------
 
@@ -80,8 +108,10 @@ pattern it should take priority over:
 .. code:: json
 
    [
-     {"pattern": "my very specific phrase", "version_key": "my-license",
-      "name_key": "my-license", "family_key": "publisher-oa"},
+     {"pattern": "my very specific phrase",
+      "version_key": "my-license",
+      "name_key": "my-license",
+      "family_key": "publisher-oa"},
      ...
    ]
 
@@ -91,59 +121,39 @@ More-specific patterns must come first.
 How to Add a Brand-New License
 ------------------------------
 
-1. Add entries to the JSON data files (``aliases/aliases.json``,
-   ``urls/url_map.json``, or ``prose/prose_patterns.json``). Each entry
-   maps a key to a dict with ``version_key``, ``name_key``, and
-   ``family_key``.
+1. Add entries to one or more JSON data files (``aliases/aliases.json``,
+   ``urls/url_map.json``, ``prose/prose_patterns.json``, or
+   ``publishers/publishers.json``). Each entry maps a key to a dict with
+   ``version_key``, ``name_key``, and ``family_key``.
 
 2. If the ``family_key`` is not covered by the regex fallback table in
    ``_registry.py``, add an explicit ``family_key`` value in the JSON
-   entry (recommended) or add a new regex pattern to
-   ``_FAMILY_PATTERNS`` in ``_registry.py`` as a last resort.
+   entry (recommended).
 
 3. Run ``make test-env ENV=py312`` to verify.
-
-Upstream vs. Curated Files
---------------------------
-
-There are two sets of external data files — upstream originals (large,
-authoritative) and curated subsets (small, actually loaded at runtime).
-
-**Upstream originals** — kept at the top level for developer use:
-
-- ``spdx-licenses.json`` — the full `SPDX license list
-  <https://spdx.org/licenses/>`_ (727 entries)
-- ``opendefinition_licenses_all.json`` — the full `OpenDefinition list
-  <https://opendefinition.org/>`_ (114 entries)
-
-**Curated subsets** — trimmed to only the IDs the maintainer has vetted,
-loaded by the package at runtime:
-
-- ``spdx/spdx-licenses.json`` (52 entries)
-- ``opendefinition/opendefinition_licenses_all.json`` (23 entries)
 
 Updating SPDX or OpenDefinition
 -------------------------------
 
-To refresh the curated subsets from upstream:
+The ``license-normaliser update-data`` CLI command fetches fresh upstream data:
 
-1. Download the latest upstream file.
-2. Copy only the entries you want to support into the corresponding
-   subdirectory file.
-3. Run ``make test-env ENV=py312`` to verify nothing broke.
+.. code:: sh
 
-Unknown license IDs from the curated subsets are silently skipped — they
-do **not** cause errors.
+    license-normaliser update-data --force
 
-Metadata Merge Priority
------------------------
+This updates:
 
-When multiple data sources contribute metadata for the same
-``version_key``:
+- ``spdx/spdx.json`` — full `SPDX license list <https://spdx.org/licenses/>`_
+- ``opendefinition/opendefinition.json`` — full `Open Definition list <https://opendefinition.org/>`_
+- ``osi/osi.json`` — `OSI license list <https://opensource.org/licenses>`_
+- ``creativecommons/creativecommons.json`` — scraped from creativecommons.org
+- ``scancode_licensedb/scancode_licensedb.json`` — `ScanCode license DB <https://scancode-licensedb.aboutcode.org/>`_
 
-- ``name_key`` – the **first** non-empty value wins (from builtin
-  sources)
-- ``family_key`` – the **first** non-empty value wins (from builtin
-  sources)
-- ``url`` – the **last** non-empty value wins (URL sources override
-  aliases)
+Family Override Files
+---------------------
+
+Some entries carry an explicit ``family_key`` that overrides the
+inference logic in ``_registry.py``.  These are stored in:
+
+- ``aliases/aliases.json`` — ``family_key`` on any alias entry populates
+  ``FAMILY_OVERRIDES`` at import time.

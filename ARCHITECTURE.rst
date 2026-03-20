@@ -267,9 +267,14 @@ Adding a New Parser
 ===================
 
 1. Create ``src/license_normaliser/parsers/my_parser.py`` implementing
-   ``BaseParser``::
+   ``BaseParser``:
 
-       from .base import BaseParser
+   .. pytestfixture: Any
+
+   .. code-block:: python
+       :name: test_adding_new_parser
+
+       from license_normaliser.parsers.base import BaseParser
 
        class MyParser(BaseParser):
            url = None  # or "https://upstream.example.com/data.json"
@@ -280,21 +285,18 @@ Adding a New Parser
                # Return [(license_id, {"url": "...", "name": "..."}), ...]
                return []
 
-2. Register it in ``src/license_normaliser/parsers/__init__.py``::
+2. Register it in ``src/license_normaliser/parsers/__init__.py``:
 
-       def get_parsers() -> list[BaseParser]:
-           return [
-               SPDXParser(),
-               OpenDefinitionParser(),
-               OSIParser(),
-               ScanCodeLicenseDBParser(),
-               CreativeCommonsParser(),
-               ProseParser(),
-               AliasParser(),
-               PublisherParser(),
-               MyParser(),  # <-- add here
-           ]
+       .. continue: test_adding_new_parser
 
+       .. code-block:: python
+          :name: test_adding_new_parser_register
+
+          def get_parsers() -> list[BaseParser]:
+              return [
+                  # All other parsers remain here
+                  MyParser(),  # <-- add here
+              ]
 
 Extending Without Python Changes
 ================================
