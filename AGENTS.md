@@ -186,23 +186,30 @@ Run linting: `make ruff` or `make pre-commit`
 
 ## 8. Testing Rules
 
-For ease and platform independent testing, all tests run inside Docker (safest
-option, always available, as long as there's Docker installed):
+> [!NOTE]
+> Python 3.15 is being tested on GitHub CI, but not inside a local Docker image.
+
+### Docker-based testing (recommended)
+
+All tests run inside Docker for platform independence and consistency:
 
 ```sh
 make test                   # full matrix (Python 3.10-3.14)
 make test-env ENV=py312     # single version
+make shell                  # interactive shell in test container
 ```
 
-Alternatively, for individual local tests, you can run local tests
-using `uv run pytest`.
-A prerequisite is `make install` first. On tooling errors, fallback to
-Docker-based testing.
+### Local testing (alternative)
+
+For faster iteration during development, you can run tests locally with `uv`:
 
 ```sh
-make install
-uv run pytest path/to/test_something.py
+make install                # one-time setup
+uv run pytest               # run all tests
+uv run pytest path/to/test_something.py  # run specific test
 ```
+
+**Important**: If you encounter tooling errors with local testing, fall back to Docker-based testing which is the canonical environment.
 
 ### Test layout
 
