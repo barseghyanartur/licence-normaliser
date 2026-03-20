@@ -234,3 +234,11 @@ src/license_normaliser/tests/
 - Changing the three-level hierarchy structure
 - Hard-coding new aliases or URL entries inside Python modules
   (use the JSON data files instead)
+- Modifying the curated SPDX and OpenDefinition subset files:
+  `src/license_normaliser/data/spdx/spdx-licenses.json` and
+  `src/license_normaliser/data/opendefinition/opendefinition_licenses_all.json`.
+  These are loaded from external upstream sources and must not be edited
+  directly. To resolve conflicts or add coverage, modify
+  `data/aliases/aliases.json`, `data/urls/url_map.json`, or
+  `data/prose/prose_patterns.json` instead. Use `data/normalize_licenses.py`
+  to identify gaps.
