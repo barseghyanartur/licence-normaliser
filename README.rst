@@ -156,8 +156,11 @@ See ``data/README.md`` for the full format specification and examples.
 
 To add a brand-new license (with a new key):
 
-1. Add enum entries to ``src/license_normaliser/_enums.py``.
-2. Add aliases/URLs/patterns to the JSON data files.
+1. Add entries to the JSON data files (``aliases.json``, ``url_map.json``, or
+   ``prose_patterns.json``).  Each entry maps a key to a dict with
+   ``version_key``, ``name_key``, and ``family_key``.
+2. If the family is not covered by the regex fallback table
+   in ``_registry.py``, add an explicit entry to ``aliases.json`` first.
 
 To add an entirely new external data source:
 

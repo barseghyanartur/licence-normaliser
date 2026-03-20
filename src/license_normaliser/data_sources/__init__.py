@@ -20,15 +20,17 @@ absolute paths.
 
 Source contract
 ---------------
-A source must provide three dicts (all values must be canonical version keys
-that exist in ``VERSION_REGISTRY``):
+A source must provide three lookup dicts and one metadata dict:
 
 * ``aliases``  - ``{cleaned_string -> version_key}``
 * ``url_map``  - ``{normalised_url    -> version_key}``
 * ``prose``    - ``{pattern_string    -> version_key}``  (regex patterns)
+* ``metadata`` - maps version_key to
+  ``{"name_key": ..., "family_key": ..., "url": ...}``.
+  The ``url`` field may be ``None``.
 
 Sources that only contribute to a subset of the three dicts may return empty
-dicts for the others.
+dicts for the others.  ``metadata`` entries are merged across all sources.
 """
 
 from __future__ import annotations
@@ -52,11 +54,14 @@ __all__ = (
 
 logger = logging.getLogger(__name__)
 
+#: Type alias for a single version-key metadata entry.
+VersionMetadata = dict[str, str]
+
 
 class SourceContribution:
     """Collected contributions from one data source."""
 
-    __slots__ = ("name", "aliases", "url_map", "prose")
+    __slots__ = ("name", "aliases", "url_map", "prose", "metadata")
 
     def __init__(
         self,
@@ -64,11 +69,13 @@ class SourceContribution:
         aliases: dict[str, str],
         url_map: dict[str, str],
         prose: dict[str, str],
+        metadata: dict[str, VersionMetadata],
     ) -> None:
         self.name = name
         self.aliases = aliases
         self.url_map = url_map
         self.prose = prose
+        self.metadata = metadata
 
 
 @runtime_checkable
@@ -90,8 +97,9 @@ class DataSource(Protocol):
         Returns
         -------
         SourceContribution
-            All aliases, URL entries, and prose patterns contributed by
-            this source.  Empty dicts are fine for unused categories.
+            All aliases, URL entries, prose patterns, and metadata
+            contributed by this source.  Empty dicts are fine for unused
+            categories.
         """
         ...
 
@@ -136,11 +144,12 @@ def load_all_sources(data_dir: Path) -> list[SourceContribution]:
             contribution = source.load(data_dir)
             contributions.append(contribution)
             logger.debug(
-                "Loaded data source %r: %d aliases, %d URLs, %d prose patterns",
+                "Loaded data source %r: %d aliases, %d URLs, %d prose, %d metadata",
                 source.name,
                 len(contribution.aliases),
                 len(contribution.url_map),
                 len(contribution.prose),
+                len(contribution.metadata),
             )
         except DataSourceError as exc:  # noqa: PERF203
             logger.warning("Data source %r failed to load: %s", module_path, exc)

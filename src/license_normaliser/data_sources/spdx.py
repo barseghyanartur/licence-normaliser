@@ -25,7 +25,7 @@ import logging
 from pathlib import Path
 
 from ..exceptions import DataSourceError
-from . import SourceContribution
+from . import SourceContribution, VersionMetadata
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -56,7 +56,13 @@ class SpdxSource:
             logger.debug(
                 "SPDX license file not found at %s; skipping SPDX source.", path
             )
-            return SourceContribution(name=self.name, aliases={}, url_map={}, prose={})
+            return SourceContribution(
+                name=self.name,
+                aliases={},
+                url_map={},
+                prose={},
+                metadata={},
+            )
 
         try:
             data: dict = json.loads(path.read_text(encoding="utf-8"))
@@ -73,6 +79,7 @@ class SpdxSource:
 
         aliases: dict[str, str] = {}
         url_map: dict[str, str] = {}
+        metadata: dict[str, VersionMetadata] = {}
 
         for entry in licenses:
             if not isinstance(entry, dict):
@@ -83,11 +90,16 @@ class SpdxSource:
 
             cleaned_id = license_id.lower()
 
-            # Register the lowercase SPDX ID as an alias pointing to itself
-            # (the pipeline's direct-lookup step will handle it if it matches
-            # a version key; otherwise the alias -> version_key map is used).
-            # We store it so the registry builder can validate it later.
+            # Register the lowercase SPDX ID as an alias pointing to itself.
             aliases[cleaned_id] = cleaned_id
+            # Contribute metadata: name_key = version_key, family_key = None
+            # (family will be inferred by the registry builder if not covered
+            # by another source).
+            if cleaned_id not in metadata:
+                metadata[cleaned_id] = {
+                    "name_key": cleaned_id,
+                    "family_key": "",
+                }
 
             # Also register "deprecated" SPDX variants
             # e.g. GPL-2.0 (deprecated) -> gpl-2.0
@@ -105,9 +117,10 @@ class SpdxSource:
                     url_map[norm] = cleaned_id
 
         logger.debug(
-            "SPDX source: %d aliases, %d URL entries from %d license records.",
+            "SPDX source: %d aliases, %d URL entries, %d metadata from %d records.",
             len(aliases),
             len(url_map),
+            len(metadata),
             len(licenses),
         )
 
@@ -116,4 +129,5 @@ class SpdxSource:
             aliases=aliases,
             url_map=url_map,
             prose={},
+            metadata=metadata,
         )

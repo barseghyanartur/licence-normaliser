@@ -1,8 +1,5 @@
 """Unit tests for _registry.py."""
 
-import pytest
-
-from license_normaliser._enums import LicenseNameEnum, LicenseVersionEnum
 from license_normaliser._registry import (
     ALIASES,
     URL_MAP,
@@ -19,18 +16,26 @@ __license__ = "MIT"
 
 
 class TestVersionRegistry:
-    def test_derived_from_enum_completeness(self):
-        for e in LicenseVersionEnum:
-            assert e.value in VERSION_REGISTRY, f"Missing: {e.value}"
+    def test_mit_has_url(self):
+        meta = VERSION_REGISTRY["mit"]
+        assert meta["url"] == "https://opensource.org/licenses/MIT"
 
-    def test_url_and_name_stored(self):
-        url, name_enum = VERSION_REGISTRY["cc-by-4.0"]
-        assert url == "https://creativecommons.org/licenses/by/4.0/"
-        assert name_enum is LicenseNameEnum.CC_BY
+    def test_mit_has_name_key(self):
+        meta = VERSION_REGISTRY["mit"]
+        assert meta["name_key"] == "mit"
+
+    def test_mit_has_family_key(self):
+        meta = VERSION_REGISTRY["mit"]
+        assert meta["family_key"] == "osi"
 
     def test_unknown_has_no_url(self):
-        url, _ = VERSION_REGISTRY["unknown"]
-        assert url is None
+        assert VERSION_REGISTRY["unknown"]["url"] is None
+
+    def test_cc_by_4_0_has_url(self):
+        meta = VERSION_REGISTRY["cc-by-4.0"]
+        assert meta["url"] == "https://creativecommons.org/licenses/by/4.0/"
+        assert meta["name_key"] == "cc-by"
+        assert meta["family_key"] == "cc"
 
 
 class TestAliases:
@@ -95,9 +100,10 @@ class TestMake:
         assert v.key == "mit"
         assert v.family.key == "osi"
 
-    def test_make_unknown_key_raises(self):
-        with pytest.raises(KeyError):
-            make("this-key-does-not-exist")
+    def test_make_unknown_key(self):
+        v = make("unknown")
+        assert v.key == "unknown"
+        assert v.family.key == "unknown"
 
 
 class TestMakeUnknown:

@@ -24,7 +24,7 @@ import logging
 from pathlib import Path
 
 from ..exceptions import DataSourceError
-from . import SourceContribution
+from . import SourceContribution, VersionMetadata
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -52,7 +52,13 @@ class OpenDefinitionSource:
         path = data_dir / _OD_FILE
         if not path.exists():
             logger.debug("OpenDefinition license file not found at %s; skipping.", path)
-            return SourceContribution(name=self.name, aliases={}, url_map={}, prose={})
+            return SourceContribution(
+                name=self.name,
+                aliases={},
+                url_map={},
+                prose={},
+                metadata={},
+            )
 
         try:
             data: dict = json.loads(path.read_text(encoding="utf-8"))
@@ -68,6 +74,7 @@ class OpenDefinitionSource:
 
         aliases: dict[str, str] = {}
         url_map: dict[str, str] = {}
+        metadata: dict[str, VersionMetadata] = {}
 
         for entry in data.values():
             if not isinstance(entry, dict):
@@ -79,8 +86,15 @@ class OpenDefinitionSource:
                 continue
 
             cleaned_id = license_id.lower()
-            # Register the lowercase OD id as a self-referential alias
             aliases[cleaned_id] = cleaned_id
+            # Contribute metadata: name_key = version_key, family_key = None
+            # (family will be inferred by the registry builder if not covered
+            # by another source).
+            if cleaned_id not in metadata:
+                metadata[cleaned_id] = {
+                    "name_key": cleaned_id,
+                    "family_key": "",
+                }
 
             # Also register legacy_ids if present
             for legacy_id in entry.get("legacy_ids", []):
@@ -94,9 +108,11 @@ class OpenDefinitionSource:
                     url_map[norm] = cleaned_id
 
         logger.debug(
-            "OpenDefinition source: %d aliases, %d URL entries from %d records.",
+            "OpenDefinition source: %d aliases, %d URL entries, %d metadata "
+            "from %d records.",
             len(aliases),
             len(url_map),
+            len(metadata),
             len(data),
         )
 
@@ -105,4 +121,5 @@ class OpenDefinitionSource:
             aliases=aliases,
             url_map=url_map,
             prose={},
+            metadata=metadata,
         )

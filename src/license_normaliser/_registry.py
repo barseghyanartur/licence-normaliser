@@ -1,36 +1,27 @@
-"""License registry - unified lookup tables built from data sources + enums.
+"""License registry - unified lookup tables built from data sources.
 
 Architecture
 ------------
-The registry is built in two phases at import time:
+The registry is built at import time in two passes:
 
-1. **Enum phase** - ``VERSION_REGISTRY``, the canonical set of known version
-   keys, is derived from :class:`~._enums.LicenseVersionEnum`.  This is the
-   *source of truth*: a key is only "known" if it appears here.
+1. **Collect keys** - every data source contributes aliases, URL entries, and
+   prose patterns.  The union of all ``version_key`` values across these
+   contributions defines the complete set of known keys.
 
-2. **Data-source phase** - :func:`_build_from_sources` collects contributions
-   from every registered data source (aliases, URLs, prose patterns) and
-   validates that all values point to keys that exist in ``VERSION_REGISTRY``.
-   Contributions that reference unknown keys are logged and discarded.
+2. **Merge metadata** - metadata dicts (``name_key``, ``family_key``, ``url``)
+   from all sources are merged.  Later sources override earlier ones on conflict.
+   For keys that lack an explicit ``family_key``, the family-inference table
+   is consulted.  ``"unknown"`` is used as the last resort.
 
-The three merged lookup tables are:
+The three lookup tables are:
 * :data:`ALIASES`  - ``{cleaned_string -> version_key}``
 * :data:`URL_MAP`  - ``{normalised_url  -> version_key}``
 * :data:`PROSE_PATTERNS` - compiled ``(re.Pattern, version_key)`` pairs
 
-Adding new normalisation rules
-------------------------------
-* **New alias / URL / prose pattern for an existing license** → edit the
-  appropriate JSON file in ``data/``.
-* **Brand-new license** → add enum entries to ``_enums.py`` *and* populate
-  data files.
-* **New external data source** → implement :class:`~.data_sources.DataSource`
-  and add it to :data:`~.data_sources.REGISTERED_SOURCES`.
-
 CC URL regex
 ------------
-The structural CC URL parser lives here unchanged; it handles arbitrary
-``creativecommons.org`` URLs that are not listed in ``URL_MAP``.
+The structural CC URL parser handles arbitrary ``creativecommons.org`` URLs
+that are not already in ``URL_MAP``.
 """
 
 from __future__ import annotations
@@ -41,8 +32,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Optional
 
-from ._enums import LicenseFamilyEnum, LicenseNameEnum, LicenseVersionEnum
-from ._models import LicenseName, LicenseVersion, _fam
+from ._models import LicenseFamily, LicenseName, LicenseVersion
 from .data_sources import load_all_sources
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
@@ -62,102 +52,154 @@ __all__ = (
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# Internal helpers
+# Family-inference fallback table
 # ---------------------------------------------------------------------------
 
-_NAME_ENUMS: dict[str, LicenseNameEnum] = {e.value: e for e in LicenseNameEnum}
-_NAME_TO_FAMILY: dict[LicenseNameEnum, LicenseFamilyEnum] = {
-    e: e.family_enum  # type: ignore[attr-defined]
-    for e in LicenseNameEnum
-}
+_FAMILY_PATTERNS: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(r"^cc0$"), "cc0"),
+    (re.compile(r"^cc-pdm$"), "public-domain"),
+    (re.compile(r"^cc"), "cc"),
+    (re.compile(r"^gpl"), "copyleft"),
+    (re.compile(r"^lgpl"), "copyleft"),
+    (re.compile(r"^agpl"), "copyleft"),
+    (re.compile(r"^mpl"), "osi"),
+    (re.compile(r"^bsd"), "osi"),
+    (re.compile(r"^mit$"), "osi"),
+    (re.compile(r"^apache"), "osi"),
+    (re.compile(r"^isc$"), "osi"),
+    (re.compile(r"^odbl"), "open-data"),
+    (re.compile(r"^odc-by"), "open-data"),
+    (re.compile(r"^pddl"), "open-data"),
+    (re.compile(r"^fal"), "other-oa"),
+    (re.compile(r"^elsevier"), "publisher-oa"),
+    (re.compile(r"^wiley"), "publisher-proprietary"),
+    (re.compile(r"^springer"), "publisher-tdm"),
+    (re.compile(r"^springernature"), "publisher-tdm"),
+    (re.compile(r"^acs"), "publisher-oa"),
+    (re.compile(r"^rsc"), "publisher-proprietary"),
+    (re.compile(r"^iop"), "publisher-tdm"),
+    (re.compile(r"^bmj"), "publisher-proprietary"),
+    (re.compile(r"^cup"), "publisher-proprietary"),
+    (re.compile(r"^aip"), "publisher-proprietary"),
+    (re.compile(r"^pnas"), "publisher-proprietary"),
+    (re.compile(r"^aps"), "publisher-proprietary"),
+    (re.compile(r"^jama"), "publisher-oa"),
+    (re.compile(r"^degruyter"), "publisher-proprietary"),
+    (re.compile(r"^thieme"), "publisher-oa"),
+    (re.compile(r"^tandf"), "publisher-proprietary"),
+    (re.compile(r"^oup"), "publisher-oa"),
+    (re.compile(r"^sage"), "publisher-proprietary"),
+    (re.compile(r"^aaas"), "publisher-proprietary"),
+    (re.compile(r"^no-reuse"), "publisher-proprietary"),
+    (re.compile(r"^all-rights-reserved"), "publisher-proprietary"),
+    (re.compile(r"^author-manuscript"), "publisher-oa"),
+    (re.compile(r"^implied-oa$"), "publisher-oa"),
+    (re.compile(r"^unspecified-oa$"), "other-oa"),
+    (re.compile(r"^thieme-nlm$"), "publisher-oa"),
+    (re.compile(r"^open-access"), "other-oa"),
+    (re.compile(r"^unspecified-oa"), "other-oa"),
+    (re.compile(r"^publisher-specific-oa"), "publisher-oa"),
+    (re.compile(r"^other-oa"), "other-oa"),
+]
+
+
+def _infer_family(version_key: str) -> str:
+    """Infer family_key from version_key prefix using the fallback table."""
+    for pattern, family in _FAMILY_PATTERNS:
+        if pattern.match(version_key):
+            return family
+    return "unknown"
+
 
 # ---------------------------------------------------------------------------
-# Phase 1: VERSION_REGISTRY derived from enums (canonical source of truth)
-# ---------------------------------------------------------------------------
-
-VERSION_REGISTRY: dict[str, tuple[Optional[str], LicenseNameEnum]] = {
-    e.value: (e.url, e.license_name)  # type: ignore[attr-defined]
-    for e in LicenseVersionEnum
-}
-
-
-# ---------------------------------------------------------------------------
-# LicenseName object cache
+# LicenseFamily / LicenseName caches
 # ---------------------------------------------------------------------------
 
 
 @lru_cache(maxsize=512)
-def _get_license_name(key: str) -> LicenseName:
-    name_enum = _NAME_ENUMS.get(key, LicenseNameEnum.UNKNOWN)
-    if name_enum is LicenseNameEnum.UNKNOWN and key.startswith("cc-"):
-        fam = _fam(LicenseFamilyEnum.CC.value)
-    else:
-        fam_enum = _NAME_TO_FAMILY.get(name_enum, LicenseFamilyEnum.UNKNOWN)
-        fam = _fam(fam_enum.value)
-    return LicenseName(key=key, family=fam)
+def _get_license_family(family_key: str) -> LicenseFamily:
+    """Return a cached LicenseFamily, defaulting to 'unknown'."""
+    if family_key in _FAMILY_CACHE:
+        return _FAMILY_CACHE[family_key]
+    return LicenseFamily(key=family_key if family_key else "unknown")
+
+
+@lru_cache(maxsize=512)
+def _get_license_name(name_key: str) -> LicenseName:
+    """Return a cached LicenseName for *name_key*."""
+    return LicenseName(
+        key=name_key,
+        family=_get_license_family(_NAME_TO_FAMILY.get(name_key, "")),
+    )
 
 
 # ---------------------------------------------------------------------------
-# Phase 2: load data sources and build merged lookup tables
+# Phase 1: collect keys and merge metadata from all data sources
 # ---------------------------------------------------------------------------
 
 
 def _data_dir() -> Path:
     """Return the absolute path to the package-level ``data/`` directory."""
-    # The data/ directory sits alongside this source file's package root.
-    # src/license_normaliser/_registry.py  ->  package root is two levels up.
     return Path(__file__).parent / "data"
 
 
-def _validate_and_filter(
-    mapping: dict[str, str],
-    source_name: str,
-    table_name: str,
-) -> dict[str, str]:
-    """Return a copy of *mapping* with entries pointing to unknown keys removed."""
-    clean: dict[str, str] = {}
-    for k, vkey in mapping.items():
-        if vkey in VERSION_REGISTRY:
-            clean[k] = vkey
-        else:
-            # Self-referential aliases (e.g. SPDX / OD lowercase IDs) that
-            # don't match a version key are silently skipped - this is expected
-            # for the many obscure SPDX ids we don't recognise.
-            logger.debug(
-                "Source %r table %r: key %r -> %r (unknown version key, skipping)",
-                source_name,
-                table_name,
-                k,
-                vkey,
-            )
-    return clean
-
-
-def _build_from_sources() -> tuple[
-    dict[str, str],  # ALIASES
-    dict[str, str],  # URL_MAP
-    list[tuple[re.Pattern[str], str]],  # PROSE_PATTERNS
+def _build_registry() -> tuple[
+    dict[str, dict[str, str | None]],
+    dict[str, str],
+    dict[str, str],
+    list[tuple[re.Pattern[str], str]],
 ]:
+    """Build VERSION_REGISTRY, ALIASES, URL_MAP, and PROSE_PATTERNS."""
     data_dir = _data_dir()
     contributions = load_all_sources(data_dir)
 
+    # Merge all keys (from aliases, url_map, prose, metadata)
+    all_keys: set[str] = set()
+    merged_metadata: dict[str, dict[str, str | None]] = {}
     merged_aliases: dict[str, str] = {}
     merged_urls: dict[str, str] = {}
-    merged_prose: dict[str, str] = {}  # pattern -> version_key, order preserved
+    merged_prose: dict[str, str] = {}
 
     for contrib in contributions:
-        valid_aliases = _validate_and_filter(contrib.aliases, contrib.name, "aliases")
-        valid_urls = _validate_and_filter(contrib.url_map, contrib.name, "url_map")
-        valid_prose = _validate_and_filter(contrib.prose, contrib.name, "prose")
-        merged_aliases.update(valid_aliases)
-        merged_urls.update(valid_urls)
-        merged_prose.update(valid_prose)
+        for alias, vkey in contrib.aliases.items():
+            merged_aliases[alias] = vkey
+            all_keys.add(vkey)
+        for url, vkey in contrib.url_map.items():
+            merged_urls[url] = vkey
+            all_keys.add(vkey)
+        for pattern, vkey in contrib.prose.items():
+            merged_prose[pattern] = vkey
+            all_keys.add(vkey)
+        for vkey, meta in contrib.metadata.items():
+            all_keys.add(vkey)
+            if vkey not in merged_metadata:
+                merged_metadata[vkey] = {"name_key": "", "family_key": "", "url": ""}
+            if meta.get("name_key"):
+                merged_metadata[vkey]["name_key"] = meta["name_key"]
+            _fk = meta.get("family_key", "")
+            if _fk:
+                merged_metadata[vkey]["family_key"] = _fk
+            url_val = meta.get("url")
+            if url_val:
+                merged_metadata[vkey]["url"] = url_val
+
+    # Fill in missing family_key with inference
+    for vkey in all_keys:
+        meta = merged_metadata.setdefault(
+            vkey, {"name_key": vkey, "family_key": "", "url": None}
+        )
+        if not meta.get("family_key"):
+            meta["family_key"] = _infer_family(vkey)
+        if not meta.get("name_key"):
+            # name_key defaults to the name portion of the version key
+            # e.g. "cc-by-4.0" -> name_key = "cc-by"
+            meta["name_key"] = vkey.rsplit("-", 1)[0] if "-" in vkey else vkey
 
     # Compile prose patterns
-    compiled: list[tuple[re.Pattern[str], str]] = []
+    compiled_prose: list[tuple[re.Pattern[str], str]] = []
     for pattern_str, vkey in merged_prose.items():
         try:
-            compiled.append((re.compile(pattern_str, re.IGNORECASE), vkey))
+            compiled_prose.append((re.compile(pattern_str, re.IGNORECASE), vkey))
         except re.error as exc:  # noqa: PERF203
             logger.warning(
                 "Invalid prose pattern %r (version_key=%r): %s - skipping.",
@@ -166,14 +208,36 @@ def _build_from_sources() -> tuple[
                 exc,
             )
 
-    return merged_aliases, merged_urls, compiled
+    return merged_metadata, merged_aliases, merged_urls, compiled_prose
 
 
+VERSION_REGISTRY: dict[str, dict[str, str | None]]
 ALIASES: dict[str, str]
 URL_MAP: dict[str, str]
 PROSE_PATTERNS: list[tuple[re.Pattern[str], str]]
 
-ALIASES, URL_MAP, PROSE_PATTERNS = _build_from_sources()
+VERSION_REGISTRY, ALIASES, URL_MAP, PROSE_PATTERNS = _build_registry()
+
+# Ensure "unknown" always exists in VERSION_REGISTRY (created at runtime, not from data)
+if "unknown" not in VERSION_REGISTRY:
+    VERSION_REGISTRY["unknown"] = {
+        "name_key": "unknown",
+        "family_key": "unknown",
+        "url": None,
+    }
+
+# Build _NAME_TO_FAMILY lookup from merged VERSION_REGISTRY
+_NAME_TO_FAMILY: dict[str, str] = {
+    vkey: (meta["family_key"] or "unknown") for vkey, meta in VERSION_REGISTRY.items()
+}
+
+# Pre-populate _FAMILY_CACHE with all known families
+_FAMILY_CACHE: dict[str, LicenseFamily] = {}
+for family_key in set(_NAME_TO_FAMILY.values()):
+    _FAMILY_CACHE[family_key] = LicenseFamily(key=family_key)
+# Always ensure "unknown" exists
+if "unknown" not in _FAMILY_CACHE:
+    _FAMILY_CACHE["unknown"] = LicenseFamily(key="unknown")
 
 
 # ---------------------------------------------------------------------------
@@ -183,11 +247,13 @@ ALIASES, URL_MAP, PROSE_PATTERNS = _build_from_sources()
 
 def make(version_key: str) -> LicenseVersion:
     """Build a :class:`LicenseVersion` from a key in :data:`VERSION_REGISTRY`."""
-    url, name_enum = VERSION_REGISTRY[version_key]
+    meta = VERSION_REGISTRY.get(version_key)
+    if meta is None:
+        return make_unknown(version_key)
     return LicenseVersion(
         key=version_key,
-        url=url,
-        license=_get_license_name(name_enum.value),
+        url=meta.get("url"),
+        license=_get_license_name(meta["name_key"]),
     )
 
 
@@ -196,7 +262,7 @@ def make_unknown(raw_key: str) -> LicenseVersion:
     return LicenseVersion(
         key=raw_key,
         url=None,
-        license=_get_license_name(LicenseNameEnum.UNKNOWN.value),
+        license=_get_license_name("unknown"),
     )
 
 
@@ -210,21 +276,21 @@ def make_synthetic(version_key: str, url: str, name_key: str) -> LicenseVersion:
 
 
 # ---------------------------------------------------------------------------
-# Structural CC URL regex (unchanged from original)
+# Structural CC URL regex
 # ---------------------------------------------------------------------------
 
-_CC_PATH_RE = re.compile(
+_CCN_PATH_RE = re.compile(
     r"creativecommons\.org/licenses/"
     r"(?P<type>by(?:-nc)?(?:-nd|-sa)?)"
     r"/(?P<ver>\d+\.\d+)"
     r"(?:/(?P<igo>igo))?",
     re.IGNORECASE,
 )
-_CC_ZERO_RE = re.compile(
+_CCN_ZERO_RE = re.compile(
     r"creativecommons\.org/publicdomain/zero/(?P<ver>\d+\.\d+)",
     re.IGNORECASE,
 )
-_CC_MARK_RE = re.compile(
+_CCN_MARK_RE = re.compile(
     r"creativecommons\.org/publicdomain/mark/",
     re.IGNORECASE,
 )
@@ -232,19 +298,19 @@ _CC_MARK_RE = re.compile(
 
 def key_from_cc_url(raw: str) -> Optional[tuple[str, str, str]]:
     """Parse a CC URL into ``(version_key, name_key, canonical_url)``."""
-    if _CC_MARK_RE.search(raw):
+    if _CCN_MARK_RE.search(raw):
         return (
             "cc-pdm",
             "cc-pdm",
             "https://creativecommons.org/publicdomain/mark/1.0/",
         )
 
-    if m := _CC_ZERO_RE.search(raw):
+    if m := _CCN_ZERO_RE.search(raw):
         ver = m["ver"]
         vk = "cc0" if ver == "1.0" else f"cc0-{ver}"
         return (vk, "cc0", f"https://creativecommons.org/publicdomain/zero/{ver}/")
 
-    if m := _CC_PATH_RE.search(raw):
+    if m := _CCN_PATH_RE.search(raw):
         t = m["type"].lower()
         ver = m["ver"]
         igo = bool(m["igo"])

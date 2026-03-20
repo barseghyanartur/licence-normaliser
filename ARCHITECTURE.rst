@@ -64,26 +64,7 @@ Class relationships
 - ``LicenseName`` holds a ``LicenseFamily`` via its ``family`` attribute.
 - ``LicenseVersion.family`` delegates to ``license.family``.
 - All three classes are **immutable** (frozen dataclasses), implement
-  ``__str__``, ``__eq__``, and ``__hash__``, and expose an ``.enum``
-  property for type-safe access.
-
-The enum backing (``_enums.py``)
---------------------------------
-
-``_enums.py`` is the source of truth for all known licences.  It defines
-three enums:
-
-``LicenseFamilyEnum``
-    Ten families: ``CC``, ``CC0``, ``PUBLIC_DOMAIN``, ``OSI``,
-    ``COPYLEFT``, ``OPEN_DATA``, ``PUBLISHER_TDM``, ``PUBLISHER_OA``,
-    ``PUBLISHER_PROPRIETARY``, ``OTHER_OA``, ``UNKNOWN``.
-
-``LicenseNameEnum``
-    Maps ``(key, family_enum)`` pairs for every known name-level licence.
-
-``LicenseVersionEnum``
-    Maps ``(key, url, name_enum)`` triples for every known version-level
-    licence.  The URL is the canonical reference URL for that version.
+  ``__str__``, ``__eq__``, and ``__hash__``.
 
 Resolution Pipeline
 ===================
@@ -100,7 +81,7 @@ where the **first step that matches wins**:
      - Logic
    * - 1
      - ``step_direct``
-     - Direct key in ``VERSION_REGISTRY`` (from enums)
+     - Direct key in ``VERSION_REGISTRY``
    * - 2
      - ``step_alias``
      - Cleaned string in ``ALIASES`` dict
@@ -118,16 +99,18 @@ where the **first step that matches wins**:
      - Always matches -- returns ``"unknown"`` version
 
 Step 1 -- Direct registry lookup
-----------------------------------------------------
+--------------------------------
 
 The ``VERSION_REGISTRY`` is a dict mapping every known version key to a
-``(url_or_none, LicenseNameEnum)`` pair.  This is populated entirely
-from the enum definitions in ``_enums.py``.  Example::
+metadata dict.  Example::
 
-    "mit" → ("https://opensource.org/licenses/MIT", LicenseNameEnum.MIT)
+    "mit" → {"url": "https://opensource.org/licenses/MIT", "name_key": "mit", "family_key": "osi"}
+
+It is built at import time from all registered data sources (see
+Registry Architecture below).
 
 Step 2 -- Alias table
-----------------------------------------------------
+---------------------
 
 ``ALIASES`` is a merged dict built from:
 
@@ -139,7 +122,7 @@ Step 2 -- Alias table
 Each entry maps a cleaned string to a version key.
 
 Step 3 -- URL map
-----------------------------------------------------
+-----------------
 
 ``URL_MAP`` is a merged dict built from:
 
@@ -154,14 +137,14 @@ URLs are **normalised once at registry-build time**:
 * Lowercased.
 
 Step 4 -- Creative Commons structural parser
-----------------------------------------------------
+--------------------------------------------
 not already in the URL map.  It uses regex to extract the licence type
 and version from the URL path, then constructs the version key and
 canonical URL.  Supports standard licences, IGO variants, and the
 public-domain mark.
 
 Step 5 -- Prose pattern scan
-----------------------------------------------------
+----------------------------
 
 ``PROSE_PATTERNS`` is a list of compiled ``(Pattern, version_key)``
 tuples.  Patterns are evaluated in order, and the **first match** wins.
@@ -169,7 +152,7 @@ Only inputs of 20 characters or longer are tested against prose
 patterns.  Patterns are compiled once at import time.
 
 Step 6 -- Fallback
-----------------------------------------------------
+------------------
 
 Always matches.  Returns the ``"unknown"`` version key with family
 ``"unknown"``.  When strict mode is disabled this is the final result;
@@ -179,25 +162,24 @@ in strict mode a ``LicenseNotFoundError`` is raised instead.
 Registry Architecture
 =====================
 
-The registry (``_registry.py``) is built in two phases at **import
-time**.
+The registry (``_registry.py``) is the canonical source of truth for all
+known version keys.  It is built in two passes at **import time**:
 
-Phase 1 -- Enum-derived registry
-----------------------------------------------------
+Phase 1 -- Collect keys
+-----------------------
 
-``VERSION_REGISTRY`` is built from ``LicenseVersionEnum``:
+Every registered data source contributes aliases, URL entries, and prose
+patterns.  The complete set of known version keys is assembled from all
+contributions.  Any key that cannot be resolved to metadata is logged
+at DEBUG level and retained so it can be used as a direct lookup target.
 
-.. code-block:: python
-
-    VERSION_REGISTRY: dict[str, tuple[Optional[str], LicenseNameEnum]]
-
-This is the canonical source of truth.  Every version key known to the
-system is present here, along with its canonical URL and name enum.
-
-Phase 2 -- Data source merging
-----------------------------------------------------
+Phase 2 -- Merge metadata
+-------------------------
 
 The three lookup tables are assembled from multiple data sources:
+
+``VERSION_REGISTRY: dict[str, dict[str, str | None]]``
+    Version key → ``{"url": str | None, "name_key": str, "family_key": str}``.
 
 ``ALIASES: dict[str, str]``
     Cleaned string → version key.
@@ -208,13 +190,30 @@ The three lookup tables are assembled from multiple data sources:
 ``PROSE_PATTERNS: list[tuple[re.Pattern[str], str]]``
     Compiled regex → version key.
 
-**All entries are validated against ``VERSION_REGISTRY`` before being
-added.**  Unknown version keys are silently discarded and logged at
-DEBUG level.  This prevents typos or stale entries from corrupting the
-registry.
+Family inference
+~~~~~~~~~~~~~~~~
+
+For entries that carry no explicit family (e.g. SPDX-only licenses),
+family is inferred from a small regex table in ``_registry.py``.  This
+is the last resort; it does not affect any entry covered by the curated
+JSON files.  The table covers common prefixes:
+
+``cc*`` → ``cc``, ``gpl*`` → ``copyleft``, ``lgpl*`` → ``copyleft``,
+``agpl*`` → ``copyleft``, ``mpl*`` → ``osi``, ``bsd*`` → ``osi``,
+``mit`` → ``osi``, ``apache`` → ``osi``, ``odbl`` → ``open-data``,
+``odc-by`` → ``open-data``, ``pddl`` → ``open-data``, ``elsevier*`` →
+``publisher-oa``, ``wiley*`` → ``publisher-proprietary``, ``springer*`` →
+``publisher-tdm``, ``acs*`` → ``publisher-oa``, ``rsc*`` →
+``publisher-proprietary``, ``iop*`` → ``publisher-tdm``, ``bmj*`` →
+``publisher-proprietary``, ``cup*`` → ``publisher-proprietary``,
+``aip*`` → ``publisher-proprietary``, ``pnas*`` → ``publisher-proprietary``,
+``aps*`` → ``publisher-proprietary``, ``jama*`` → ``publisher-oa``,
+``degruyter*`` → ``publisher-proprietary``, ``thieme*`` → ``publisher-oa``,
+``tandf*`` → ``publisher-proprietary``, ``oup*`` → ``publisher-oa``,
+``sage*`` → ``publisher-proprietary``, ``aaas*`` → ``publisher-proprietary``.
 
 Factory functions
-----------------------------------------------------
+-----------------
 
 * ``make(version_key)`` -- creates ``LicenseVersion`` from the registry.
 * ``make_unknown(raw_key)`` -- creates ``"unknown"`` ``LicenseVersion``.
@@ -316,7 +315,7 @@ pipeline.  It implements two LRU caches:
     ``LicenseVersion``.  Default size: **8192 entries**.
 
 ``_get_license_name()`` -- model cache
-    Key: ``LicenseNameEnum``.  Value: the ``LicenseName`` instance.
+    Key: name key string.  Value: the ``LicenseName`` instance.
     Default size: **512 entries**.
 
 Input cleaning (``_clean()``)
@@ -353,9 +352,6 @@ Public API
         LicenseFamily,
         LicenseName,
         LicenseVersion,
-        LicenseFamilyEnum,
-        LicenseNameEnum,
-        LicenseVersionEnum,
     )
     from license_normaliser.exceptions import (
         LicenseNotFoundError,
@@ -411,11 +407,18 @@ Extending Without Python Changes
 Adding a new alias
 ------------------
 
-Edit ``data/aliases/aliases.json``:
+Edit ``data/aliases/aliases.json``.  Each entry maps an alias string to
+a dict with ``version_key``, ``name_key``, and ``family_key``:
 
 .. code-block:: json
 
-    { "my new alias": "existing-version-key" }
+    {
+      "my new alias": {
+        "version_key": "existing-version-key",
+        "name_key": "existing-name",
+        "family_key": "cc"
+      }
+    }
 
 Adding a new URL
 ----------------
@@ -424,7 +427,13 @@ Edit ``data/urls/url_map.json``:
 
 .. code-block:: json
 
-    { "https://example.com/license/": "existing-version-key" }
+    {
+      "https://example.com/license/": {
+        "version_key": "existing-version-key",
+        "name_key": "existing-name",
+        "family_key": "osi"
+      }
+    }
 
 Adding a prose pattern
 ----------------------
@@ -435,7 +444,7 @@ patterns before general ones):
 .. code-block:: json
 
     [
-      {"pattern": "my specific phrase", "version_key": "existing-version-key"},
+      {"pattern": "my specific phrase", "version_key": "existing-version-key", "name_key": "existing-name", "family_key": "osi"},
       ...
     ]
 
@@ -446,13 +455,34 @@ longer to avoid false positives on short strings.
 Adding a Brand-New Licence
 ==========================
 
-1. Add enum entries to ``_enums.py``:
+1. Add entries to the JSON data files.  Each entry is a dict with
+   ``version_key``, ``name_key``, and ``family_key``::
 
-   - ``LicenseFamilyEnum`` (if the family is new).
-   - ``LicenseNameEnum`` with ``(key, family_enum)``.
-   - ``LicenseVersionEnum`` with ``(key, url, name_enum)``.
+   ``data/aliases/aliases.json``:
 
-2. Add aliases, URLs, or prose patterns to the JSON data files.
+   .. code-block:: json
+
+       { "my alias": {"version_key": "my-license", "name_key": "my-license", "family_key": "osi"} }
+
+   ``data/urls/url_map.json``:
+
+   .. code-block:: json
+
+       { "https://example.com/license/": {"version_key": "my-license", "name_key": "my-license", "family_key": "osi"} }
+
+   ``data/prose/prose_patterns.json``:
+
+   .. code-block:: json
+
+       [
+         {"pattern": "my specific phrase", "version_key": "my-license", "name_key": "my-license", "family_key": "osi"}
+       ]
+
+   At least one of these files must provide an entry for the new key.
+
+2. If the new licence has family information not covered by the regex
+   fallback table in ``_registry.py``, add an explicit entry to
+   ``data/aliases/aliases.json`` to ensure it is picked up.
 
 3. Write tests covering both the new licence and any edge cases.
 
@@ -463,13 +493,12 @@ Adding a Brand-New Licence
 
 
 Directory Structure
-====================
+===================
 
 ::
 
     src/license_normaliser/
     ├── __init__.py              # Public API exports
-    ├── _enums.py                 # LicenseFamily/Name/Version enums
     ├── _models.py                # Frozen dataclass hierarchy
     ├── _registry.py              # VERSION_REGISTRY + data source merge
     ├── _pipeline.py              # Six-step resolution pipeline
@@ -481,7 +510,7 @@ Directory Structure
     │   └── _main.py              # CLI entry point
     ├── data_sources/
     │   ├── __init__.py           # DataSource protocol + REGISTRY
-    │   ├── builtin_aliases.py   # aliases.json loader
+    │   ├── builtin_aliases.py    # aliases.json loader
     │   ├── builtin_urls.py       # url_map.json loader
     │   ├── builtin_prose.py      # prose_patterns.json loader
     │   ├── spdx.py               # SPDX JSON parser

@@ -3,9 +3,6 @@
 import pytest
 
 from license_normaliser import (
-    LicenseFamilyEnum,
-    LicenseNameEnum,
-    LicenseVersionEnum,
     normalise_license,
     normalise_licenses,
 )
@@ -419,15 +416,6 @@ class TestHierarchyNavigation:
         assert str(v) == "cc-by-nc-nd-4.0"
         assert str(v.license) == "cc-by-nc-nd"
         assert str(v.family) == "cc"
-
-    def test_enum_checking_methods(self):
-        v = normalise_license("MIT")
-        assert v.is_family(LicenseFamilyEnum.OSI)
-        assert not v.is_family(LicenseFamilyEnum.CC)
-        assert v.is_name(LicenseNameEnum.MIT)
-        assert not v.is_name(LicenseNameEnum.CC_BY)
-        assert v.is_version(LicenseVersionEnum.MIT)
-        assert not v.is_version(LicenseVersionEnum.GPL_3_0)
 
 
 class TestBatchNormalisation:

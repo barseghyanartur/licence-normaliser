@@ -8,11 +8,6 @@ from ._core import (
     normalise_license,
     normalise_licenses,
 )
-from ._enums import (
-    LicenseFamilyEnum,
-    LicenseNameEnum,
-    LicenseVersionEnum,
-)
 from .exceptions import (
     DataSourceError,
     LicenseNormaliserError,
@@ -28,9 +23,6 @@ __all__ = (
     "LicenseFamily",
     "LicenseName",
     "LicenseVersion",
-    "LicenseFamilyEnum",
-    "LicenseNameEnum",
-    "LicenseVersionEnum",
     "LicenseNormaliserError",
     "LicenseNotFoundError",
     "DataSourceError",

@@ -31,7 +31,7 @@
 
 ### Resolution Pipeline
 
-1. **Direct registry lookup** – cleaned lowercase key matches a `LicenseVersionEnum` value
+1. **Direct registry lookup** – cleaned lowercase key matches a `VERSION_REGISTRY` entry
 2. **Alias table** – hit in merged `ALIASES` dict (from `data/aliases/aliases.json` + data sources)
 3. **URL map** – hit in merged `URL_MAP` dict (from `data/urls/url_map.json` + data sources)
 4. **Structural CC URL regex** – any `creativecommons.org` URL not in the map
@@ -42,15 +42,15 @@
 
 | File | Purpose |
 |------|---------|
-| `src/license_normaliser/_enums.py` | Source of truth for all known licenses |
-| `src/license_normaliser/_registry.py` | Builds merged lookup tables from enums + data sources |
+| `src/license_normaliser/_models.py` | Frozen dataclass hierarchy |
+| `src/license_normaliser/_registry.py` | VERSION_REGISTRY built from data sources + family inference |
 | `src/license_normaliser/data_sources/` | Pluggable data-source package |
 | `src/license_normaliser/_pipeline.py` | Six-step resolution pipeline |
 | `src/license_normaliser/_cache.py` | LRU caching + strict mode |
 | `src/license_normaliser/exceptions.py` | Public exception hierarchy |
-| `data/aliases/aliases.json` | Curated alias map |
-| `data/urls/url_map.json` | Curated URL map |
-| `data/prose/prose_patterns.json` | Ordered prose regex patterns |
+| `data/aliases/aliases.json` | Curated alias map (dict format) |
+| `data/urls/url_map.json` | Curated URL map (dict format) |
+| `data/prose/prose_patterns.json` | Ordered prose regex patterns (dict format) |
 | `data/spdx/spdx-licenses.json` | SPDX license list (auto-parsed) |
 | `data/opendefinition/opendefinition_licenses_all.json` | OD license list (auto-parsed) |
 
@@ -100,20 +100,20 @@ results = normalise_licenses(["MIT", "Apache-2.0"], strict=True)
 ### Adding a new alias
 Edit `data/aliases/aliases.json`:
 ```json
-{ "my new alias": "existing-version-key" }
+{ "my new alias": {"version_key": "existing-version-key", "name_key": "existing-name", "family_key": "cc"} }
 ```
 
 ### Adding a new URL
 Edit `data/urls/url_map.json`:
 ```json
-{ "https://example.com/license/": "existing-version-key" }
+{ "https://example.com/license/": {"version_key": "existing-version-key", "name_key": "existing-name", "family_key": "osi"} }
 ```
 
 ### Adding a prose pattern
 Edit `data/prose/prose_patterns.json` (order matters – specific before general):
 ```json
 [
-  {"pattern": "my specific phrase", "version_key": "existing-version-key"},
+  {"pattern": "my specific phrase", "version_key": "existing-version-key", "name_key": "existing-name", "family_key": "osi"},
   ...
 ]
 ```
@@ -122,16 +122,10 @@ Edit `data/prose/prose_patterns.json` (order matters – specific before general
 
 ## 5. Adding a Brand-New License
 
-1. Add enum entries to `src/license_normaliser/_enums.py`:
-   - `LicenseFamilyEnum` (if the family is new)
-   - `LicenseNameEnum` (with `(key, family_enum)`)
-   - `LicenseVersionEnum` (with `(key, url, name_enum)`)
-
-2. Add aliases/URLs/patterns to the JSON data files.
-
-3. Export from `__init__.py` if needed.
-
-4. Write tests.
+1. Add entries to the JSON data files (aliases.json, url_map.json, or prose_patterns.json).
+   Each entry maps a key (alias string, URL, or pattern) to a dict with `version_key`, `name_key`, and `family_key`.
+2. If the family is not covered by the regex fallback table in `_registry.py`, add an explicit entry to `aliases.json` first.
+3. Write tests.
 
 ---
 
@@ -188,7 +182,7 @@ Run linting: `make ruff` or `make pre-commit`
 1. **Check the mission** – does the change preserve the no-dependencies policy and three-level hierarchy?
 2. **Identify the correct location**:
    - New synonym for existing license → JSON data file only
-   - New license → `_enums.py` + JSON data files
+   - New license → JSON data files (all three support dict entries with `version_key`, `name_key`, `family_key`)
    - New external data source → `data_sources/my_source.py` + `REGISTERED_SOURCES`
    - Core pipeline change → `_pipeline.py`
    - New public API → `_cache.py` + `__init__.py`
@@ -203,13 +197,16 @@ Run linting: `make ruff` or `make pre-commit`
 
 ## 9. Testing Rules
 
-All tests run inside Docker:
+All tests run inside Docker (safest option, always available):
 
 ```sh
 make test                   # full matrix (Python 3.10–3.14)
 make test-env ENV=py312     # single version
-make shell                  # interactive shell
 ```
+
+For individual local tests, you can use `uv run pytest`.
+A prerequisite is `make install` first. On tooling errors, fallback to
+Docker-based testing.
 
 ### Test layout
 

@@ -40,11 +40,12 @@ def _data_dir() -> Path:
 
 class TestSourceContribution:
     def test_construction(self):
-        c = SourceContribution("test", {"a": "b"}, {"u": "v"}, {"p": "q"})
+        c = SourceContribution("test", {"a": "b"}, {"u": "v"}, {"p": "q"}, {})
         assert c.name == "test"
         assert c.aliases == {"a": "b"}
         assert c.url_map == {"u": "v"}
         assert c.prose == {"p": "q"}
+        assert c.metadata == {}
 
 
 class TestBuiltinAliasSource:
