@@ -178,8 +178,9 @@ Phase 2 -- Merge metadata
 
 The three lookup tables are assembled from multiple data sources:
 
-``VERSION_REGISTRY: dict[str, dict[str, str | None]]``
-    Version key → ``{"url": str | None, "name_key": str, "family_key": str}``.
+``VERSION_REGISTRY: dict[str, dict[str, str]]``
+    Version key → ``{"url": str, "name_key": str, "family_key": str}``.
+    ``url`` is the canonical URL (may be ``""`` when no URL is known).
 
 ``ALIASES: dict[str, str]``
     Cleaned string → version key.
@@ -198,19 +199,26 @@ family is inferred from a small regex table in ``_registry.py``.  This
 is the last resort; it does not affect any entry covered by the curated
 JSON files.  The table covers common prefixes:
 
-``cc*`` → ``cc``, ``gpl*`` → ``copyleft``, ``lgpl*`` → ``copyleft``,
+``cc0`` → ``cc0``, ``cc-pdm`` → ``public-domain``, ``cc*`` → ``cc``,
+``gpl*`` → ``copyleft``, ``lgpl*`` → ``copyleft``,
 ``agpl*`` → ``copyleft``, ``mpl*`` → ``osi``, ``bsd*`` → ``osi``,
 ``mit`` → ``osi``, ``apache`` → ``osi``, ``odbl`` → ``open-data``,
-``odc-by`` → ``open-data``, ``pddl`` → ``open-data``, ``elsevier*`` →
-``publisher-oa``, ``wiley*`` → ``publisher-proprietary``, ``springer*`` →
-``publisher-tdm``, ``acs*`` → ``publisher-oa``, ``rsc*`` →
-``publisher-proprietary``, ``iop*`` → ``publisher-tdm``, ``bmj*`` →
-``publisher-proprietary``, ``cup*`` → ``publisher-proprietary``,
+``odc-by`` → ``open-data``, ``pddl`` → ``open-data``, ``fal*`` →
+``other-oa``, ``elsevier*`` → ``publisher-oa``,
+``wiley*`` → ``publisher-proprietary``, ``springer*`` → ``publisher-tdm``,
+``springernature*`` → ``publisher-tdm``, ``acs*`` → ``publisher-oa``,
+``rsc*`` → ``publisher-proprietary``, ``iop*`` → ``publisher-tdm``,
+``bmj*`` → ``publisher-proprietary``, ``cup*`` → ``publisher-proprietary``,
 ``aip*`` → ``publisher-proprietary``, ``pnas*`` → ``publisher-proprietary``,
 ``aps*`` → ``publisher-proprietary``, ``jama*`` → ``publisher-oa``,
 ``degruyter*`` → ``publisher-proprietary``, ``thieme*`` → ``publisher-oa``,
 ``tandf*`` → ``publisher-proprietary``, ``oup*`` → ``publisher-oa``,
-``sage*`` → ``publisher-proprietary``, ``aaas*`` → ``publisher-proprietary``.
+``sage*`` → ``publisher-proprietary``, ``aaas*`` → ``publisher-proprietary``,
+``no-reuse`` → ``publisher-proprietary``,
+``all-rights-reserved`` → ``publisher-proprietary``,
+``author-manuscript`` → ``publisher-oa``, ``implied-oa`` → ``publisher-oa``,
+``open-access`` → ``other-oa``, ``unspecified-oa`` → ``other-oa``,
+``publisher-specific-oa`` → ``publisher-oa``, ``other-oa`` → ``other-oa``.
 
 Factory functions
 -----------------
@@ -242,6 +250,12 @@ Protocol definition
         aliases: dict[str, str]
         url_map: dict[str, str]
         prose: dict[str, str]
+        metadata: dict[str, VersionMetadata]
+
+``VersionMetadata`` is ``dict[str, str]`` mapping fields
+``name_key``, ``family_key``, and ``url`` to their values.
+The ``metadata`` dict holds per-version-key metadata; empty strings
+mean "no value provided" and are filled in by later sources.
 
 Loading
 -------

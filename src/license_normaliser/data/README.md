@@ -9,51 +9,70 @@ Python code.
 ```
 data/
 ├── aliases/
-│   └── aliases.json          # Prose/SPDX/short-form → version key
+│   └── aliases.json              # Prose/SPDX/short-form → metadata dict
 ├── urls/
-│   └── url_map.json          # Canonical URL → version key
+│   └── url_map.json              # Canonical URL → metadata dict
 ├── prose/
-│   └── prose_patterns.json   # Ordered regex patterns for long text scanning
+│   └── prose_patterns.json        # Ordered regex patterns for long text scanning
 ├── spdx/
-│   └── spdx-licenses.json    # SPDX license list (optional, can be updated)
+│   └── spdx-licenses.json        # SPDX license list (optional)
 └── opendefinition/
     └── opendefinition_licenses_all.json   # OD license list (optional)
 ```
 
+## Entry Format
+
+Every entry maps a **lookup key** (alias string, URL, or prose pattern) to a
+metadata dict with three required fields:
+
+- ``version_key`` -- the canonical version-level identifier (e.g. ``"cc-by-4.0"``)
+- ``name_key`` -- the name-level identifier without version suffix (e.g. ``"cc-by"``)
+- ``family_key`` -- the family-level identifier (e.g. ``"cc"``)
+
+URLs are stored separately in the ``url`` field of the metadata dict.
+
 ## How to Add a New License Alias
 
-Edit `aliases/aliases.json`:
+Edit ``aliases/aliases.json``:
 
 ```json
 {
-  "my new alias": "existing-version-key"
+  "my new alias": {
+    "version_key": "cc-by-4.0",
+    "name_key": "cc-by",
+    "family_key": "cc"
+  }
 }
 ```
 
-The key must be **lowercase and whitespace-collapsed**. The value must be a
-version key that exists in `LicenseVersionEnum` (defined in `_enums.py`).
+The key must be **lowercase and whitespace-collapsed**.
 
 ## How to Add a New URL Mapping
 
-Edit `urls/url_map.json`:
+Edit ``urls/url_map.json``:
 
 ```json
 {
-  "https://example.com/my-license/": "existing-version-key"
+  "https://example.com/my-license/": {
+    "version_key": "my-license",
+    "name_key": "my-license",
+    "family_key": "publisher-oa"
+  }
 }
 ```
 
-Both `http://` and `https://` variants may be listed; trailing slashes are
-normalised on load — you only need one entry per URL.
+Both ``http://`` and ``https://`` variants may be listed; the loader
+normalises them (converts http→https, strips/preserves trailing slash).
 
 ## How to Add a New Prose Pattern
 
-Edit `prose/prose_patterns.json` — insert your entry **before** any pattern
+Edit ``prose/prose_patterns.json`` — insert your entry **before** any pattern
 it should take priority over:
 
 ```json
 [
-  {"pattern": "my very specific phrase", "version_key": "existing-version-key"},
+  {"pattern": "my very specific phrase", "version_key": "my-license",
+   "name_key": "my-license", "family_key": "publisher-oa"},
   ...
 ]
 ```
@@ -61,22 +80,31 @@ it should take priority over:
 Patterns are Python regular expressions matched case-insensitively.
 More-specific patterns must come first.
 
+## How to Add a Brand-New License
+
+1. Add entries to the JSON data files (``aliases/aliases.json``,
+   ``urls/url_map.json``, or ``prose/prose_patterns.json``).
+   Each entry maps a key to a dict with ``version_key``, ``name_key``,
+   and ``family_key``.
+
+2. If the ``family_key`` is not covered by the regex fallback table in
+   ``_registry.py``, add an explicit ``family_key`` value in the JSON entry
+   (recommended) or add a new regex pattern to ``_FAMILY_PATTERNS`` in
+   ``_registry.py`` as a last resort.
+
+3. Run ``make test-env ENV=py312`` to verify.
+
 ## Updating the SPDX or OpenDefinition Files
 
-Replace `spdx/spdx-licenses.json` or `opendefinition/opendefinition_licenses_all.json`
-with the latest version from the respective upstream source. The parser will
-automatically pick up any new license IDs or URLs that match existing version keys.
+Replace ``spdx/spdx-licenses.json`` or
+``opendefinition/opendefinition_licenses_all.json`` with the latest version
+from the respective upstream source. Unknown license IDs (those not matching
+any existing entry) are silently skipped — they do **not** cause errors.
 
-Unknown IDs (those not in `LicenseVersionEnum`) are silently skipped — they do
-**not** cause errors.
+## Metadata Merge Priority
 
-## Adding a Completely New License
+When multiple data sources contribute metadata for the same ``version_key``:
 
-1. Add enum entries to `src/license_normaliser/_enums.py`:
-   - `LicenseFamilyEnum` (if the family is new)
-   - `LicenseNameEnum`
-   - `LicenseVersionEnum`
-
-2. Add its aliases, URLs, and/or prose patterns to the appropriate JSON files.
-
-3. Run `make test` to verify nothing broke.
+- ``name_key`` -- the **first** non-empty value wins (from builtin sources)
+- ``family_key`` -- the **first** non-empty value wins (from builtin sources)
+- ``url`` -- the **last** non-empty value wins (URL sources override aliases)
