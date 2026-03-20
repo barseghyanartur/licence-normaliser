@@ -48,3 +48,30 @@ def test_empty_input():
     assert v.key == "unknown"
     v = normalise_license("   ")
     assert v.key == "unknown"
+
+
+def test_real_world_license_strings():
+    """Test against real-world license strings collected from the wild."""
+    cases = [
+        ("http://creativecommons.org/licenses/by-nc-nd/4.0/", "cc-by-nc-nd-4.0"),
+        ("http://creativecommons.org/licenses/by/4.0/", "cc-by-4.0"),
+        ("http://creativecommons.org/licenses/by-nc/4.0/", "cc-by-nc-4.0"),
+        (
+            "http://www.elsevier.com/open-access/userlicense/1.0/",
+            "http://www.elsevier.com/open-access/userlicense/1.0",
+        ),
+        (
+            "http://creativecommons.org/licenses/by-nc-nd/3.0/igo/",
+            "http://creativecommons.org/licenses/by-nc-nd/3.0/igo",
+        ),
+        ("CC BY-NC-ND 4.0", "cc-by-nc-nd-4.0"),
+        (
+            "http://creativecommons.org/licenses/by/3.0/igo/",
+            "http://creativecommons.org/licenses/by/3.0/igo",
+        ),
+    ]
+    for raw, expected_key in cases:
+        v = normalise_license(raw)
+        assert v.key == expected_key, (
+            f"input: {raw!r} -> got {v.key!r}, want {expected_key!r}"
+        )
