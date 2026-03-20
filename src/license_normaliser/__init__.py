@@ -7,7 +7,6 @@ from ._core import (
     normalise_license,
     normalise_licenses,
 )
-from ._enums import LicenseFamilyEnum, LicenseNameEnum, LicenseVersionEnum
 from ._exceptions import LicenseNormalisationError
 from .exceptions import LicenseNotFoundError
 
@@ -21,9 +20,6 @@ __all__ = (
     "LicenseFamily",
     "LicenseName",
     "LicenseVersion",
-    "LicenseFamilyEnum",
-    "LicenseNameEnum",
-    "LicenseVersionEnum",
     "LicenseNormalisationError",
     "LicenseNotFoundError",
     "normalise_license",
