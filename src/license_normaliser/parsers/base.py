@@ -8,7 +8,7 @@ from typing import Any
 class BaseParser(ABC):
     """All data parsers must implement this."""
 
-    url: str
+    url: str | None
     local_path: str
 
     @abstractmethod
@@ -23,16 +23,20 @@ class BaseParser(ABC):
         The local path is resolved relative to the package root
         (``src/license_normaliser/``).
 
+        If ``cls.url`` is None, this is a local-only parser with no external
+        source and the operation succeeds without fetching.
+
         Returns True on success, False on failure.
         """
-        import json
-        import urllib.request
-
         target = Path(__file__).parent.parent / cls.local_path
-        skipped = target.exists() and not force
-        if skipped:
+        if target.exists() and not force:
             return True
+        if cls.url is None:
+            return False
         try:
+            import json
+            import urllib.request
+
             with urllib.request.urlopen(cls.url, timeout=30) as response:  # noqa: S310
                 data = response.read()
             target.parent.mkdir(parents=True, exist_ok=True)
