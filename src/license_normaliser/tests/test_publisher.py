@@ -416,3 +416,45 @@ class TestPublisherCatchAll:
         v = normalise_license("no reuse")
         assert v.key == "no-reuse"
         assert v.family.key == "publisher-proprietary"
+
+
+class TestCCPublicDomain:
+    def test_cc_pdm_bare_key(self):
+        v = normalise_license("cc-pdm")
+        assert v.key == "cc-pdm-1.0"
+        assert v.family.key == "public-domain"
+
+    def test_cc_pdm_versioned_key(self):
+        v = normalise_license("cc-pdm-1.0")
+        assert v.key == "cc-pdm-1.0"
+        assert v.family.key == "public-domain"
+
+    def test_cc0_bare_key(self):
+        v = normalise_license("cc0")
+        assert v.key == "cc0-1.0"
+        assert v.family.key == "cc0"
+
+    def test_cc0_versioned_key(self):
+        v = normalise_license("cc0-1.0")
+        assert v.key == "cc0-1.0"
+        assert v.family.key == "cc0"
+
+    def test_cc_zero_shorthand(self):
+        v = normalise_license("cc-zero")
+        assert v.key == "cc0-1.0"
+        assert v.family.key == "cc0"
+
+    def test_public_domain_fallback(self):
+        v = normalise_license("public-domain")
+        assert v.key == "public-domain"
+        assert v.family.key == "public-domain"
+
+    def test_creative_commons_zero(self):
+        v = normalise_license("creative commons zero")
+        assert v.key == "cc0-1.0"
+        assert v.family.key == "cc0"
+
+    def test_creative_commons_public_domain(self):
+        v = normalise_license("creative commons public domain")
+        assert v.key == "cc-pdm-1.0"
+        assert v.family.key == "public-domain"
