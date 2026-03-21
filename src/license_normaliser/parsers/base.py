@@ -1,5 +1,9 @@
 """Base parser interface."""
 
+import json
+import logging
+import urllib.error
+import urllib.request
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any
@@ -40,14 +44,29 @@ class BaseParser(ABC):
         if cls.url is None:
             return False
         try:
-            import json
-            import urllib.request
-
             with urllib.request.urlopen(cls.url, timeout=30) as response:  # noqa: S310
-                data = response.read()
+                raw_bytes = response.read()
+            json.loads(raw_bytes.decode("utf-8"))
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(data)
-            json.loads(data.decode("utf-8"))
+            target.write_bytes(raw_bytes)
             return True
-        except Exception:
+        except urllib.error.URLError as exc:
+            logging.warning(
+                "refresh(%s): URLError fetching %s - %s", cls.__name__, cls.url, exc
+            )
+            return False
+        except urllib.error.HTTPError as exc:
+            logging.warning(
+                "refresh(%s): HTTPError %s fetching %s", cls.__name__, exc.code, cls.url
+            )
+            return False
+        except json.JSONDecodeError as exc:
+            logging.error(
+                "refresh(%s): invalid JSON from %s - %s", cls.__name__, cls.url, exc
+            )
+            return False
+        except OSError as exc:
+            logging.error(
+                "refresh(%s): OSError writing %s - %s", cls.__name__, target, exc
+            )
             return False
