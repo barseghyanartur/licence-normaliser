@@ -1,10 +1,12 @@
 """OSI parser - loads osi.json from package data."""
 
+from __future__ import annotations
+
 import json
 from pathlib import Path
 from typing import Any
 
-from .base import BaseParser
+from license_normaliser.plugins import RegistryPlugin, URLPlugin
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -12,7 +14,7 @@ __license__ = "MIT"
 __all__ = ("OSIParser",)
 
 
-class OSIParser(BaseParser):
+class OSIParser(RegistryPlugin, URLPlugin):
     url = "https://opensource.org/api/license"
     local_path = "data/osi/osi.json"
 
@@ -42,3 +44,43 @@ class OSIParser(BaseParser):
                 )
             )
         return results
+
+    @staticmethod
+    def load_registry() -> dict[str, str]:
+        path = Path(__file__).parent.parent / OSIParser.local_path
+        data = json.loads(path.read_text(encoding="utf-8"))
+        result: dict[str, str] = {}
+        if not isinstance(data, list):
+            return result
+        for entry in data:
+            if not isinstance(entry, dict):
+                continue
+            key = entry.get("id", "").strip()
+            if key:
+                result[key.lower()] = key.lower()
+        return result
+
+    @staticmethod
+    def load_urls() -> dict[str, str]:
+        path = Path(__file__).parent.parent / OSIParser.local_path
+        data = json.loads(path.read_text(encoding="utf-8"))
+        result: dict[str, str] = {}
+        if not isinstance(data, list):
+            return result
+        for entry in data:
+            if not isinstance(entry, dict):
+                continue
+            key = entry.get("id", "").strip()
+            if not key:
+                continue
+            canonical = key.lower()
+            links = entry.get("_links", {})
+            html_link = links.get("html", {})
+            raw_url = html_link.get("href", "") if isinstance(html_link, dict) else ""
+            if not raw_url:
+                continue
+            clean = raw_url.strip().lower().rstrip("/")
+            if clean.startswith("http://"):
+                clean = "https://" + clean[7:]
+            result[clean] = canonical
+        return result

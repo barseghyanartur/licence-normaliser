@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from .base import BaseParser
+from license_normaliser.plugins import ProsePlugin
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -17,10 +17,9 @@ __all__ = ("ProseParser",)
 _COMPILED_PATTERNS: list[tuple[re.Pattern[str], str]] = []
 
 
-class ProseParser(BaseParser):
+class ProseParser(ProsePlugin):
     url = None
     local_path = "data/prose/prose_patterns.json"
-    is_registry_entry = False
 
     def parse(self) -> list[tuple[str, dict[str, Any]]]:
         path = Path(__file__).parent.parent / self.local_path
@@ -49,7 +48,21 @@ class ProseParser(BaseParser):
                 )
         return results
 
+    @staticmethod
+    def load_prose() -> list[tuple[re.Pattern[str], str]]:
+        global _COMPILED_PATTERNS
+        _COMPILED_PATTERNS = []
+        path = Path(__file__).parent.parent / ProseParser.local_path
+        data: list[dict[str, str]] = json.loads(path.read_text(encoding="utf-8"))
+        for entry in data:
+            pattern_str = entry.get("pattern", "")
+            version_key = entry.get("version_key", "")
+            if pattern_str and version_key:
+                compiled = re.compile(pattern_str, re.IGNORECASE)
+                _COMPILED_PATTERNS.append((compiled, version_key))
+        return _COMPILED_PATTERNS
+
 
 def get_prose_patterns() -> list[tuple[re.Pattern[str], str]]:
-    """Return the compiled prose patterns for use in resolution."""
+    """Legacy helper: return the compiled prose patterns."""
     return _COMPILED_PATTERNS
