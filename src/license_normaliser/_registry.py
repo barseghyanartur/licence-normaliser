@@ -11,6 +11,14 @@ from ._models import LicenseFamily, LicenseName, LicenseVersion
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
 __license__ = "MIT"
+__all__ = (
+    "make",
+    "make_unknown",
+    "REGISTRY",
+    "URL_MAP",
+    "ALIASES",
+    "FAMILY_OVERRIDES",
+)
 
 REGISTRY: dict[str, str] = {}
 URL_MAP: dict[str, str] = {}
