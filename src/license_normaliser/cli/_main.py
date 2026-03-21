@@ -5,8 +5,10 @@ import sys
 from pathlib import Path
 
 from license_normaliser import __version__, normalise_license
-from license_normaliser._exceptions import LicenseNormalisationError
-from license_normaliser.exceptions import LicenseNotFoundError
+from license_normaliser.exceptions import (
+    LicenseNormalisationError,
+    LicenseNotFoundError,
+)
 from license_normaliser.parsers import get_parsers
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
