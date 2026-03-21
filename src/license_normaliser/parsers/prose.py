@@ -23,7 +23,7 @@ class ProseParser(BaseParser):
     is_registry_entry = False
 
     def parse(self) -> list[tuple[str, dict[str, Any]]]:
-        path = Path(__file__).parent.parent / "data" / "prose" / "prose_patterns.json"
+        path = Path(__file__).parent.parent / self.local_path
         data: list[dict[str, str]] = json.loads(path.read_text(encoding="utf-8"))
         global _COMPILED_PATTERNS
         _COMPILED_PATTERNS = []
