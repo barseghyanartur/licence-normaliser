@@ -10,6 +10,9 @@ from .publisher import PublisherParser
 from .scancode_licensedb import ScanCodeLicenseDBParser
 from .spdx import SPDXParser
 
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2026 Artur Barseghyan"
+__license__ = "MIT"
 __all__ = ("get_parsers",)
 
 
