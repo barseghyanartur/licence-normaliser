@@ -23,7 +23,21 @@ are used for versioning (schema follows below):
 ---
 2026-03-21
 
-- Major refactoring.
+- **Architecture rewrite** — parser-based pluggable system with 8 parsers
+  loading from JSON data files.
+- **3-level hierarchy** — `LicenseFamily → LicenseName → LicenseVersion`
+  with 11 families including publisher OA/TDM.
+- **New data files** — 170+ aliases, 41 prose patterns, 50+ publisher
+  URLs (Elsevier, Wiley, Springer, ACS, etc.).
+- **Strict mode** — `strict=True` raises `LicenseNotFoundError` on unknown
+  licenses.
+- **Bug fixes** — `cc-pdm`/`cc0` family inference, `gpl-3.0+` `+`-suffix
+  stripping, false-positive prose pattern removed, ALIASES-before-REGISTRY
+  lookup order.
+- **Tests** — 386 tests (up from ~80), including 165-case integration matrix.
+- **Docs** — `AGENTS.md`, `ARCHITECTURE.rst`, `CONTRIBUTING.rst` rewritten;
+  stale `literalinclude` targets fixed.
+
 
 0.1.1
 -----
