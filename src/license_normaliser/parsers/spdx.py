@@ -17,7 +17,7 @@ class SPDXParser(BaseParser):
     local_path = "data/spdx/spdx.json"
 
     def parse(self) -> list[tuple[str, dict[str, Any]]]:
-        path = Path(__file__).parent.parent / "data" / "spdx" / "spdx.json"
+        path = Path(__file__).parent.parent / self.local_path
         data = json.loads(path.read_text(encoding="utf-8"))
         results: list[tuple[str, dict[str, Any]]] = []
         for entry in data.get("licenses", []):

@@ -6,18 +6,18 @@ from typing import Any
 
 from .base import BaseParser
 
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2026 Artur Barseghyan"
+__license__ = "MIT"
+__all__ = ("OpenDefinitionParser",)
+
 
 class OpenDefinitionParser(BaseParser):
     url = "https://licenses.opendefinition.org/licenses/groups/all.json"
     local_path = "data/opendefinition/opendefinition.json"
 
     def parse(self) -> list[tuple[str, dict[str, Any]]]:
-        path = (
-            Path(__file__).parent.parent
-            / "data"
-            / "opendefinition"
-            / "opendefinition.json"
-        )
+        path = Path(__file__).parent.parent / self.local_path
         data = json.loads(path.read_text(encoding="utf-8"))
         results: list[tuple[str, dict[str, Any]]] = []
         for entry in data.values():

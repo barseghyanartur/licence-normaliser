@@ -17,7 +17,7 @@ class OSIParser(BaseParser):
     local_path = "data/osi/osi.json"
 
     def parse(self) -> list[tuple[str, dict[str, Any]]]:
-        path = Path(__file__).parent.parent / "data" / "osi" / "osi.json"
+        path = Path(__file__).parent.parent / self.local_path
         data = json.loads(path.read_text(encoding="utf-8"))
         results: list[tuple[str, dict[str, Any]]] = []
         if not isinstance(data, list):
