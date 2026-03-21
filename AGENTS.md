@@ -213,7 +213,7 @@ uv run pytest path/to/test_something.py  # run specific test
 
 ### Test layout
 
-```
+```text
 src/license_normaliser/tests/
     test_integration.py    - public API only (survives any rewrite)
     test_core.py          - end-to-end pipeline tests
