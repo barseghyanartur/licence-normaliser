@@ -2,7 +2,7 @@
  Architecture Guide
 ===================
 
-:Version: 0.2
+:Version: 0.3
 :Author: Artur Barseghyan <artur.barseghyan@gmail.com>
 :Repository: https://github.com/barseghyanartur/license-normaliser
 
