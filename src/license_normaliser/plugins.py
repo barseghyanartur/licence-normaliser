@@ -18,13 +18,13 @@ __copyright__ = "2026 Artur Barseghyan"
 __license__ = "MIT"
 
 __all__ = (
-    "RegistryPlugin",
-    "URLPlugin",
     "AliasPlugin",
+    "BasePlugin",
     "FamilyPlugin",
     "NamePlugin",
     "ProsePlugin",
-    "BasePlugin",
+    "RegistryPlugin",
+    "URLPlugin",
 )
 
 
