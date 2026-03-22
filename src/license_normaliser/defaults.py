@@ -18,7 +18,25 @@ __all__ = (
     "DEFAULT_NAME",
     "DEFAULT_PROSE",
     "DEFAULT_PLUGINS",
+    "get_all_refreshable_plugins",
 )
+
+
+def get_all_refreshable_plugins() -> list[type]:
+    """Return all plugin classes that support refresh (have url set)."""
+    from .parsers.creativecommons import CreativeCommonsParser
+    from .parsers.opendefinition import OpenDefinitionParser
+    from .parsers.osi import OSIParser
+    from .parsers.scancode_licensedb import ScanCodeLicenseDBParser
+    from .parsers.spdx import SPDXParser
+
+    return [
+        SPDXParser,
+        OpenDefinitionParser,
+        OSIParser,
+        ScanCodeLicenseDBParser,
+        CreativeCommonsParser,
+    ]
 
 
 # Registry plugins - contribute key -> canonical_key mappings

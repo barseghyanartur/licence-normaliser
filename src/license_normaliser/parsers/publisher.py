@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from license_normaliser.plugins import AliasPlugin, URLPlugin
+from license_normaliser.plugins import AliasPlugin, BasePlugin, URLPlugin
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -14,7 +14,7 @@ __license__ = "MIT"
 __all__ = ("PublisherParser",)
 
 
-class PublisherParser(AliasPlugin, URLPlugin):
+class PublisherParser(BasePlugin, AliasPlugin, URLPlugin):
     url = None
     local_path = "data/publishers/publishers.json"
 
@@ -28,16 +28,14 @@ class PublisherParser(AliasPlugin, URLPlugin):
                 results.append((url, meta))
         return results
 
-    @staticmethod
-    def load_aliases() -> dict[str, str]:
-        path = Path(__file__).parent.parent / PublisherParser.local_path
+    def load_aliases(self) -> dict[str, str]:
+        path = Path(__file__).parent.parent / self.local_path
         data: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
         aliases: dict[str, str] = data.get("shorthand_aliases", {})
         return dict(aliases)
 
-    @staticmethod
-    def load_urls() -> dict[str, str]:
-        path = Path(__file__).parent.parent / PublisherParser.local_path
+    def load_urls(self) -> dict[str, str]:
+        path = Path(__file__).parent.parent / self.local_path
         data: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
         result: dict[str, str] = {}
         for url, meta in data.get("urls", {}).items():

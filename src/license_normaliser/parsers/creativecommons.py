@@ -9,7 +9,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 
-from license_normaliser.plugins import RegistryPlugin, URLPlugin
+from license_normaliser.plugins import BasePlugin, RegistryPlugin, URLPlugin
 
 CC_LICENSE_RE = re.compile(
     r"^(by|by-nc|by-nc-nd|by-nc-sa|by-nd|by-sa|"
@@ -209,7 +209,7 @@ def _scrape() -> list[dict[str, str]]:
     return entries
 
 
-class CreativeCommonsParser(RegistryPlugin, URLPlugin):
+class CreativeCommonsParser(BasePlugin, RegistryPlugin, URLPlugin):
     url = "https://creativecommons.org/licenses/list.en"
     local_path = "data/creativecommons/creativecommons.json"
 

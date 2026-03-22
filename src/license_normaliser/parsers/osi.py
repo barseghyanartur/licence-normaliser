@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from license_normaliser.plugins import RegistryPlugin, URLPlugin
+from license_normaliser.plugins import BasePlugin, RegistryPlugin, URLPlugin
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -14,7 +14,7 @@ __license__ = "MIT"
 __all__ = ("OSIParser",)
 
 
-class OSIParser(RegistryPlugin, URLPlugin):
+class OSIParser(BasePlugin, RegistryPlugin, URLPlugin):
     url = "https://opensource.org/api/license"
     local_path = "data/osi/osi.json"
 

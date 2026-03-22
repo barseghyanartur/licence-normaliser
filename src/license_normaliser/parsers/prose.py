@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from license_normaliser.plugins import ProsePlugin
+from license_normaliser.plugins import BasePlugin, ProsePlugin
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -17,7 +17,7 @@ __all__ = ("ProseParser",)
 _COMPILED_PATTERNS: list[tuple[re.Pattern[str], str]] = []
 
 
-class ProseParser(ProsePlugin):
+class ProseParser(BasePlugin, ProsePlugin):
     url = None
     local_path = "data/prose/prose_patterns.json"
 
@@ -48,11 +48,10 @@ class ProseParser(ProsePlugin):
                 )
         return results
 
-    @staticmethod
-    def load_prose() -> list[tuple[re.Pattern[str], str]]:
+    def load_prose(self) -> list[tuple[re.Pattern[str], str]]:
         global _COMPILED_PATTERNS
         _COMPILED_PATTERNS = []
-        path = Path(__file__).parent.parent / ProseParser.local_path
+        path = Path(__file__).parent.parent / self.local_path
         data: list[dict[str, str]] = json.loads(path.read_text(encoding="utf-8"))
         for entry in data:
             pattern_str = entry.get("pattern", "")

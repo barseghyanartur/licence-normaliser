@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from license_normaliser.plugins import RegistryPlugin
+from license_normaliser.plugins import BasePlugin, RegistryPlugin
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -14,7 +14,7 @@ __license__ = "MIT"
 __all__ = ("ScanCodeLicenseDBParser",)
 
 
-class ScanCodeLicenseDBParser(RegistryPlugin):
+class ScanCodeLicenseDBParser(BasePlugin, RegistryPlugin):
     url = "https://scancode-licensedb.aboutcode.org/index.json"
     local_path = "data/scancode_licensedb/scancode_licensedb.json"
 
