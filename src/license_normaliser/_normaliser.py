@@ -128,7 +128,7 @@ class LicenseNormaliser:
             return self._make(self._url_map[url_key])
 
         # 4. Prose matching (only for longer strings)
-        if len(cleaned) > 20:
+        if len(cleaned) >= 20:
             for pattern, vkey in self._prose_patterns:
                 if pattern.search(cleaned):
                     return self._make(vkey)
