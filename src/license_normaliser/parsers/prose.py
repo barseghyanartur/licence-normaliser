@@ -18,6 +18,7 @@ _COMPILED_PATTERNS: list[tuple[re.Pattern[str], str]] = []
 
 
 class ProseParser(BasePlugin, ProsePlugin):
+    is_registry_entry = False
     url = None
     local_path = "data/prose/prose_patterns.json"
 
