@@ -119,7 +119,8 @@ class LicenseNormaliser:
 
         # 2. Registry lookup
         if cleaned in self._registry:
-            return self._make(cleaned)
+            canonical = self._registry[cleaned]
+            return self._make(canonical)
 
         # 3. URL lookup
         url_key = self._normalise_url(cleaned)
