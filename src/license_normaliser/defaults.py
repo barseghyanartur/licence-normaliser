@@ -11,12 +11,6 @@ __copyright__ = "2026 Artur Barseghyan"
 __license__ = "MIT"
 
 __all__ = (
-    "DEFAULT_REGISTRY",
-    "DEFAULT_URL",
-    "DEFAULT_ALIAS",
-    "DEFAULT_FAMILY",
-    "DEFAULT_NAME",
-    "DEFAULT_PROSE",
     "DEFAULT_PLUGINS",
     "get_all_refreshable_plugins",
 )
@@ -39,12 +33,6 @@ def get_all_refreshable_plugins() -> list[type]:
     ]
 
 
-# Registry plugins - contribute key -> canonical_key mappings
-DEFAULT_REGISTRY: list[type] = [
-    # Local imports to avoid circular issues - these are lightweight until used
-]
-
-
 def _load_registry_plugins() -> list[type]:
     from .parsers.creativecommons import CreativeCommonsParser
     from .parsers.opendefinition import OpenDefinitionParser
@@ -59,10 +47,6 @@ def _load_registry_plugins() -> list[type]:
         ScanCodeLicenseDBParser,
         CreativeCommonsParser,
     ]
-
-
-# URL plugins - contribute cleaned_url -> version_key mappings
-DEFAULT_URL: list[type] = []
 
 
 def _load_url_plugins() -> list[type]:
@@ -81,10 +65,6 @@ def _load_url_plugins() -> list[type]:
     ]
 
 
-# Alias plugins - contribute alias_string -> version_key mappings
-DEFAULT_ALIAS: list[type] = []
-
-
 def _load_alias_plugins() -> list[type]:
     from .parsers.alias import AliasParser
     from .parsers.publisher import PublisherParser
@@ -93,28 +73,16 @@ def _load_alias_plugins() -> list[type]:
     return [PublisherParser, AliasParser]
 
 
-# Family plugins - contribute version_key -> family_key mappings
-DEFAULT_FAMILY: list[type] = []
-
-
 def _load_family_plugins() -> list[type]:
     from .parsers.alias import AliasParser
 
     return [AliasParser]
 
 
-# Name plugins - contribute version_key -> name_key mappings
-DEFAULT_NAME: list[type] = []
-
-
 def _load_name_plugins() -> list[type]:
     from .parsers.alias import AliasParser
 
     return [AliasParser]
-
-
-# Prose plugins - contribute list of (compiled_pattern, version_key)
-DEFAULT_PROSE: list[type] = []
 
 
 def _load_prose_plugins() -> list[type]:
