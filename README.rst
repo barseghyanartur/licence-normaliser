@@ -192,7 +192,7 @@ with ``lru_cache``.
 Disable it by passing ``cache=False`` for debugging:
 
 .. code-block:: python
-    :name: test_cachnig
+    :name: test_caching
 
     from license_normaliser import LicenseNormaliser
 

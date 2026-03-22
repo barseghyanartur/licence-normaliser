@@ -152,7 +152,7 @@ ln = LicenseNormaliser(
 For caching, `LicenseNormaliser` wraps the resolution method with `lru_cache`.
 Disable it by passing `cache=False` for debugging:
 
-```python name=test_cachnig
+```python name=test_caching
 from license_normaliser import LicenseNormaliser
 
 ln = LicenseNormaliser(cache=False)
