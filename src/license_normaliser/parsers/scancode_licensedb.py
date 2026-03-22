@@ -47,9 +47,8 @@ class ScanCodeLicenseDBParser(RegistryPlugin):
             )
         return results
 
-    @staticmethod
-    def load_registry() -> dict[str, str]:
-        path = Path(__file__).parent.parent / ScanCodeLicenseDBParser.local_path
+    def load_registry(self) -> dict[str, str]:
+        path = Path(__file__).parent.parent / self.local_path
         data = json.loads(path.read_text(encoding="utf-8"))
         result: dict[str, str] = {}
         if not isinstance(data, list):

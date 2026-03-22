@@ -231,9 +231,8 @@ class CreativeCommonsParser(RegistryPlugin, URLPlugin):
             if "license_key" in entry
         ]
 
-    @staticmethod
-    def load_registry() -> dict[str, str]:
-        path = Path(__file__).parent.parent / CreativeCommonsParser.local_path
+    def load_registry(self) -> dict[str, str]:
+        path = Path(__file__).parent.parent / self.local_path
         if not path.exists():
             return {}
         data: list[dict[str, str]] = json.loads(path.read_text(encoding="utf-8"))
@@ -244,9 +243,8 @@ class CreativeCommonsParser(RegistryPlugin, URLPlugin):
                 result[key.lower().strip()] = key.lower().strip()
         return result
 
-    @staticmethod
-    def load_urls() -> dict[str, str]:
-        path = Path(__file__).parent.parent / CreativeCommonsParser.local_path
+    def load_urls(self) -> dict[str, str]:
+        path = Path(__file__).parent.parent / self.local_path
         if not path.exists():
             return {}
         data: list[dict[str, str]] = json.loads(path.read_text(encoding="utf-8"))

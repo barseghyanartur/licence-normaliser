@@ -30,9 +30,8 @@ class OpenDefinitionParser(RegistryPlugin, URLPlugin):
             results.append((lid, {"url": url, "title": entry.get("title", "")}))
         return results
 
-    @staticmethod
-    def load_registry() -> dict[str, str]:
-        path = Path(__file__).parent.parent / OpenDefinitionParser.local_path
+    def load_registry(self) -> dict[str, str]:
+        path = Path(__file__).parent.parent / self.local_path
         data = json.loads(path.read_text(encoding="utf-8"))
         result: dict[str, str] = {}
         for entry in data.values():
@@ -43,9 +42,8 @@ class OpenDefinitionParser(RegistryPlugin, URLPlugin):
                 result[lid.lower().strip()] = lid.lower().strip()
         return result
 
-    @staticmethod
-    def load_urls() -> dict[str, str]:
-        path = Path(__file__).parent.parent / OpenDefinitionParser.local_path
+    def load_urls(self) -> dict[str, str]:
+        path = Path(__file__).parent.parent / self.local_path
         data = json.loads(path.read_text(encoding="utf-8"))
         result: dict[str, str] = {}
         for entry in data.values():

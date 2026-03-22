@@ -29,46 +29,40 @@ __all__ = (
 class RegistryPlugin:
     """Returns key -> canonical_key mappings."""
 
-    @staticmethod
-    def load_registry() -> dict[str, str]:
+    def load_registry(self) -> dict[str, str]:
         raise NotImplementedError
 
 
 class URLPlugin:
     """Returns cleaned_url -> version_key mappings."""
 
-    @staticmethod
-    def load_urls() -> dict[str, str]:
+    def load_urls(self) -> dict[str, str]:
         raise NotImplementedError
 
 
 class AliasPlugin:
     """Returns alias_string -> version_key mappings."""
 
-    @staticmethod
-    def load_aliases() -> dict[str, str]:
+    def load_aliases(self) -> dict[str, str]:
         raise NotImplementedError
 
 
 class FamilyPlugin:
     """Returns version_key -> family_key mappings."""
 
-    @staticmethod
-    def load_families() -> dict[str, str]:
+    def load_families(self) -> dict[str, str]:
         raise NotImplementedError
 
 
 class NamePlugin:
     """Returns version_key -> name_key mappings."""
 
-    @staticmethod
-    def load_names() -> dict[str, str]:
+    def load_names(self) -> dict[str, str]:
         raise NotImplementedError
 
 
 class ProsePlugin:
     """Returns list of (compiled_pattern, version_key) for prose matching."""
 
-    @staticmethod
-    def load_prose() -> list[tuple[re.Pattern[str], str]]:
+    def load_prose(self) -> list[tuple[re.Pattern[str], str]]:
         raise NotImplementedError

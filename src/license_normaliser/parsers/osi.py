@@ -45,9 +45,8 @@ class OSIParser(RegistryPlugin, URLPlugin):
             )
         return results
 
-    @staticmethod
-    def load_registry() -> dict[str, str]:
-        path = Path(__file__).parent.parent / OSIParser.local_path
+    def load_registry(self) -> dict[str, str]:
+        path = Path(__file__).parent.parent / self.local_path
         data = json.loads(path.read_text(encoding="utf-8"))
         result: dict[str, str] = {}
         if not isinstance(data, list):
@@ -60,9 +59,8 @@ class OSIParser(RegistryPlugin, URLPlugin):
                 result[key.lower()] = key.lower()
         return result
 
-    @staticmethod
-    def load_urls() -> dict[str, str]:
-        path = Path(__file__).parent.parent / OSIParser.local_path
+    def load_urls(self) -> dict[str, str]:
+        path = Path(__file__).parent.parent / self.local_path
         data = json.loads(path.read_text(encoding="utf-8"))
         result: dict[str, str] = {}
         if not isinstance(data, list):
