@@ -52,7 +52,7 @@ class BasePlugin:
         """
         if not cls.local_path:
             return False
-        target = Path(__file__).parent.parent / cls.local_path
+        target = Path(__file__).parent / cls.local_path
         if target.exists() and not force:
             return True
         if cls.url is None:
