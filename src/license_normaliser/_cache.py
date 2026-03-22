@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from threading import Lock
 from typing import Iterable
 
 from ._models import LicenseVersion
@@ -21,21 +22,23 @@ __license__ = "MIT"
 __all__ = ("normalise_license", "normalise_licenses", "get_registry_keys")
 
 
-# Lazy-loaded default normaliser instance
 _DEFAULT: LicenseNormaliser | None = None
+_DEFAULT_LOCK = Lock()
 
 
 def _get_default() -> LicenseNormaliser:
     global _DEFAULT
     if _DEFAULT is None:
-        _DEFAULT = LicenseNormaliser(
-            registry=get_default_registry(),
-            url=get_default_url(),
-            alias=get_default_alias(),
-            family=get_default_family(),
-            name=get_default_name(),
-            prose=get_default_prose(),
-        )
+        with _DEFAULT_LOCK:
+            if _DEFAULT is None:
+                _DEFAULT = LicenseNormaliser(
+                    registry=get_default_registry(),
+                    url=get_default_url(),
+                    alias=get_default_alias(),
+                    family=get_default_family(),
+                    name=get_default_name(),
+                    prose=get_default_prose(),
+                )
     return _DEFAULT
 
 
