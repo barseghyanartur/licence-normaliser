@@ -45,6 +45,18 @@ class LicenseNormaliser:
     Resolution order: aliases -> registry -> url -> prose -> unknown
     Name/family inference: plugins only - no fallback to hardcoded logic.
 
+    Tracing
+        Set ``trace=True`` to include resolution trace in the result. Trace shows
+        which pipeline stage matched and the source file/line number (when
+        available). Trace is disabled by default for performance.
+
+        Trace can be enabled at three levels (precedence: method >
+        constructor > env var):
+
+        - **Constructor**: ``LicenseNormaliser(trace=True)`` - all calls get trace
+        - **Method**: ``ln.normalise_license("MIT", trace=True)`` - this call only
+        - **Environment**: ``ENABLE_LICENSE_NORMALISER_TRACE=1`` - applies globally
+
     Example::
 
         from license_normaliser import LicenseNormaliser
@@ -55,11 +67,13 @@ class LicenseNormaliser:
         # Disable caching for debugging
         ln = LicenseNormaliser(cache=False)
 
-        # Custom plugins
-        ln = LicenseNormaliser(
-            registry=[SPDXParser],
-            alias=[AliasParser, PublisherParser],
-        )
+        # Enable trace for all calls on this instance
+        ln = LicenseNormaliser(trace=True)
+        v = ln.normalise_license("MIT")
+        print(v.explain())  # Shows resolution path with source lines
+
+        # Or enable trace for a single call
+        v = ln.normalise_license("MIT", trace=True)
     """
 
     def __init__(
@@ -298,8 +312,10 @@ class LicenseNormaliser:
             raw: The raw license string, SPDX ID, URL, or prose description.
             strict: If True, raises ``LicenseNotFoundError`` when the input
                 cannot be resolved to a known license.
-            trace: If True, include resolution trace. If None, uses
-                ENABLE_LICENSE_NORMALISER_TRACE env var or class default.
+            trace: If True, include resolution trace showing which pipeline
+                stage matched and source file/line. If None, uses the instance
+                default (``trace`` param from constructor) or falls back to
+                ``ENABLE_LICENSE_NORMALISER_TRACE`` env var.
 
         Returns:
             A ``LicenseVersion`` with the resolved key, license name, and family.
