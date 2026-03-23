@@ -22,20 +22,10 @@ the contents of each key file.
    │       ├── data
    │       │   ├── aliases
    │       │   │   └── aliases.json
-   │       │   ├── creativecommons
-   │       │   │   └── creativecommons.json
-   │       │   ├── opendefinition
-   │       │   │   └── opendefinition.json
-   │       │   ├── osi
-   │       │   │   └── osi.json
    │       │   ├── prose
    │       │   │   └── prose_patterns.json
    │       │   ├── publishers
    │       │   │   └── publishers.json
-   │       │   ├── scancode_licensedb
-   │       │   │   └── scancode_licensedb.json
-   │       │   ├── spdx
-   │       │   │   └── spdx.json
    │       │   ├── urls
    │       │   │   └── url_map.json
    │       │   └── README.rst
