@@ -146,6 +146,8 @@ ln = LicenseNormaliser(
     prose=get_default_prose(),
     cache=True,
     cache_maxsize=8192,
+)
+result = ln.normalise_license("MIT")
 ```
 
 > [!NOTE]

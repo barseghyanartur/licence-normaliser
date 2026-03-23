@@ -183,7 +183,7 @@ class TestNameInference:
 
     def test_non_cc_keeps_key(self):
         assert normalise_license("mit").license.key == "mit"
-        assert normalise_license("gpl-3.0").license.key == "gpl-3.0"
+        assert normalise_license("gpl-3.0").license.key == "gpl-3"
 
 
 class TestHierarchyNavigation:
