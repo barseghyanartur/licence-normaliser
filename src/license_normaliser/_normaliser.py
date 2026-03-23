@@ -217,11 +217,7 @@ class LicenseNormaliser:
         override_name = self._name_overrides.get(canonical)
         if canonical.startswith("cc-") or canonical.startswith("cc0"):
             # CC licenses: use override if different, otherwise fallback
-            name_key = (
-                override_name
-                if override_name and override_name != canonical
-                else self._infer_name(canonical)
-            )
+            name_key = override_name if override_name else self._infer_name(canonical)
         else:
             # Non-CC: use override if present and different, otherwise canonical
             name_key = (

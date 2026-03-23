@@ -417,6 +417,11 @@
     "name_key": "lgpl-3",
     "family_key": "copyleft"
   },
+  "mozilla public license 2.0": {
+    "version_key": "mpl-2.0",
+    "name_key": "mpl",
+    "family_key": "osi"
+  },
   "open database license": {
     "version_key": "odbl",
     "name_key": "odbl",
