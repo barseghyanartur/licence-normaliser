@@ -112,9 +112,6 @@ LICENSE_MATRIX = [
     ("CC-PDM 1.0", "cc-pdm-1.0", "cc-pdm", "public-domain"),
     ("cc-pdm 1.0", "cc-pdm-1.0", "cc-pdm", "public-domain"),
     ("creative commons public domain", "cc-pdm-1.0", "cc-pdm", "public-domain"),
-    ("public domain", "cc0-1.0", "cc0", "cc0"),
-    ("public-domain", "public-domain", "public-domain", "public-domain"),
-    ("pd", "cc0-1.0", "cc0", "cc0"),
     # CC shorthand
     ("creative commons by", "cc-by", "cc-by", "cc"),
     ("creative commons by 4.0", "cc-by-4.0", "cc-by", "cc"),
@@ -308,6 +305,10 @@ LICENSE_MATRIX = [
         "totally fake license xyz999",
         "unknown",
     ),
+    # Public domain
+    ("public domain", "public-domain", "public-domain", "public-domain"),
+    ("public-domain", "public-domain", "public-domain", "public-domain"),
+    ("pd", "public-domain", "public-domain", "public-domain"),
 ]
 
 

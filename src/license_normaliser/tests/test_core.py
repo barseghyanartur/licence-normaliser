@@ -127,7 +127,7 @@ class TestBuiltinAliases:
         assert normalise_license("CC0 1.0").key == "cc0-1.0"
 
     def test_public_domain(self):
-        assert normalise_license("public domain").key == "cc0-1.0"
+        assert normalise_license("public domain").key == "public-domain"
 
 
 class TestUrlLookup:
