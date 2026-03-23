@@ -153,13 +153,16 @@ def print_report(data: dict) -> None:
             print("-" * 70)
             print(f"Incorrect in {family}: {stats['incorrect']} cases")
             print("-" * 70)
-            print(f"{'Version Key':<30} {'Curated':<20} {'Inferred':<20}")
+            print(
+                f"{'Version Key':<30} {'Curated (aliases.json)':<25} "
+                f"{'Inferred (heuristic)':<20}"
+            )
             print("-" * 70)
             for detail in stats["details"][:10]:
                 if not detail["match"]:
                     print(
                         f"{detail['version_key']:<30} "
-                        f"{detail['curated_name']:<20} {detail['inferred_name']:<20}"
+                        f"{detail['curated_name']:<25} {detail['inferred_name']:<20}"
                     )
             incorrect_count = len([d for d in stats["details"] if not d["match"]])
             if incorrect_count > 10:
