@@ -98,14 +98,42 @@ def check_coverage() -> dict:
     }
 
 
+def group_by_prefix(licenses: list[str]) -> dict[str, list[str]]:
+    """Group licenses by common prefixes."""
+    groups: dict[str, list[str]] = {}
+    prefixes = [
+        "gpl-",
+        "agpl-",
+        "lgpl-",
+        "apache-",
+        "mpl-",
+        "mit",
+        "bsd",
+        "cc-",
+        "unlicense",
+        "zlib",
+        "isc",
+    ]
+    for prefix in prefixes:
+        matches = sorted([lic for lic in licenses if lic.startswith(prefix)])
+        if matches:
+            groups[prefix.rstrip("-") or "mit"] = matches
+            licenses = [lic for lic in licenses if not lic.startswith(prefix)]
+
+    if licenses:
+        groups["other"] = sorted(licenses)
+
+    return groups
+
+
 def print_report(data: dict) -> None:
     """Print text table report."""
     print("=" * 70)
     print("Coverage Report: Downloaded Licenses vs Curated Aliases")
     print("=" * 70)
     print()
-    print(f"Total downloaded licenses: {data['total_downloaded']}")
-    print(f"Total curated alias targets: {data['total_alias_targets']}")
+    print(f"Total downloaded: {data['total_downloaded']}")
+    print(f"Total alias targets: {data['total_alias_targets']}")
     print(f"Coverage: {data['coverage_percent']}%")
     print()
 
@@ -123,18 +151,23 @@ def print_report(data: dict) -> None:
         )
 
     print()
-    print("-" * 70)
-    print(f"Licenses WITHOUT alias entry: {len(data['without_alias'])}")
-    print("-" * 70)
-    # Print in columns
-    line = ""
-    for lic in data["without_alias"]:
-        if len(line) + len(lic) > 66:
-            print(line)
-            line = ""
-        line += lic + ", "
-    if line:
-        print(line.rstrip(", "))
+    print("=" * 70)
+    print(f"Missing Aliases ({len(data['without_alias'])} licenses)")
+    print("=" * 70)
+
+    groups = group_by_prefix(data["without_alias"].copy())
+
+    for group_name, licenses in groups.items():
+        if group_name == "other":
+            print()
+            print(f"All other licenses ({len(licenses)}):")
+        else:
+            print()
+            print(f"{group_name.upper()} ({len(licenses)}):")
+
+        for lic in licenses:
+            print(f"  {lic}")
+
     print()
 
 
