@@ -317,4 +317,10 @@ ignore = [
     "docs/documentation.rst",
     "docs/index.rst",
     "uv.lock",
+    "codebin",
+    "src/license_normaliser/data/creativecommons",
+    "src/license_normaliser/data/opendefinition",
+    "src/license_normaliser/data/osi",
+    "src/license_normaliser/data/scancode_licensedb",
+    "src/license_normaliser/data/spdx",
 ]
