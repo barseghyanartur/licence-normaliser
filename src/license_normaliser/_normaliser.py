@@ -17,6 +17,7 @@ from license_normaliser.defaults import (
 
 if TYPE_CHECKING:
     from license_normaliser._models import LicenseVersion
+    from license_normaliser._trace import LicenseTrace
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -72,6 +73,7 @@ class LicenseNormaliser:
         prose: Sequence[type] | None = None,
         cache: bool = True,
         cache_maxsize: int = 8192,
+        trace: bool | None = None,
     ) -> None:
         self._registry: dict[str, str] = {}
         self._url_map: dict[str, str] = {}
@@ -82,6 +84,7 @@ class LicenseNormaliser:
         self._prose_patterns: list[tuple[re.Pattern[str], str]] = []
         self._cache = cache
         self._cache_maxsize = cache_maxsize
+        self._trace_default = trace
 
         # Load plugins - use defaults if not explicitly provided
         registry = registry or get_default_registry()
@@ -125,6 +128,82 @@ class LicenseNormaliser:
             # type: ignore[assignment]
             self._resolve_impl = resolve_fn
 
+    def _get_trace_mode(self, trace: bool | None) -> bool:
+        """Determine if tracing is enabled: explicit > env var > default."""
+        from license_normaliser._trace import _should_trace
+
+        if trace is not None:
+            return trace
+        if self._trace_default is not None:
+            return self._trace_default
+        return _should_trace()
+
+    def _resolve_with_trace(
+        self, raw: str, cleaned: str, strict: bool
+    ) -> LicenseVersion:
+        """Resolve with full pipeline tracing."""
+        from license_normaliser._trace import LicenseTrace, LicenseTraceStage
+
+        stages: list[LicenseTraceStage] = []
+
+        # 1. Alias lookup
+        if cleaned in self._aliases:
+            stages.append(
+                LicenseTraceStage("alias", cleaned, self._aliases[cleaned], True)
+            )
+            v = self._make(self._aliases[cleaned])
+            trace = LicenseTrace(raw, cleaned, stages)
+            return self._make_with_trace(v, trace)
+
+        stages.append(LicenseTraceStage("alias", cleaned, "", False))
+
+        # 2. Registry lookup
+        if cleaned in self._registry:
+            canonical = self._registry[cleaned]
+            stages.append(LicenseTraceStage("registry", cleaned, canonical, True))
+            v = self._make(canonical)
+            trace = LicenseTrace(raw, cleaned, stages)
+            return self._make_with_trace(v, trace)
+
+        stages.append(LicenseTraceStage("registry", cleaned, "", False))
+
+        # 3. URL lookup
+        url_key = self._normalise_url(cleaned)
+        if url_key in self._url_map:
+            resolved = self._url_map[url_key]
+            stages.append(LicenseTraceStage("url", url_key, resolved, True))
+            v = self._make(resolved)
+            trace = LicenseTrace(raw, cleaned, stages)
+            return self._make_with_trace(v, trace)
+
+        stages.append(LicenseTraceStage("url", cleaned, "", False))
+
+        # 4. Prose matching (only for longer strings)
+        if len(cleaned) >= 20:
+            for pattern, vkey in self._prose_patterns:
+                if pattern.search(cleaned):
+                    stages.append(LicenseTraceStage("prose", cleaned, vkey, True))
+                    v = self._make(vkey)
+                    trace = LicenseTrace(raw, cleaned, stages)
+                    return self._make_with_trace(v, trace)
+
+        stages.append(LicenseTraceStage("prose", cleaned, "", False))
+
+        # 5. Fallback to unknown
+        stages.append(LicenseTraceStage("fallback", cleaned, cleaned, True))
+        v = self._make_unknown(cleaned)
+        trace = LicenseTrace(raw, cleaned, stages)
+        return self._make_with_trace(v, trace)
+
+    def _make_with_trace(
+        self, v: LicenseVersion, trace: LicenseTrace
+    ) -> LicenseVersion:
+        """Create a LicenseVersion with trace attached."""
+
+        # Reconstruct with trace using object.__setattr__ (frozen dataclass)
+        object.__setattr__(v, "_trace", trace)
+        return v
+
     def _resolve_impl(self, cleaned: str) -> LicenseVersion:
         # 1. Alias lookup
         if cleaned in self._aliases:
@@ -149,13 +228,17 @@ class LicenseNormaliser:
         # 5. Fallback to unknown
         return self._make_unknown(cleaned)
 
-    def normalise_license(self, raw: str, *, strict: bool = False) -> LicenseVersion:
+    def normalise_license(
+        self, raw: str, *, strict: bool = False, trace: bool | None = None
+    ) -> LicenseVersion:
         """Normalise a single license string.
 
         Args:
             raw: The raw license string, SPDX ID, URL, or prose description.
             strict: If True, raises ``LicenseNotFoundError`` when the input
                 cannot be resolved to a known license.
+            trace: If True, include resolution trace. If None, uses
+                ENABLE_LICENSE_NORMALISER_TRACE env var or class default.
 
         Returns:
             A ``LicenseVersion`` with the resolved key, license name, and family.
@@ -165,17 +248,30 @@ class LicenseNormaliser:
         """
         from license_normaliser.exceptions import LicenseNotFoundError
 
+        do_trace = self._get_trace_mode(trace)
+
         if not raw or not raw.strip():
-            v = self._make_unknown("unknown")
+            cleaned = "unknown"
+            v = self._make_unknown(cleaned)
+            if do_trace:
+                from license_normaliser._trace import LicenseTrace, LicenseTraceStage
+
+                stages = [LicenseTraceStage("fallback", cleaned, cleaned, True)]
+                trace_obj = LicenseTrace(raw, cleaned, stages)
+                v = self._make_with_trace(v, trace_obj)
         else:
-            v = self._resolve_impl(self._clean(self._try_decode_mojibake(raw)))
+            cleaned = self._clean(self._try_decode_mojibake(raw))
+            if do_trace:
+                v = self._resolve_with_trace(raw, cleaned, strict)
+            else:
+                v = self._resolve_impl(cleaned)
 
         if strict and v.family.key == "unknown":
             raise LicenseNotFoundError(raw, v.key) from None
         return v
 
     def normalise_licenses(
-        self, raws: Iterable[str], *, strict: bool = False
+        self, raws: Iterable[str], *, strict: bool = False, trace: bool | None = None
     ) -> list[LicenseVersion]:
         """Batch normalisation.
 
@@ -185,7 +281,7 @@ class LicenseNormaliser:
 
         results: list[LicenseVersion] = []
         for raw in raws:
-            v = self.normalise_license(raw, strict=False)
+            v = self.normalise_license(raw, strict=False, trace=trace)
             if strict and v.family.key == "unknown":
                 raise LicenseNotFoundError(raw, v.key) from None
             results.append(v)
