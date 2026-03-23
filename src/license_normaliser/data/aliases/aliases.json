@@ -16,6 +16,11 @@
     "name_key": "cc0",
     "family_key": "cc0"
   },
+  "cc-by": {
+    "version_key": "cc-by",
+    "name_key": "cc-by",
+    "family_key": "cc"
+  },
   "cc by": {
     "version_key": "cc-by",
     "name_key": "cc-by",
@@ -49,6 +54,11 @@
   "cc-by-3": {
     "version_key": "cc-by-3.0",
     "name_key": "cc-by",
+    "family_key": "cc"
+  },
+  "cc-by-sa": {
+    "version_key": "cc-by-sa",
+    "name_key": "cc-by-sa",
     "family_key": "cc"
   },
   "cc by-sa": {
@@ -307,7 +317,7 @@
     "name_key": "bsd-3-clause",
     "family_key": "osi"
   },
-  "BSD 3-Clause": {
+  "bsd 3-clause": {
     "version_key": "bsd-3-clause",
     "name_key": "bsd-3-clause",
     "family_key": "osi"
