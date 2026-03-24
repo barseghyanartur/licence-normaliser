@@ -113,6 +113,11 @@ class LicenseNormaliser:
         name = name or get_default_name()
         prose = prose or get_default_prose()
 
+        # Store plugin lists for trace resolution
+        self._alias_plugins = alias
+        self._url_plugins = url
+        self._prose_plugins = prose
+
         # Instantiate plugins and load their data
         for plugin_cls in registry:
             data = plugin_cls().load_registry()
@@ -159,20 +164,14 @@ class LicenseNormaliser:
 
     def _load_alias_lines(self):
         """Lazy load all source line numbers on first trace request."""
-        from license_normaliser.defaults import (
-            get_default_alias,
-            get_default_prose,
-            get_default_url,
-        )
-
-        for plugin_cls in get_default_alias():
+        for plugin_cls in self._alias_plugins:
             if hasattr(plugin_cls, "load_aliases_with_lines"):
                 lines_data = plugin_cls().load_aliases_with_lines()
                 for alias_key, (version_key, line_num) in lines_data.items():
                     if version_key == self._aliases.get(alias_key):
                         self._alias_lines[alias_key] = (version_key, line_num)
 
-        for plugin_cls in get_default_alias():
+        for plugin_cls in self._alias_plugins:
             if hasattr(plugin_cls, "load_aliases_with_lines"):
                 lines_data = plugin_cls().load_aliases_with_lines()
                 for alias_key, (version_key, line_num) in lines_data.items():
@@ -182,21 +181,21 @@ class LicenseNormaliser:
                     ):
                         self._alias_lines[alias_key] = (version_key, line_num)
 
-        for plugin_cls in get_default_url():
+        for plugin_cls in self._url_plugins:
             if hasattr(plugin_cls, "load_aliases_with_lines"):
                 lines_data = plugin_cls().load_aliases_with_lines()
                 for alias_key, (version_key, line_num) in lines_data.items():
                     if version_key == self._aliases.get(alias_key):
                         self._publisher_alias_lines[alias_key] = (version_key, line_num)
 
-        for plugin_cls in get_default_url():
+        for plugin_cls in self._url_plugins:
             if hasattr(plugin_cls, "load_urls_with_lines"):
                 lines_data = plugin_cls().load_urls_with_lines()
                 for url_key, (version_key, line_num) in lines_data.items():
                     if version_key == self._url_map.get(url_key):
                         self._publisher_url_lines[url_key] = (version_key, line_num)
 
-        for plugin_cls in get_default_prose():
+        for plugin_cls in self._prose_plugins:
             if hasattr(plugin_cls, "load_prose_with_lines"):
                 lines_data = plugin_cls().load_prose_with_lines()
                 self._prose_lines.extend(lines_data)

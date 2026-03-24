@@ -110,31 +110,6 @@ def _cmd_batch(args: argparse.Namespace) -> int:
     return 0
 
 
-def _cmd_batch(args: argparse.Namespace) -> int:
-    trace = args.trace if args.trace is not None else _should_trace()
-    if args.strict:
-        try:
-            for license_str in args.licenses:
-                result = normalise_license(license_str, strict=True, trace=trace)
-                if trace:
-                    print(f"{license_str}:")
-                    print(result.explain())
-                else:
-                    print(f"{license_str}: {result.key}")
-        except LicenseNotFoundError as exc:
-            print(f"error: {exc}", file=sys.stderr)
-            return 1
-    else:
-        for license_str in args.licenses:
-            result = normalise_license(license_str, strict=False, trace=trace)
-            if trace:
-                print(f"{license_str}:")
-                print(result.explain())
-            else:
-                print(f"{license_str}: {result.key}")
-    return 0
-
-
 def _cmd_update_data(args: argparse.Namespace) -> int:
     parser_classes = get_all_refreshable_plugins()
     if args.parser_name:
