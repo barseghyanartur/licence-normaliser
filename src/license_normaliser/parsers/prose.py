@@ -78,9 +78,10 @@ class ProseParser(BasePlugin, ProsePlugin):
             version_key = entry.get("version_key", "")
             if pattern_str and version_key:
                 compiled = re.compile(pattern_str, re.IGNORECASE)
+                serialized = json.dumps(pattern_str)
                 line_num = 1
                 for i, line in enumerate(lines, start=1):
-                    if '"pattern"' in line and pattern_str[:30] in line:
+                    if '"pattern"' in line and serialized[:30] in line:
                         line_num = i
                         break
                 result.append((compiled, version_key, line_num))
