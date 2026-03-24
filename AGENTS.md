@@ -185,6 +185,7 @@ When debugging why a license resolves a certain way, or aligning curated
 data sources, use the trace feature:
 
 **Via CLI:**
+
 ```sh
 license-normaliser normalise "MIT" --trace
 license-normaliser normalise "CC BY-NC-ND 3.0 igo" --trace
@@ -197,7 +198,8 @@ ENABLE_LICENSE_NORMALISER_TRACE=1 license-normaliser normalise "MIT"
 ```
 
 **Via Python:**
-```python
+
+```python name=test_trace
 from license_normaliser import normalise_license
 v = normalise_license("MIT", trace=True)
 print(v.explain())
