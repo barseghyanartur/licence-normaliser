@@ -179,6 +179,43 @@ This fetches fresh JSON from the authoritative upstream URLs and writes them to:
 
 ---
 
+## 4a. Trace / Explain
+
+When debugging why a license resolves a certain way, or aligning curated
+data sources, use the trace feature:
+
+**Via CLI:**
+```sh
+license-normaliser normalise "MIT" --trace
+license-normaliser normalise "CC BY-NC-ND 3.0 igo" --trace
+license-normaliser batch MIT Apache --trace
+```
+
+Or via environment variable:
+```sh
+ENABLE_LICENSE_NORMALISER_TRACE=1 license-normaliser normalise "MIT"
+```
+
+**Via Python:**
+```python
+from license_normaliser import normalise_license
+v = normalise_license("MIT", trace=True)
+print(v.explain())
+```
+
+The trace shows:
+- Each resolution stage attempted (alias → registry → url → prose → fallback)
+- Whether it matched (✓) or didn't (-)
+- Source file and line number for curated sources (aliases.json, publishers.json, prose_patterns.json)
+- Final result with version_key, name_key, family_key
+
+This is essential for:
+- Understanding why a license resolves unexpectedly
+- Finding the source line that defines an alias when curating data
+- Debugging resolution order issues
+
+---
+
 ## 5. Adding a New Parser
 
 Parsers implement plugin interfaces and can be added to `src/license_normaliser/parsers/`:
@@ -241,6 +278,7 @@ Run linting: `make ruff` or `make pre-commit`
 2. **Identify the correct location**:
    - New SPDX/OD license → update SPDX/OpenDefinition JSON files (run `update-data`)
    - New alias or family override → add to `data/aliases/aliases.json`
+   - **Use `--trace` to find the exact line that defines an alias**
    - New URL mapping → add to `data/publishers/publishers.json`
    - New prose pattern → add to `data/prose/prose_patterns.json`
    - New parser → `parsers/my_parser.py` + `defaults.py`
