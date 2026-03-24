@@ -49,12 +49,11 @@
 | `src/license_normaliser/parsers/` | Parser classes implementing plugin interfaces |
 | `src/license_normaliser/cli/_main.py` | CLI with normalise, batch, update-data |
 | `src/license_normaliser/exceptions.py` | LicenseNormalisationError |
-| `src/license_normaliser/data/spdx/spdx.json` | Full SPDX license list (loaded at runtime) |
-| `src/license_normaliser/data/opendefinition/opendefinition.json` | Full OpenDefinition list (loaded at runtime) |
+| `src/license_normaliser/data/spdx/spdx.json` | **DO NOT MODIFY** Full SPDX license list (loaded at runtime) |
+| `src/license_normaliser/data/opendefinition/opendefinition.json` | **DO NOT MODIFY** Full OpenDefinition list (loaded at runtime) |
 | `src/license_normaliser/data/aliases/aliases.json` | Curated aliases with rich metadata |
 | `src/license_normaliser/data/prose/prose_patterns.json` | Curated prose regex patterns |
 | `src/license_normaliser/data/publishers/publishers.json` | Publisher URLs and shorthand aliases |
-| `src/license_normaliser/data/original/` | **DO NOT MODIFY** - upstream originals |
 
 ---
 
@@ -325,7 +324,13 @@ assert isinstance(foo, Foo)
 - Adding external dependencies
 - Removing existing normalisation coverage
 - Changing the three-level hierarchy structure
-- Modifying files in `src/license_normaliser/data/original/` - these are upstream originals, **DO NOT MODIFY**
-- Modifying `src/license_normaliser/data/spdx/spdx.json` or
-  `src/license_normaliser/data/opendefinition/opendefinition.json` directly.
-  Use `license-normaliser update-data --force` to refresh them from upstream sources.
+- Modifying the following files is strictly forbidden:
+
+  - `src/license_normaliser/data/creativecommons/creativecommons.json`
+  - `src/license_normaliser/data/opendefinition/opendefinition.json`
+  - `src/license_normaliser/data/osi/osi.json`
+  - `src/license_normaliser/data/scancode_licensedb/scancode_licensedb.json`
+  - `src/license_normaliser/data/spdx/spdx.json`
+
+  Use `license-normaliser update-data --force` to refresh them from upstream
+  sources.
