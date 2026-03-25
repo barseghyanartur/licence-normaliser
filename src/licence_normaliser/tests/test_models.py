@@ -90,3 +90,51 @@ class TestLicenceVersion:
             licence=LicenceName(key="unknown", family=LicenceFamily(key="unknown")),
         )
         assert v.url is None
+
+
+class TestLicenceVersionEquality:
+    def test_eq_same_key(self):
+        v1 = _mit_version()
+        v2 = LicenceVersion(
+            key="mit",
+            url=None,
+            licence=LicenceName(key="mit", family=LicenceFamily(key="osi")),
+        )
+        assert v1 == v2
+
+    def test_eq_string(self):
+        v = _mit_version()
+        assert v == "mit"
+
+    def test_neq_different_key(self):
+        v1 = _mit_version()
+        v2 = LicenceVersion(
+            key="apache-2.0",
+            url=None,
+            licence=LicenceName(key="apache", family=LicenceFamily(key="osi")),
+        )
+        assert v1 != v2
+
+    def test_eq_other_type_returns_notimplemented(self):
+        v = _mit_version()
+        result = v.__eq__(123)
+        assert result == NotImplemented
+
+    def test_hash_same_key(self):
+        v1 = _mit_version()
+        v2 = LicenceVersion(
+            key="mit",
+            url="different-url",
+            licence=LicenceName(key="mit", family=LicenceFamily(key="osi")),
+        )
+        assert hash(v1) == hash(v2)
+
+    def test_hash_usable_in_set(self):
+        v1 = _mit_version()
+        v2 = LicenceVersion(
+            key="mit",
+            url=None,
+            licence=LicenceName(key="mit", family=LicenceFamily(key="osi")),
+        )
+        s = {v1, v2}
+        assert len(s) == 1

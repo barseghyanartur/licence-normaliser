@@ -1,6 +1,6 @@
 """Tests for trace and explain functionality."""
 
-from licence_normaliser import normalise_licence
+from licence_normaliser import normalise_licence, normalise_licences
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -126,3 +126,25 @@ class TestTraceProseResolution:
         v = normalise_licence("Apache License 2.0", trace=True)
         output = v.explain()
         assert "[✓]" in output
+
+
+class TestBatchTrace:
+    def test_batch_with_trace(self):
+        results = normalise_licences(["MIT", "Apache-2.0"], trace=True)
+        assert len(results) == 2
+        assert results[0]._trace is not None
+        assert results[1]._trace is not None
+        assert "mit" in results[0].explain()
+        assert "apache-2.0" in results[1].explain()
+
+    def test_batch_strict_with_trace(self):
+        results = normalise_licences(["MIT", "GPL-3.0"], strict=True, trace=True)
+        assert len(results) == 2
+        assert results[0]._trace is not None
+        assert results[1]._trace is not None
+
+    def test_batch_mixed_known_unknown_with_trace(self):
+        results = normalise_licences(["MIT", "unknown-xyz-123"], trace=True)
+        assert len(results) == 2
+        assert results[0]._trace is not None
+        assert results[1]._trace is not None

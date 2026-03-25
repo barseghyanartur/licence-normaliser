@@ -154,3 +154,55 @@ class TestVersionFlag:
                 main()
             assert exc_info.value.code == 0
         assert "licence-normaliser" in capsys.readouterr().out
+
+
+class TestUpdateDataCommand:
+    @patch("licence_normaliser.cli._main.get_all_refreshable_plugins")
+    @patch("licence_normaliser.cli._main.main")
+    def test_update_data_all_parsers(self, mock_main, mock_get_plugins, capsys):
+        mock_get_plugins.return_value = []
+        with patch("sys.argv", ["licence-normaliser", "update-data"]):
+            with pytest.raises(SystemExit) as exc_info:
+                main()
+            assert exc_info.value.code == 0
+
+    @patch("licence_normaliser.parsers.spdx.SPDXParser.refresh")
+    @patch("licence_normaliser.cli._main.get_all_refreshable_plugins")
+    def test_update_data_specific_parser(self, mock_get_plugins, mock_refresh, capsys):
+        from licence_normaliser.parsers.spdx import SPDXParser
+
+        mock_get_plugins.return_value = [SPDXParser]
+        mock_refresh.return_value = True
+        with patch(
+            "sys.argv", ["licence-normaliser", "update-data", "--parser", "spdx"]
+        ):
+            with pytest.raises(SystemExit) as exc_info:
+                main()
+            assert exc_info.value.code == 0
+
+    def test_update_data_unknown_parser_error(self, capsys):
+        with patch(
+            "sys.argv", ["licence-normaliser", "update-data", "--parser", "nonexistent"]
+        ):
+            with pytest.raises(SystemExit) as exc_info:
+                main()
+            assert exc_info.value.code == 1
+        err = capsys.readouterr().err
+        assert "unknown parser" in err
+        assert "nonexistent" in err
+
+    @patch("licence_normaliser.parsers.spdx.SPDXParser.refresh")
+    @patch("licence_normaliser.cli._main.get_all_refreshable_plugins")
+    def test_update_data_failure_handling(self, mock_get_plugins, mock_refresh, capsys):
+        from licence_normaliser.parsers.spdx import SPDXParser
+
+        mock_get_plugins.return_value = [SPDXParser]
+        mock_refresh.return_value = False
+        with patch(
+            "sys.argv", ["licence-normaliser", "update-data", "--parser", "spdx"]
+        ):
+            with pytest.raises(SystemExit) as exc_info:
+                main()
+            assert exc_info.value.code == 1
+        err = capsys.readouterr().err
+        assert "failed" in err
