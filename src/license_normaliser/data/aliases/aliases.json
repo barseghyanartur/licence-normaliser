@@ -105,20 +105,29 @@
     "name_key": "bmj-copyright",
     "family_key": "publisher-proprietary"
   },
-  "bsd": {
-    "version_key": "bsd-3-clause",
-    "name_key": "bsd-3-clause",
-    "family_key": "osi"
+  "bsd 2-clause": {
+    "version_key": "bsd-2-clause",
+    "name_key": "bsd-2-clause",
+    "family_key": "osi",
+    "aliases": [
+      "bsd 2 clause",
+      "bsd-2-clause",
+      "bsd-2"
+    ]
   },
   "bsd 3-clause": {
     "version_key": "bsd-3-clause",
     "name_key": "bsd-3-clause",
-    "family_key": "osi"
-  },
-  "bsd license": {
-    "version_key": "bsd-3-clause",
-    "name_key": "bsd-3-clause",
-    "family_key": "osi"
+    "family_key": "osi",
+    "aliases": [
+      "bsd 3 clause",
+      "bsd-3-clause",
+      "bsd-3",
+      "bsd-3 license",
+      "bsd",
+      "bsd license"
+    ],
+    "justification": "BSD 3-Clause is sometimes called 'BSD', so we need to make sure that this doesn't get confused with the generic 'bsd' alias for the BSD-2-Clause license."
   },
   "cc by": {
     "version_key": "cc-by",
