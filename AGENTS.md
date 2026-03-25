@@ -7,10 +7,10 @@
 
 ## 1. Project Mission (Never Deviate)
 
-> Comprehensive license normalisation with a three-level hierarchy - secure,
+> Comprehensive licence normalisation with a three-level hierarchy - secure,
 > fast, and extensible.
 
-- Maps any license representation to a canonical three-level hierarchy
+- Maps any licence representation to a canonical three-level hierarchy
 - Supports SPDX tokens, URLs, prose descriptions
 - No external dependencies (only optional dev/test deps)
 - LRU caching for performance
@@ -25,14 +25,14 @@
 
 | Level | Class | Example |
 | ----- | ----- | ------- |
-| **Family** | `LicenseFamily` | `"cc"`, `"osi"`, `"copyleft"`, `"data"` |
-| **Name** | `LicenseName` | `"cc-by"`, `"mit"`, `"gpl-3.0-only"` |
-| **Version** | `LicenseVersion` | `"cc-by-4.0"`, `"mit"`, `"gpl-3.0-only"` |
+| **Family** | `LicenceFamily` | `"cc"`, `"osi"`, `"copyleft"`, `"data"` |
+| **Name** | `LicenceName` | `"cc-by"`, `"mit"`, `"gpl-3.0-only"` |
+| **Version** | `LicenceVersion` | `"cc-by-4.0"`, `"mit"`, `"gpl-3.0-only"` |
 
 ### Resolution Pipeline
 
 1. **Alias table** - cleaned lowercase key matches `ALIASES` (loaded from `data/aliases/aliases.json`)
-2. **Direct registry lookup** - hit in `REGISTRY` (SPDX, OpenDefinition, OSI, CC, ScanCode license keys)
+2. **Direct registry lookup** - hit in `REGISTRY` (SPDX, OpenDefinition, OSI, CC, ScanCode licence keys)
 3. **URL map** - hit in `URL_MAP` (loaded from SPDX + OpenDefinition + publisher data)
 4. **Prose pattern scan** - regex patterns from `data/prose/prose_patterns.json` (for strings >20 chars)
 5. **Fallback** - key = cleaned string, family = unknown
@@ -42,14 +42,14 @@
 | File | Purpose |
 | ---- | ------- |
 | `src/licence_normaliser/_models.py` | Frozen dataclass hierarchy |
-| `src/licence_normaliser/_normaliser.py` | `LicenseNormaliser` class with plugin-based resolution |
+| `src/licence_normaliser/_normaliser.py` | `LicenceNormaliser` class with plugin-based resolution |
 | `src/licence_normaliser/plugins.py` | Plugin interfaces (BasePlugin, RegistryPlugin, URLPlugin, etc.) |
 | `src/licence_normaliser/defaults.py` | Lazy-loading default plugin bundle |
-| `src/licence_normaliser/_cache.py` | Module-level API delegating to `LicenseNormaliser` |
+| `src/licence_normaliser/_cache.py` | Module-level API delegating to `LicenceNormaliser` |
 | `src/licence_normaliser/parsers/` | Parser classes implementing plugin interfaces |
 | `src/licence_normaliser/cli/_main.py` | CLI with normalise, batch, update-data |
-| `src/licence_normaliser/exceptions.py` | LicenseNormalisationError |
-| `src/licence_normaliser/data/spdx/spdx.json` | **DO NOT MODIFY** Full SPDX license list (loaded at runtime) |
+| `src/licence_normaliser/exceptions.py` | LicenceNormalisationError |
+| `src/licence_normaliser/data/spdx/spdx.json` | **DO NOT MODIFY** Full SPDX licence list (loaded at runtime) |
 | `src/licence_normaliser/data/opendefinition/opendefinition.json` | **DO NOT MODIFY** Full OpenDefinition list (loaded at runtime) |
 | `src/licence_normaliser/data/aliases/aliases.json` | Curated aliases with rich metadata |
 | `src/licence_normaliser/data/prose/prose_patterns.json` | Curated prose regex patterns |
@@ -62,9 +62,9 @@
 ### Simple case
 
 ```python name=test_simple_case
-from licence_normaliser import normalise_license
+from licence_normaliser import normalise_licence
 
-v = normalise_license("MIT")
+v = normalise_licence("MIT")
 str(v)  # "mit"
 ```
 
@@ -72,7 +72,7 @@ str(v)  # "mit"
 
 <!-- continue: test_simple_case -->
 ```python name=test_full_hierarchy
-v = normalise_license("CC BY-NC-ND 4.0")
+v = normalise_licence("CC BY-NC-ND 4.0")
 print(v.key)           # "cc-by-nc-nd-4.0"
 print(v.license.key)   # "cc-by-nc-nd"
 print(v.family.key)    # "cc"
