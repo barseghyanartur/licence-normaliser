@@ -1,4 +1,4 @@
-"""OpenDefinition parser - loads opendefinition_licenses_all.json from package data."""
+"""OpenDefinition parser - loads `data/opendefinition/opendefinition.json`."""
 
 from __future__ import annotations
 

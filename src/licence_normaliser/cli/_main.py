@@ -4,12 +4,12 @@ import argparse
 import sys
 from pathlib import Path
 
-from licence_normaliser import __version__, normalise_license
+from licence_normaliser import __version__, normalise_licence
 from licence_normaliser._trace import _should_trace
 from licence_normaliser.defaults import get_all_refreshable_plugins
 from licence_normaliser.exceptions import (
-    LicenseNormalisationError,
-    LicenseNotFoundError,
+    LicenceNormalisationError,
+    LicenceNotFoundError,
 )
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
@@ -66,7 +66,7 @@ def _build_parser() -> argparse.ArgumentParser:
 def _cmd_normalise(args: argparse.Namespace) -> int:
     try:
         trace = args.trace or _should_trace()
-        result = normalise_license(args.license, strict=args.strict, trace=trace)
+        result = normalise_licence(args.license, strict=args.strict, trace=trace)
         if trace:
             print(result.explain())
         elif args.full:
@@ -76,10 +76,10 @@ def _cmd_normalise(args: argparse.Namespace) -> int:
             print(f"Family: {result.family}")
         else:
             print(result.key)
-    except LicenseNotFoundError as exc:
+    except LicenceNotFoundError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
-    except LicenseNormalisationError as exc:
+    except LicenceNormalisationError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
     return 0
@@ -90,18 +90,18 @@ def _cmd_batch(args: argparse.Namespace) -> int:
     if args.strict:
         try:
             for license_str in args.licenses:
-                result = normalise_license(license_str, strict=True, trace=trace)
+                result = normalise_licence(license_str, strict=True, trace=trace)
                 if trace:
                     print(f"{license_str}:")
                     print(result.explain())
                 else:
                     print(f"{license_str}: {result.key}")
-        except LicenseNotFoundError as exc:
+        except LicenceNotFoundError as exc:
             print(f"error: {exc}", file=sys.stderr)
             return 1
     else:
         for license_str in args.licenses:
-            result = normalise_license(license_str, strict=False, trace=trace)
+            result = normalise_licence(license_str, strict=False, trace=trace)
             if trace:
                 print(f"{license_str}:")
                 print(result.explain())

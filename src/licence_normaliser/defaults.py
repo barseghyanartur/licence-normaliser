@@ -1,7 +1,7 @@
 """Default plugin configuration.
 
 These are the plugin CLASSES (not instances) that form the sane defaults.
-Pass them to LicenseNormaliser - they're instantiated lazily.
+Pass them to LicenceNormaliser - they're instantiated lazily.
 """
 
 from __future__ import annotations

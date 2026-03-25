@@ -11,7 +11,7 @@ from typing import Any
 
 from licence_normaliser.plugins import BasePlugin, RegistryPlugin, URLPlugin
 
-CC_LICENSE_RE = re.compile(
+CC_LICENCE_RE = re.compile(
     r"^(by|by-nc|by-nc-nd|by-nc-sa|by-nd|by-sa|"
     r"zero|pdmark|devnations|"
     r"nc|nd|sa|sampling|nc-sa|sampling\+|nc-sampling\+|nd-nc)"
@@ -22,8 +22,8 @@ CC_LICENSE_RE = re.compile(
 VERSION_RE = re.compile(r"^[\d.]+$")
 
 
-def _path_to_license_key(path: str) -> str | None:
-    m = CC_LICENSE_RE.match(path)
+def _path_to_licence_key(path: str) -> str | None:
+    m = CC_LICENCE_RE.match(path)
     if not m:
         return None
     lic_type, version, igo = m.group(1), m.group(2), m.group(3)
@@ -196,7 +196,7 @@ def _scrape() -> list[dict[str, str]]:
     entries: list[dict[str, str]] = []
     seen_keys: set[str] = set()
     for href in sorted(all_deeds):
-        lic_key = _path_to_license_key(href)
+        lic_key = _path_to_licence_key(href)
         if not lic_key:
             continue
         url_path = href.rsplit("/deed.", 1)[0]

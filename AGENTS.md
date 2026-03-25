@@ -57,7 +57,7 @@
 
 ---
 
-## 3. Using licence-normaliser in Application Code
+## 3. Using licence-normaliser in application code
 
 ### Simple case
 
@@ -74,7 +74,7 @@ str(v)  # "mit"
 ```python name=test_full_hierarchy
 v = normalise_licence("CC BY-NC-ND 4.0")
 print(v.key)           # "cc-by-nc-nd-4.0"
-print(v.license.key)   # "cc-by-nc-nd"
+print(v.licence.key)   # "cc-by-nc-nd"
 print(v.family.key)    # "cc"
 ```
 
@@ -82,34 +82,34 @@ print(v.family.key)    # "cc"
 
 ```python name=test_strict_mode
 import pytest
-from licence_normaliser import normalise_license, LicenseNotFoundError
+from licence_normaliser import normalise_licence, LicenceNotFoundError
 
-# Would normally raise: License not found: 'unknown string'
-with pytest.raises(LicenseNotFoundError):
-    v = normalise_license("unknown string", strict=True)
+# Would normally raise: Licence not found: 'unknown string'
+with pytest.raises(LicenceNotFoundError):
+    v = normalise_licence("unknown string", strict=True)
 
 # Batch strict
-from licence_normaliser import normalise_licenses
+from licence_normaliser import normalise_licences
 
-with pytest.raises(LicenseNotFoundError):
-    results = normalise_licenses(
+with pytest.raises(LicenceNotFoundError):
+    results = normalise_licences(
         ["unknown string", "unknown string 2.0"],
         strict=True,
     )
 ```
 
-### Custom plugins with LicenseNormaliser
+### Custom plugins with LicenceNormaliser
 
-The `LicenseNormaliser` class lets you inject custom plugin classes for
+The `LicenceNormaliser` class lets you inject custom plugin classes for
 specialised use cases:
 
 ```python name=test_custom_plugins
-from licence_normaliser import LicenseNormaliser
+from licence_normaliser import LicenceNormaliser
 from licence_normaliser.parsers.spdx import SPDXParser
 from licence_normaliser.parsers.alias import AliasParser
 
 # Use only SPDX + Alias plugins (no CC, no publisher URLs)
-ln = LicenseNormaliser(
+ln = LicenceNormaliser(
     registry=[SPDXParser],
     alias=[AliasParser],
     family=[AliasParser],
@@ -117,16 +117,16 @@ ln = LicenseNormaliser(
 )
 
 # MIT resolves via SPDX parser
-assert str(ln.normalise_license("MIT")) == "mit"
+assert str(ln.normalise_licence("MIT")) == "mit"
 
 # CC BY resolves via Alias
-assert str(ln.normalise_license("CC BY-NC-ND 4.0")) == "cc-by-nc-nd-4.0"
+assert str(ln.normalise_licence("CC BY-NC-ND 4.0")) == "cc-by-nc-nd-4.0"
 ```
 
 To use all defaults, import from `defaults`:
 
 ```python name=test_defaults_usage
-from licence_normaliser import LicenseNormaliser
+from licence_normaliser import LicenceNormaliser
 from licence_normaliser.defaults import (
     get_default_registry,
     get_default_url,
@@ -136,7 +136,7 @@ from licence_normaliser.defaults import (
     get_default_prose,
 )
 
-ln = LicenseNormaliser(
+ln = LicenceNormaliser(
     registry=get_default_registry(),
     url=get_default_url(),
     alias=get_default_alias(),
@@ -146,21 +146,21 @@ ln = LicenseNormaliser(
     cache=True,
     cache_maxsize=8192,
 )
-result = ln.normalise_license("MIT")
+result = ln.normalise_licence("MIT")
 ```
 
 > [!NOTE]
-> Explicit plugin passing is optional — `LicenseNormaliser()` automatically
+> Explicit plugin passing is optional — `LicenceNormaliser()` automatically
 > loads defaults. Use the pattern above only if you need custom plugins.
 
-For caching, `LicenseNormaliser` wraps the resolution method with `lru_cache`.
+For caching, `LicenceNormaliser` wraps the resolution method with `lru_cache`.
 Disable it by passing `cache=False` for debugging:
 
 ```python name=test_caching
-from licence_normaliser import LicenseNormaliser
+from licence_normaliser import LicenceNormaliser
 
-ln = LicenseNormaliser(cache=False)
-result = ln.normalise_license("MIT")
+ln = LicenceNormaliser(cache=False)
+result = ln.normalise_licence("MIT")
 ```
 
 ---
@@ -181,7 +181,7 @@ This fetches fresh JSON from the authoritative upstream URLs and writes them to:
 
 ## 4a. Trace / Explain
 
-When debugging why a license resolves a certain way, or aligning curated
+When debugging why a licence resolves a certain way, or aligning curated
 data sources, use the trace feature:
 
 **Via CLI:**
@@ -200,8 +200,8 @@ ENABLE_LICENCE_NORMALISER_TRACE=1 licence-normaliser normalise "MIT"
 **Via Python:**
 
 ```python name=test_trace
-from licence_normaliser import normalise_license
-v = normalise_license("MIT", trace=True)
+from licence_normaliser import normalise_licence
+v = normalise_licence("MIT", trace=True)
 print(v.explain())
 ```
 
@@ -327,7 +327,7 @@ src/licence_normaliser/tests/
     test_core.py            - end-to-end pipeline tests
     test_exceptions.py      - exception hierarchy and strict mode
     test_cli.py             - CLI commands including update-data
-    test_models.py          - LicenseFamily, LicenseName, LicenseVersion
+    test_models.py          - LicenceFamily, LicenceName, LicenceVersion
     test_aliases.py         - non-CC aliases (Apache, MIT, BSD, GPL, etc.)
     test_alias_expansion.py - explicit aliases array expansion feature
     test_publisher.py       - publisher URLs and shorthand aliases

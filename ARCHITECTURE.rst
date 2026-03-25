@@ -48,21 +48,21 @@ three objects that form a chain.
      - Class
      - Example
    * - Family
-     - ``LicenseFamily``
+     - ``LicenceFamily``
      - ``"cc"``, ``"osi"``, ``"copyleft"``, ``"publisher-tdm"``
    * - Name
-     - ``LicenseName``
+     - ``LicenceName``
      - ``"cc-by"``, ``"mit"``, ``"wiley-tdm"``
    * - Version
-     - ``LicenseVersion``
+     - ``LicenceVersion``
      - ``"cc-by-4.0"``, ``"mit"``, ``"wiley-tdm-1.1"``
 
 Class relationships
 -------------------
 
-- ``LicenseVersion`` holds a ``LicenseName`` via its ``license`` attribute.
-- ``LicenseName`` holds a ``LicenseFamily`` via its ``family`` attribute.
-- ``LicenseVersion.family`` delegates to ``license.family``.
+- ``LicenceVersion`` holds a ``LicenceName`` via its ``license`` attribute.
+- ``LicenceName`` holds a ``LicenceFamily`` via its ``family`` attribute.
+- ``LicenceVersion.family`` delegates to ``license.family``.
 - All three classes are **immutable** (frozen dataclasses), implement
   ``__str__``, ``__eq__``, and ``__hash__``.
 
@@ -163,13 +163,13 @@ Step 5 -- Fallback
 
 Always matches.  Returns the ``"unknown"`` version key with family
 ``"unknown"``.  When strict mode is disabled this is the final result;
-in strict mode a ``LicenseNotFoundError`` is raised instead.
+in strict mode a ``LicenceNotFoundError`` is raised instead.
 
 
 Plugin Architecture
 ===================
 
-The normalisation logic lives in ``LicenseNormaliser`` (``_normaliser.py``),
+The normalisation logic lives in ``LicenceNormaliser`` (``_normaliser.py``),
 which is configured with plugin CLASSES (not instances).  Plugins are
 instantiated lazily when their data is first accessed.
 
@@ -210,7 +210,7 @@ Parser Classes
 --------------
 
 Each parser class inherits from ``BasePlugin`` plus one or more plugin
-interfaces.  Parsers contribute data to ``LicenseNormaliser``:
+interfaces.  Parsers contribute data to ``LicenceNormaliser``:
 
 .. list-table::
    :header-rows: 1
@@ -285,10 +285,10 @@ all other publisher prefixes (``wiley-*``, ``rsc-*``, ``bmj-*``,
 Factory Methods
 ---------------
 
-``LicenseNormaliser`` provides these factory methods:
+``LicenceNormaliser`` provides these factory methods:
 
-* ``_make(version_key)`` -- creates ``LicenseVersion`` from resolved key.
-* ``_make_unknown(raw_key)`` -- creates ``"unknown"`` ``LicenseVersion``.
+* ``_make(version_key)`` -- creates ``LicenceVersion`` from resolved key.
+* ``_make_unknown(raw_key)`` -- creates ``"unknown"`` ``LicenceVersion``.
 * ``_infer_name(key)`` -- for CC keys returns name without version (e.g.
   ``cc-by-4.0`` → ``cc-by``); non-CC keys are unchanged.
 
@@ -426,11 +426,11 @@ longer to avoid false positives on short strings.
 Caching
 =======
 
-The ``LicenseNormaliser`` class accepts ``cache`` and ``cache_maxsize``
+The ``LicenceNormaliser`` class accepts ``cache`` and ``cache_maxsize``
 parameters.  When enabled (default), the resolution method is wrapped with
 LRU caching.  Default size: **8192 entries**.
 
-The module-level API (``_cache.py``) delegates to ``LicenseNormaliser``
+The module-level API (``_cache.py``) delegates to ``LicenceNormaliser``
 with default plugins, providing a transparent caching layer.
 
 Input cleaning (``_clean()``)
@@ -456,8 +456,8 @@ Strict mode
 -----------
 
 * ``strict=False`` (default) -- unknown input returns ``"unknown"``
-  ``LicenseVersion``.
-* ``strict=True`` -- raises ``LicenseNotFoundError`` with ``raw`` and
+  ``LicenceVersion``.
+* ``strict=True`` -- raises ``LicenceNotFoundError`` with ``raw`` and
   ``cleaned`` attributes.
 
 
@@ -469,12 +469,12 @@ Directory Structure
     src/licence_normaliser/
     ├── __init__.py              # Public API exports
     ├── _models.py               # Frozen dataclass hierarchy
-    ├── _normaliser.py           # LicenseNormaliser class with plugin-based resolution
-    ├── _cache.py                # Module-level API delegating to LicenseNormaliser
+    ├── _normaliser.py           # LicenceNormaliser class with plugin-based resolution
+    ├── _cache.py                # Module-level API delegating to LicenceNormaliser
     ├── _core.py                 # Internal resolve helpers (deprecated, kept for compat)
     ├── plugins.py               # Plugin interfaces (BasePlugin, RegistryPlugin, etc.)
     ├── defaults.py              # Lazy-loading default plugin bundle
-    ├── _exceptions.py           # LicenseNormalisationError, LicenseNotFoundError
+    ├── _exceptions.py           # LicenceNormalisationError, LicenceNotFoundError
     ├── cli/
     │   ├── __init__.py
     │   └── _main.py             # CLI entry point
