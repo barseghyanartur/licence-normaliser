@@ -37,29 +37,17 @@
     "name_key": "acs-authorchoice-nih",
     "family_key": "publisher-oa"
   },
-  "agpl": {
-    "version_key": "agpl-3.0",
-    "name_key": "agpl-3",
-    "family_key": "copyleft"
-  },
-  "agpl v3": {
-    "version_key": "agpl-3.0",
-    "name_key": "agpl-3",
-    "family_key": "copyleft"
-  },
   "agpl-3": {
     "version_key": "agpl-3.0",
     "name_key": "agpl-3",
     "family_key": "copyleft",
     "aliases": [
       "agpl-v3",
-      "agpl 3"
+      "agpl 3",
+      "agpl",
+      "agpl v3",
+      "agpl-3.0+"
     ]
-  },
-  "agpl-3.0+": {
-    "version_key": "agpl-3.0",
-    "name_key": "agpl-3",
-    "family_key": "copyleft"
   },
   "aip-rights": {
     "version_key": "aip-rights",
@@ -77,30 +65,16 @@
       "all-rights-reserved"
     ]
   },
-  "apache": {
-    "version_key": "apache-2.0",
-    "name_key": "apache",
-    "family_key": "osi"
-  },
-  "apache 2": {
-    "version_key": "apache-2.0",
-    "name_key": "apache",
-    "family_key": "osi"
-  },
   "apache 2.0": {
     "version_key": "apache-2.0",
     "name_key": "apache",
-    "family_key": "osi"
-  },
-  "apache license": {
-    "version_key": "apache-2.0",
-    "name_key": "apache",
-    "family_key": "osi"
-  },
-  "apache license 2.0": {
-    "version_key": "apache-2.0",
-    "name_key": "apache",
-    "family_key": "osi"
+    "family_key": "osi",
+    "aliases": [
+      "apache 2",
+      "apache",
+      "apache license",
+      "apache license 2.0"
+    ]
   },
   "aps-default": {
     "version_key": "aps-default",
