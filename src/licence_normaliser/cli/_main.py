@@ -1,0 +1,165 @@
+"""licence-normaliser CLI - license normalisation from the command line."""
+
+import argparse
+import sys
+from pathlib import Path
+
+from licence_normaliser import __version__, normalise_license
+from licence_normaliser._trace import _should_trace
+from licence_normaliser.defaults import get_all_refreshable_plugins
+from licence_normaliser.exceptions import (
+    LicenseNormalisationError,
+    LicenseNotFoundError,
+)
+
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2026 Artur Barseghyan"
+__license__ = "MIT"
+__all__ = ("main",)
+
+
+def _build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="licence-normaliser",
+        description="Comprehensive license normalisation - three-level hierarchy.",
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+    )
+
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    norm = sub.add_parser("normalise", help="Normalise a license string.")
+    norm.add_argument("license", help="License string to normalise.")
+    norm.add_argument("--full", action="store_true")
+    norm.add_argument("--strict", action="store_true")
+    norm.add_argument("--trace", action="store_true", help="Show resolution trace.")
+
+    batch = sub.add_parser("batch", help="Normalise multiple license strings.")
+    batch.add_argument("licenses", nargs="+")
+    batch.add_argument("--strict", action="store_true")
+    batch.add_argument(
+        "--trace", action="store_true", help="Show resolution trace for each."
+    )
+
+    update = sub.add_parser(
+        "update-data", help="Fetch fresh data from all registered parsers."
+    )
+    update.add_argument(
+        "--parser",
+        dest="parser_name",
+        metavar="NAME",
+        help="Refresh only the named parser (e.g. spdx, opendefinition, osi). "
+        "Without this flag, all parsers are refreshed.",
+    )
+    update.add_argument(
+        "--force",
+        action="store_true",
+        help="Overwrite even if the local file already exists.",
+    )
+
+    return parser
+
+
+def _cmd_normalise(args: argparse.Namespace) -> int:
+    try:
+        trace = args.trace or _should_trace()
+        result = normalise_license(args.license, strict=args.strict, trace=trace)
+        if trace:
+            print(result.explain())
+        elif args.full:
+            print(f"Key: {result.key}")
+            print(f"URL: {result.url or '(none)'}")
+            print(f"License: {result.license}")
+            print(f"Family: {result.family}")
+        else:
+            print(result.key)
+    except LicenseNotFoundError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    except LicenseNormalisationError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    return 0
+
+
+def _cmd_batch(args: argparse.Namespace) -> int:
+    trace = args.trace or _should_trace()
+    if args.strict:
+        try:
+            for license_str in args.licenses:
+                result = normalise_license(license_str, strict=True, trace=trace)
+                if trace:
+                    print(f"{license_str}:")
+                    print(result.explain())
+                else:
+                    print(f"{license_str}: {result.key}")
+        except LicenseNotFoundError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 1
+    else:
+        for license_str in args.licenses:
+            result = normalise_license(license_str, strict=False, trace=trace)
+            if trace:
+                print(f"{license_str}:")
+                print(result.explain())
+            else:
+                print(f"{license_str}: {result.key}")
+    return 0
+
+
+def _cmd_update_data(args: argparse.Namespace) -> int:
+    parser_classes = get_all_refreshable_plugins()
+    if args.parser_name:
+        parser_classes = [
+            p for p in parser_classes if getattr(p, "id", None) == args.parser_name
+        ]
+        if not parser_classes:
+            available = [
+                getattr(p, "id", p.__name__) for p in get_all_refreshable_plugins()
+            ]
+            print(
+                f"error: unknown parser {args.parser_name!r}. Available: {available}",
+                file=sys.stderr,
+            )
+            return 1
+
+    failed: list[str] = []
+    for parser_cls in parser_classes:
+        name = getattr(parser_cls, "id", parser_cls.__name__)
+        url = parser_cls.url
+        target = parser_cls.local_path
+        target_path = Path(__file__).parent.parent / target
+        ok = parser_cls.refresh(args.force)
+        if target_path.exists() and not args.force:
+            status = "skipped"
+        elif ok:
+            status = "fetched"
+        else:
+            status = "FAILED"
+        if not ok:
+            failed.append(name)
+        print(f"  {status}: {name} ({url}) -> {target}")
+
+    if failed:
+        print(f"error: failed to refresh: {', '.join(failed)}", file=sys.stderr)
+        return 1
+    print("Data sources updated successfully.")
+    return 0
+
+
+def main() -> None:
+    parser = _build_parser()
+    args = parser.parse_args()
+
+    if args.command == "normalise":
+        sys.exit(_cmd_normalise(args))
+    elif args.command == "batch":
+        sys.exit(_cmd_batch(args))
+    elif args.command == "update-data":
+        sys.exit(_cmd_update_data(args))
+    else:
+        parser.print_help()
+        sys.exit(1)

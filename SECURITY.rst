@@ -9,7 +9,7 @@ Please report security issues by emailing Artur Barseghyan
 
 Supported Versions
 ------------------
-The two most recent ``license-normaliser`` minor release series receive
+The two most recent ``licence-normaliser`` minor release series receive
 security support.
 It is recommended to use the latest version.
 
@@ -26,8 +26,8 @@ It is recommended to use the latest version.
 .. note::
 
     For example, during the development cycle leading to the release
-    of ``license-normaliser`` 0.17.x, support will be provided
-    for ``license-normaliser`` 0.16.x.
+    of ``licence-normaliser`` 0.17.x, support will be provided
+    for ``licence-normaliser`` 0.16.x.
 
-    Upon the release of ``license-normaliser`` 0.18.x, security support
-    for ``license-normaliser`` 0.16.x will end.
+    Upon the release of ``licence-normaliser`` 0.18.x, security support
+    for ``licence-normaliser`` 0.16.x will end.

@@ -25,7 +25,7 @@ codebin/
 /builddocs.zip
 /build/
 /dist/
-license_normaliser.egg-info/
+licence_normaliser.egg-info/
 matyan.log*
 db.sqlite3
 sample_db.sqlite

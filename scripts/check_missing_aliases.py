@@ -15,7 +15,7 @@ import json
 import sys
 from pathlib import Path
 
-DATA_DIR = Path(__file__).parent.parent / "src" / "license_normaliser" / "data"
+DATA_DIR = Path(__file__).parent.parent / "src" / "licence_normaliser" / "data"
 SCRIPTS_DIR = Path(__file__).parent
 
 
@@ -34,7 +34,7 @@ def load_alias_targets() -> set[str]:
 
 def load_downloaded_licenses() -> dict[str, set[str]]:
     """Load licenses from all refreshable plugins."""
-    from license_normaliser.defaults import get_all_refreshable_plugins
+    from licence_normaliser.defaults import get_all_refreshable_plugins
 
     result: dict[str, set[str]] = {}
     for plugin_cls in get_all_refreshable_plugins():

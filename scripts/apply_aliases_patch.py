@@ -22,7 +22,7 @@ from pathlib import Path
 ALIASES_PATH = (
     Path(__file__).parent.parent
     / "src"
-    / "license_normaliser"
+    / "licence_normaliser"
     / "data"
     / "aliases"
     / "aliases.json"
