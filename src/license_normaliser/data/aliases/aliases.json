@@ -425,7 +425,8 @@
     "aliases": [
       "cc 0",
       "cc zero",
-      "creative commons zero"
+      "creative commons zero",
+      "cc-zero"
     ]
   },
   "cc0 1.0": {
@@ -435,6 +436,7 @@
     "aliases": [
       "cc0-1.0",
       "cc zero",
+      "cc-zero",
       "cc zero 1.0",
       "creative commons zero 1.0"
     ]
