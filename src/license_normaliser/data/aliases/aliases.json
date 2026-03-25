@@ -428,26 +428,6 @@
       "elsevier-tdm"
     ]
   },
-  "gnu gpl": {
-    "version_key": "gpl-3.0",
-    "name_key": "gpl-3",
-    "family_key": "copyleft"
-  },
-  "gnu gpl v3": {
-    "version_key": "gpl-3.0",
-    "name_key": "gpl-3",
-    "family_key": "copyleft"
-  },
-  "gpl": {
-    "version_key": "gpl-3.0",
-    "name_key": "gpl-3",
-    "family_key": "copyleft"
-  },
-  "gpl v3": {
-    "version_key": "gpl-3.0",
-    "name_key": "gpl-3",
-    "family_key": "copyleft"
-  },
   "gpl-2": {
     "version_key": "gpl-2.0",
     "name_key": "gpl-2",
@@ -467,13 +447,14 @@
     "aliases": [
       "gpl-v3",
       "gpl v3 only",
-      "gpl 3"
-    ]
-  },
-  "gpl-3.0+": {
-    "version_key": "gpl-3.0",
-    "name_key": "gpl-3",
-    "family_key": "copyleft"
+      "gpl 3",
+      "gnu gpl",
+      "gnu gpl v3",
+      "gpl",
+      "gpl v3",
+      "gpl-3.0+"
+    ],
+    "justification": "gnu gpl, gnu gpl v3, gpl, gpl v3, gpl-3, and gpl-3.0+ are all standard aliases for GPL-3.0."
   },
   "implied oa": {
     "version_key": "implied-oa",
