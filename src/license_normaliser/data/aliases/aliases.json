@@ -224,7 +224,7 @@
       "cc by nc-nd",
       "cc by nc nd",
       "cc-by nc-nd",
-      "creative commons attribution-noderivatives",
+      "creative commons attribution-noncommercial-noderivatives",
       "creative commons by-nc-nd"
     ]
   },
@@ -298,7 +298,8 @@
       "cc-by-nd",
       "cc by nd",
       "cc-by nd",
-      "creative commons by-nd"
+      "creative commons by-nd",
+      "creative commons attribution-noderivatives"
     ]
   },
   "cc by-nd 3.0": {
