@@ -50,13 +50,13 @@ Features
   and more.
 - **File-driven data** - Add aliases, URLs, and patterns by editing JSON files.
   No Python code changes required for new synonyms.
-- **Pluggable parsers** - Drop in a new ``Parser`` class to ingest
+- **Pluggable parsers** - Drop in a new parser class to ingest
   any external license registry. Parsers implement plugin interfaces
-  (RegistryPlugin, URLPlugin, etc.).
+  (``RegistryPlugin``, ``URLPlugin``, etc.).
 - **Strict mode** - Raise ``LicenseNotFoundError`` instead of silently
   returning ``"unknown"``.
 - **Caching** - LRU caching for performance.
-- **CLI** - Command-line interface with ``--strict`` support.
+- **CLI** - Command-line interface with ``--strict`` and ``--explain`` support.
 
 Hierarchy
 =========
