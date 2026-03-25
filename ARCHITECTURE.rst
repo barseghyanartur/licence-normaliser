@@ -1,8 +1,8 @@
 ===================
- Architecture Guide
+ Architecture guide
 ===================
 
-:Version: 0.3.2
+:Version: 0.4
 :Author: Artur Barseghyan <artur.barseghyan@gmail.com>
 :Repository: https://github.com/barseghyanartur/licence-normaliser
 
@@ -18,7 +18,7 @@ canonical three-level hierarchy.  The package has **zero runtime
 dependencies** and is extensible through data files without touching
 Python code.
 
-Design Goals
+Design goals
 ------------
 
 1. **Three-level hierarchy** -- every licence maps to exactly one
@@ -33,7 +33,7 @@ Design Goals
    instead of falling back to ``"unknown"``.
 
 
-Three-Level Hierarchy
+Three-level hierarchy
 =====================
 
 The core data model lives in ``_models.py`` and is built on frozen
@@ -66,7 +66,7 @@ Class relationships
 - All three classes are **immutable** (frozen dataclasses), implement
   ``__str__``, ``__eq__``, and ``__hash__``.
 
-Resolution Pipeline
+Resolution pipeline
 ===================
 
 Normalisation happens through a **five-step pipeline** (``_normaliser.py``)
@@ -166,14 +166,14 @@ Always matches.  Returns the ``"unknown"`` version key with family
 in strict mode a ``LicenceNotFoundError`` is raised instead.
 
 
-Plugin Architecture
+Plugin architecture
 ===================
 
 The normalisation logic lives in ``LicenceNormaliser`` (``_normaliser.py``),
 which is configured with plugin CLASSES (not instances).  Plugins are
 instantiated lazily when their data is first accessed.
 
-Plugin Interfaces
+Plugin interfaces
 -----------------
 
 Six plugin types are supported (defined in ``plugins.py``):
@@ -206,7 +206,7 @@ Six plugin types are supported (defined in ``plugins.py``):
      - ``load_prose()``
      - ``list[tuple[Pattern, str]]``: compiled patterns → version_key
 
-Parser Classes
+Parser classes
 --------------
 
 Each parser class inherits from ``BasePlugin`` plus one or more plugin
@@ -243,7 +243,7 @@ interfaces.  Parsers contribute data to ``LicenceNormaliser``:
      - Prose + BasePlugin
      - ``data/prose/prose_patterns.json`` (local-only)
 
-Default Plugins
+Default plugins
 ---------------
 
 The default plugin bundle is defined in ``defaults.py`` using lazy loading
@@ -282,7 +282,7 @@ all other publisher prefixes (``wiley-*``, ``rsc-*``, ``bmj-*``,
 ``public-domain`` → ``public-domain``, ``other-oa``, ``open-access`` →
 ``other-oa``, everything else → ``unknown``.
 
-Factory Methods
+Factory methods
 ---------------
 
 ``LicenceNormaliser`` provides these factory methods:
@@ -293,7 +293,7 @@ Factory Methods
   ``cc-by-4.0`` → ``cc-by``); non-CC keys are unchanged.
 
 
-Adding a New Parser
+Adding a new parser
 ===================
 
 1. Create ``src/licence_normaliser/parsers/my_parser.py`` implementing
@@ -335,7 +335,7 @@ Adding a New Parser
               MyParser,
           ]
 
-Extending Without Python Changes
+Extending without Python changes
 ================================
 
 Adding a new alias
@@ -461,7 +461,7 @@ Strict mode
   ``cleaned`` attributes.
 
 
-Directory Structure
+Directory structure
 ===================
 
 ::
@@ -511,7 +511,7 @@ Directory Structure
     └── original/                  **DO NOT MODIFY** — upstream originals
 
 
-Coding Conventions
+Coding conventions
 ==================
 
 * Line length: **88 characters** (ruff).

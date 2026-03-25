@@ -12,7 +12,7 @@ from ._trace import LicenceTrace, LicenceTraceStage
 from .exceptions import LicenceNormalisationError, LicenceNotFoundError
 
 __title__ = "licence-normaliser"
-__version__ = "0.3.2"
+__version__ = "0.4"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
 __license__ = "MIT"
