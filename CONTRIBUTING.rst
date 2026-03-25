@@ -2,15 +2,15 @@
 Contributor guidelines
 ======================
 
-.. _license-normaliser: https://github.com/barseghyanartur/license-normaliser/
+.. _licence-normaliser: https://github.com/barseghyanartur/licence-normaliser/
 .. _uv: https://docs.astral.sh/uv/
 .. _tox: https://tox.wiki
 .. _ruff: https://beta.ruff.rs/docs/
 .. _doc8: https://doc8.readthedocs.io/
 .. _pre-commit: https://pre-commit.com/#installation
-.. _issues: https://github.com/barseghyanartur/license-normaliser/issues
-.. _discussions: https://github.com/barseghyanartur/license-normaliser/discussions
-.. _pull request: https://github.com/barseghyanartur/license-normaliser/pulls
+.. _issues: https://github.com/barseghyanartur/licence-normaliser/issues
+.. _discussions: https://github.com/barseghyanartur/licence-normaliser/discussions
+.. _pull request: https://github.com/barseghyanartur/licence-normaliser/pulls
 .. _versions manifest: https://github.com/actions/python-versions/blob/main/versions-manifest.json
 
 Developer prerequisites
@@ -123,7 +123,7 @@ Adding new normalisation rules
 
 For a new **alias** or **family override** for an *existing* license:
 
-1. Add an entry to ``src/license_normaliser/data/aliases/aliases.json``.
+1. Add an entry to ``src/licence_normaliser/data/aliases/aliases.json``.
 2. Optionally, add an ``aliases`` array to define additional lookup variants
    (e.g. hyphen vs space forms) that resolve to the same target:
 
@@ -138,27 +138,27 @@ For a new **alias** or **family override** for an *existing* license:
          }
        }
 
-3. Add a test in ``src/license_normaliser/tests/test_aliases.py`` or
+3. Add a test in ``src/licence_normaliser/tests/test_aliases.py`` or
    ``test_alias_expansion.py``.
 4. No Python changes needed.
 
 For a new **prose pattern** (regex matching free-text descriptions):
 
-1. Add an entry to ``src/license_normaliser/data/prose/prose_patterns.json``.
-2. Add a test in ``src/license_normaliser/tests/test_prose.py``.
+1. Add an entry to ``src/licence_normaliser/data/prose/prose_patterns.json``.
+2. Add a test in ``src/licence_normaliser/tests/test_prose.py``.
 3. No Python changes needed.
 
 For a new **URL mapping**:
 
-1. Add an entry to ``src/license_normaliser/data/urls/url_map.json`` or
-   ``src/license_normaliser/data/publishers/publishers.json``.
-2. Add a test in ``src/license_normaliser/tests/test_publisher.py``.
+1. Add an entry to ``src/licence_normaliser/data/urls/url_map.json`` or
+   ``src/licence_normaliser/data/publishers/publishers.json``.
+2. Add a test in ``src/licence_normaliser/tests/test_publisher.py``.
 3. No Python changes needed.
 
 For a **brand-new license key** (SPDX, OpenDefinition, OSI, CC, or ScanCode):
 
 1. The upstream data source must be updated first
-   (``license-normaliser update-data --force`` for SPDX/OpenDefinition, or
+   (``licence-normaliser update-data --force`` for SPDX/OpenDefinition, or
    edit the upstream source for OSI/CC/ScanCode).
 2. The parser will pick it up automatically on the next import.
 3. Add an alias in ``aliases.json`` if needed.
@@ -167,9 +167,9 @@ For a **brand-new license key** (SPDX, OpenDefinition, OSI, CC, or ScanCode):
 
 For a **new parser** (new upstream data source):
 
-1. Create ``src/license_normaliser/parsers/my_parser.py`` implementing
+1. Create ``src/licence_normaliser/parsers/my_parser.py`` implementing
    ``BasePlugin``.
-2. Register it in ``src/license_normaliser/parsers/__init__.py``.
+2. Register it in ``src/licence_normaliser/parsers/__init__.py``.
 3. Set ``is_registry_entry = False`` if the parser only contributes
    aliases/URLs/patterns (not new license keys).
 4. Add tests.
@@ -236,7 +236,7 @@ General checklist
   ``AGENTS.md``, ``ARCHITECTURE.rst``, ``CONTRIBUTING.rst``)?
 - Does your change require new tests?
 - Does your change add any external dependencies?
-  If so, reconsider: ``license-normaliser`` should have minimal dependencies.
+  If so, reconsider: ``licence-normaliser`` should have minimal dependencies.
 
 When fixing bugs
 ~~~~~~~~~~~~~~~~

@@ -7,7 +7,7 @@ the contents of each key file.
 .. code-block:: text
    :caption: Project directory layout
 
-   license-normaliser/
+   licence-normaliser/
    ├── docs
    │   ├── conf.py
    │   └── full_llms.rst
@@ -18,7 +18,7 @@ the contents of each key file.
    │   ├── README.rst
    │   └── test_name_inference.py
    ├── src
-   │   └── license_normaliser
+   │   └── licence_normaliser
    │       ├── cli
    │       │   ├── __init__.py
    │       │   └── _main.py
@@ -165,254 +165,254 @@ scripts/test_name_inference.py
    :language: python
    :caption: scripts/test_name_inference.py
 
-src/license_normaliser/__init__.py
+src/licence_normaliser/__init__.py
 ----------------------------------
 
-.. literalinclude:: ../src/license_normaliser/__init__.py
+.. literalinclude:: ../src/licence_normaliser/__init__.py
    :language: python
-   :caption: src/license_normaliser/__init__.py
+   :caption: src/licence_normaliser/__init__.py
 
-src/license_normaliser/_cache.py
+src/licence_normaliser/_cache.py
 --------------------------------
 
-.. literalinclude:: ../src/license_normaliser/_cache.py
+.. literalinclude:: ../src/licence_normaliser/_cache.py
    :language: python
-   :caption: src/license_normaliser/_cache.py
+   :caption: src/licence_normaliser/_cache.py
 
-src/license_normaliser/_core.py
+src/licence_normaliser/_core.py
 -------------------------------
 
-.. literalinclude:: ../src/license_normaliser/_core.py
+.. literalinclude:: ../src/licence_normaliser/_core.py
    :language: python
-   :caption: src/license_normaliser/_core.py
+   :caption: src/licence_normaliser/_core.py
 
-src/license_normaliser/_models.py
+src/licence_normaliser/_models.py
 ---------------------------------
 
-.. literalinclude:: ../src/license_normaliser/_models.py
+.. literalinclude:: ../src/licence_normaliser/_models.py
    :language: python
-   :caption: src/license_normaliser/_models.py
+   :caption: src/licence_normaliser/_models.py
 
-src/license_normaliser/_normaliser.py
+src/licence_normaliser/_normaliser.py
 -------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/_normaliser.py
+.. literalinclude:: ../src/licence_normaliser/_normaliser.py
    :language: python
-   :caption: src/license_normaliser/_normaliser.py
+   :caption: src/licence_normaliser/_normaliser.py
 
-src/license_normaliser/_trace.py
+src/licence_normaliser/_trace.py
 --------------------------------
 
-.. literalinclude:: ../src/license_normaliser/_trace.py
+.. literalinclude:: ../src/licence_normaliser/_trace.py
    :language: python
-   :caption: src/license_normaliser/_trace.py
+   :caption: src/licence_normaliser/_trace.py
 
-src/license_normaliser/cli/__init__.py
+src/licence_normaliser/cli/__init__.py
 --------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/cli/__init__.py
+.. literalinclude:: ../src/licence_normaliser/cli/__init__.py
    :language: python
-   :caption: src/license_normaliser/cli/__init__.py
+   :caption: src/licence_normaliser/cli/__init__.py
 
-src/license_normaliser/cli/_main.py
+src/licence_normaliser/cli/_main.py
 -----------------------------------
 
-.. literalinclude:: ../src/license_normaliser/cli/_main.py
+.. literalinclude:: ../src/licence_normaliser/cli/_main.py
    :language: python
-   :caption: src/license_normaliser/cli/_main.py
+   :caption: src/licence_normaliser/cli/_main.py
 
-src/license_normaliser/data/README.rst
+src/licence_normaliser/data/README.rst
 --------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/data/README.rst
+.. literalinclude:: ../src/licence_normaliser/data/README.rst
    :language: rst
-   :caption: src/license_normaliser/data/README.rst
+   :caption: src/licence_normaliser/data/README.rst
 
-src/license_normaliser/data/aliases/aliases.json
+src/licence_normaliser/data/aliases/aliases.json
 ------------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/data/aliases/aliases.json
+.. literalinclude:: ../src/licence_normaliser/data/aliases/aliases.json
    :language: json
-   :caption: src/license_normaliser/data/aliases/aliases.json
+   :caption: src/licence_normaliser/data/aliases/aliases.json
 
-src/license_normaliser/data/prose/prose_patterns.json
+src/licence_normaliser/data/prose/prose_patterns.json
 -----------------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/data/prose/prose_patterns.json
+.. literalinclude:: ../src/licence_normaliser/data/prose/prose_patterns.json
    :language: json
-   :caption: src/license_normaliser/data/prose/prose_patterns.json
+   :caption: src/licence_normaliser/data/prose/prose_patterns.json
 
-src/license_normaliser/data/publishers/publishers.json
+src/licence_normaliser/data/publishers/publishers.json
 ------------------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/data/publishers/publishers.json
+.. literalinclude:: ../src/licence_normaliser/data/publishers/publishers.json
    :language: json
-   :caption: src/license_normaliser/data/publishers/publishers.json
+   :caption: src/licence_normaliser/data/publishers/publishers.json
 
-src/license_normaliser/data/urls/url_map.json
+src/licence_normaliser/data/urls/url_map.json
 ---------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/data/urls/url_map.json
+.. literalinclude:: ../src/licence_normaliser/data/urls/url_map.json
    :language: json
-   :caption: src/license_normaliser/data/urls/url_map.json
+   :caption: src/licence_normaliser/data/urls/url_map.json
 
-src/license_normaliser/defaults.py
+src/licence_normaliser/defaults.py
 ----------------------------------
 
-.. literalinclude:: ../src/license_normaliser/defaults.py
+.. literalinclude:: ../src/licence_normaliser/defaults.py
    :language: python
-   :caption: src/license_normaliser/defaults.py
+   :caption: src/licence_normaliser/defaults.py
 
-src/license_normaliser/exceptions.py
+src/licence_normaliser/exceptions.py
 ------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/exceptions.py
+.. literalinclude:: ../src/licence_normaliser/exceptions.py
    :language: python
-   :caption: src/license_normaliser/exceptions.py
+   :caption: src/licence_normaliser/exceptions.py
 
-src/license_normaliser/parsers/__init__.py
+src/licence_normaliser/parsers/__init__.py
 ------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/parsers/__init__.py
+.. literalinclude:: ../src/licence_normaliser/parsers/__init__.py
    :language: python
-   :caption: src/license_normaliser/parsers/__init__.py
+   :caption: src/licence_normaliser/parsers/__init__.py
 
-src/license_normaliser/parsers/alias.py
+src/licence_normaliser/parsers/alias.py
 ---------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/parsers/alias.py
+.. literalinclude:: ../src/licence_normaliser/parsers/alias.py
    :language: python
-   :caption: src/license_normaliser/parsers/alias.py
+   :caption: src/licence_normaliser/parsers/alias.py
 
-src/license_normaliser/parsers/creativecommons.py
+src/licence_normaliser/parsers/creativecommons.py
 -------------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/parsers/creativecommons.py
+.. literalinclude:: ../src/licence_normaliser/parsers/creativecommons.py
    :language: python
-   :caption: src/license_normaliser/parsers/creativecommons.py
+   :caption: src/licence_normaliser/parsers/creativecommons.py
 
-src/license_normaliser/parsers/opendefinition.py
+src/licence_normaliser/parsers/opendefinition.py
 ------------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/parsers/opendefinition.py
+.. literalinclude:: ../src/licence_normaliser/parsers/opendefinition.py
    :language: python
-   :caption: src/license_normaliser/parsers/opendefinition.py
+   :caption: src/licence_normaliser/parsers/opendefinition.py
 
-src/license_normaliser/parsers/osi.py
+src/licence_normaliser/parsers/osi.py
 -------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/parsers/osi.py
+.. literalinclude:: ../src/licence_normaliser/parsers/osi.py
    :language: python
-   :caption: src/license_normaliser/parsers/osi.py
+   :caption: src/licence_normaliser/parsers/osi.py
 
-src/license_normaliser/parsers/prose.py
+src/licence_normaliser/parsers/prose.py
 ---------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/parsers/prose.py
+.. literalinclude:: ../src/licence_normaliser/parsers/prose.py
    :language: python
-   :caption: src/license_normaliser/parsers/prose.py
+   :caption: src/licence_normaliser/parsers/prose.py
 
-src/license_normaliser/parsers/publisher.py
+src/licence_normaliser/parsers/publisher.py
 -------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/parsers/publisher.py
+.. literalinclude:: ../src/licence_normaliser/parsers/publisher.py
    :language: python
-   :caption: src/license_normaliser/parsers/publisher.py
+   :caption: src/licence_normaliser/parsers/publisher.py
 
-src/license_normaliser/parsers/scancode_licensedb.py
+src/licence_normaliser/parsers/scancode_licensedb.py
 ----------------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/parsers/scancode_licensedb.py
+.. literalinclude:: ../src/licence_normaliser/parsers/scancode_licensedb.py
    :language: python
-   :caption: src/license_normaliser/parsers/scancode_licensedb.py
+   :caption: src/licence_normaliser/parsers/scancode_licensedb.py
 
-src/license_normaliser/parsers/spdx.py
+src/licence_normaliser/parsers/spdx.py
 --------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/parsers/spdx.py
+.. literalinclude:: ../src/licence_normaliser/parsers/spdx.py
    :language: python
-   :caption: src/license_normaliser/parsers/spdx.py
+   :caption: src/licence_normaliser/parsers/spdx.py
 
-src/license_normaliser/plugins.py
+src/licence_normaliser/plugins.py
 ---------------------------------
 
-.. literalinclude:: ../src/license_normaliser/plugins.py
+.. literalinclude:: ../src/licence_normaliser/plugins.py
    :language: python
-   :caption: src/license_normaliser/plugins.py
+   :caption: src/licence_normaliser/plugins.py
 
-src/license_normaliser/tests/__init__.py
+src/licence_normaliser/tests/__init__.py
 ----------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/tests/__init__.py
+.. literalinclude:: ../src/licence_normaliser/tests/__init__.py
    :language: python
-   :caption: src/license_normaliser/tests/__init__.py
+   :caption: src/licence_normaliser/tests/__init__.py
 
-src/license_normaliser/tests/conftest.py
+src/licence_normaliser/tests/conftest.py
 ----------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/tests/conftest.py
+.. literalinclude:: ../src/licence_normaliser/tests/conftest.py
    :language: python
-   :caption: src/license_normaliser/tests/conftest.py
+   :caption: src/licence_normaliser/tests/conftest.py
 
-src/license_normaliser/tests/test_aliases.py
+src/licence_normaliser/tests/test_aliases.py
 --------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/tests/test_aliases.py
+.. literalinclude:: ../src/licence_normaliser/tests/test_aliases.py
    :language: python
-   :caption: src/license_normaliser/tests/test_aliases.py
+   :caption: src/licence_normaliser/tests/test_aliases.py
 
-src/license_normaliser/tests/test_cache.py
+src/licence_normaliser/tests/test_cache.py
 ------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/tests/test_cache.py
+.. literalinclude:: ../src/licence_normaliser/tests/test_cache.py
    :language: python
-   :caption: src/license_normaliser/tests/test_cache.py
+   :caption: src/licence_normaliser/tests/test_cache.py
 
-src/license_normaliser/tests/test_cli.py
+src/licence_normaliser/tests/test_cli.py
 ----------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/tests/test_cli.py
+.. literalinclude:: ../src/licence_normaliser/tests/test_cli.py
    :language: python
-   :caption: src/license_normaliser/tests/test_cli.py
+   :caption: src/licence_normaliser/tests/test_cli.py
 
-src/license_normaliser/tests/test_core.py
+src/licence_normaliser/tests/test_core.py
 -----------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/tests/test_core.py
+.. literalinclude:: ../src/licence_normaliser/tests/test_core.py
    :language: python
-   :caption: src/license_normaliser/tests/test_core.py
+   :caption: src/licence_normaliser/tests/test_core.py
 
-src/license_normaliser/tests/test_exceptions.py
+src/licence_normaliser/tests/test_exceptions.py
 -----------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/tests/test_exceptions.py
+.. literalinclude:: ../src/licence_normaliser/tests/test_exceptions.py
    :language: python
-   :caption: src/license_normaliser/tests/test_exceptions.py
+   :caption: src/licence_normaliser/tests/test_exceptions.py
 
-src/license_normaliser/tests/test_integration.py
+src/licence_normaliser/tests/test_integration.py
 ------------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/tests/test_integration.py
+.. literalinclude:: ../src/licence_normaliser/tests/test_integration.py
    :language: python
-   :caption: src/license_normaliser/tests/test_integration.py
+   :caption: src/licence_normaliser/tests/test_integration.py
 
-src/license_normaliser/tests/test_models.py
+src/licence_normaliser/tests/test_models.py
 -------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/tests/test_models.py
+.. literalinclude:: ../src/licence_normaliser/tests/test_models.py
    :language: python
-   :caption: src/license_normaliser/tests/test_models.py
+   :caption: src/licence_normaliser/tests/test_models.py
 
-src/license_normaliser/tests/test_prose.py
+src/licence_normaliser/tests/test_prose.py
 ------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/tests/test_prose.py
+.. literalinclude:: ../src/licence_normaliser/tests/test_prose.py
    :language: python
-   :caption: src/license_normaliser/tests/test_prose.py
+   :caption: src/licence_normaliser/tests/test_prose.py
 
-src/license_normaliser/tests/test_publisher.py
+src/licence_normaliser/tests/test_publisher.py
 ----------------------------------------------
 
-.. literalinclude:: ../src/license_normaliser/tests/test_publisher.py
+.. literalinclude:: ../src/licence_normaliser/tests/test_publisher.py
    :language: python
-   :caption: src/license_normaliser/tests/test_publisher.py
+   :caption: src/licence_normaliser/tests/test_publisher.py

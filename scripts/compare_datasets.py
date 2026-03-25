@@ -1,4 +1,4 @@
-"""Dataset comparison tool for license-normaliser.
+"""Dataset comparison tool for licence-normaliser.
 
 Compares SPDX, OpenDefinition, OSI, CreativeCommons, ScanCode, and
 curated data files (aliases, url_map, prose, publishers) for:
@@ -18,7 +18,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
-DATA_DIR = Path(__file__).parent.parent / "src" / "license_normaliser" / "data"
+DATA_DIR = Path(__file__).parent.parent / "src" / "licence_normaliser" / "data"
 
 
 def load_spdx_ids() -> set[str]:
@@ -98,7 +98,7 @@ def load_pub_aliases() -> dict[str, str]:
 
 
 def load_registry_keys() -> set[str]:
-    from license_normaliser._cache import get_registry_keys
+    from licence_normaliser._cache import get_registry_keys
 
     return get_registry_keys()
 

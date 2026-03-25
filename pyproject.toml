@@ -1,5 +1,5 @@
 [project]
-name = "license-normaliser"
+name = "licence-normaliser"
 description = "Comprehensive license normalisation with a three-level hierarchy."
 readme = "README.rst"
 version = "0.3.2"
@@ -34,15 +34,15 @@ keywords = [
 ]
 
 [project.scripts]
-license-normaliser = "license_normaliser.cli:main"
+licence-normaliser = "licence_normaliser.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/barseghyanartur/license-normaliser/"
-Repository = "https://github.com/barseghyanartur/license-normaliser/"
-Issues = "https://github.com/barseghyanartur/license-normaliser/issues"
+Homepage = "https://github.com/barseghyanartur/licence-normaliser/"
+Repository = "https://github.com/barseghyanartur/licence-normaliser/"
+Issues = "https://github.com/barseghyanartur/licence-normaliser/issues"
 
 [project.optional-dependencies]
-all = ["license-normaliser[dev,test,docs,build]"]
+all = ["licence-normaliser[dev,test,docs,build]"]
 dev = [
     "detect-secrets",
     "doc8",
@@ -76,10 +76,10 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["license_normaliser", "license_normaliser.*"]
+include = ["licence_normaliser", "licence_normaliser.*"]
 
 [tool.setuptools.package-data]
-"license_normaliser" = ["data/**/*.json"]
+"licence_normaliser" = ["data/**/*.json"]
 
 [build-system]
 requires = ["setuptools>=41.0", "wheel"]
@@ -106,7 +106,7 @@ lint.ignore = [
     "ISC003",
 ]
 fix = true
-src = ["src/license_normaliser"]
+src = ["src/licence_normaliser"]
 exclude = [
     ".bzr",
     ".direnv",
@@ -133,7 +133,7 @@ target-version = "py310"
 lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.isort]
-known-first-party = ["license_normaliser"]
+known-first-party = ["licence_normaliser"]
 
 [tool.ruff.lint.per-file-ignores]
 "conftest.py" = [
@@ -143,7 +143,7 @@ known-first-party = ["license_normaliser"]
 [tool.doc8]
 ignore-path = [
     "docs/requirements.txt",
-    "src/license_normaliser.egg-info/SOURCES.txt",
+    "src/licence_normaliser.egg-info/SOURCES.txt",
 ]
 
 [tool.pytest.ini_options]
@@ -151,7 +151,7 @@ addopts = [
     "-ra",
     "-vvv",
     "-q",
-    "--cov=license_normaliser",
+    "--cov=licence_normaliser",
     "--ignore=.tox",
     "--cov-report=html",
     "--cov-report=term",
@@ -159,7 +159,7 @@ addopts = [
     "--capture=no",
 ]
 testpaths = [
-    "src/license_normaliser/tests",
+    "src/licence_normaliser/tests",
     ".",
     "**/*.rst",
     "**/*.md",
@@ -170,7 +170,7 @@ norecursedirs = [".git", ".tox"]
 [tool.coverage.run]
 relative_files = true
 omit = [".tox/*"]
-source = ["license_normaliser"]
+source = ["licence_normaliser"]
 
 [tool.coverage.report]
 show_missing = true
@@ -245,11 +245,11 @@ ignore = [
     "docs/index.rst",
     "uv.lock",
     "codebin",
-    "src/license_normaliser/data/creativecommons",
-    "src/license_normaliser/data/opendefinition",
-    "src/license_normaliser/data/osi",
-    "src/license_normaliser/data/scancode_licensedb",
-    "src/license_normaliser/data/spdx",
+    "src/licence_normaliser/data/creativecommons",
+    "src/licence_normaliser/data/opendefinition",
+    "src/licence_normaliser/data/osi",
+    "src/licence_normaliser/data/scancode_licensedb",
+    "src/licence_normaliser/data/spdx",
 ]
 order = [
     "README.rst",
@@ -323,9 +323,9 @@ ignore = [
     "docs/documentation.rst",
     "docs/index.rst",
     "uv.lock",
-    "src/license_normaliser/data/creativecommons",
-    "src/license_normaliser/data/opendefinition",
-    "src/license_normaliser/data/osi",
-    "src/license_normaliser/data/scancode_licensedb",
-    "src/license_normaliser/data/spdx",
+    "src/licence_normaliser/data/creativecommons",
+    "src/licence_normaliser/data/opendefinition",
+    "src/licence_normaliser/data/osi",
+    "src/licence_normaliser/data/scancode_licensedb",
+    "src/licence_normaliser/data/spdx",
 ]

@@ -1,6 +1,6 @@
-# AGENTS.md - license-normaliser
+# AGENTS.md - licence-normaliser
 
-**Repository**: https://github.com/barseghyanartur/license-normaliser
+**Repository**: https://github.com/barseghyanartur/licence-normaliser
 **Maintainer**: Artur Barseghyan <artur.barseghyan@gmail.com>
 
 ---
@@ -15,7 +15,7 @@
 - No external dependencies (only optional dev/test deps)
 - LRU caching for performance
 - Data-file-driven: parsers load from package data JSON files
-- `license-normaliser update-data` CLI command to refresh SPDX + OpenDefinition data
+- `licence-normaliser update-data` CLI command to refresh SPDX + OpenDefinition data
 
 ---
 
@@ -41,28 +41,28 @@
 
 | File | Purpose |
 | ---- | ------- |
-| `src/license_normaliser/_models.py` | Frozen dataclass hierarchy |
-| `src/license_normaliser/_normaliser.py` | `LicenseNormaliser` class with plugin-based resolution |
-| `src/license_normaliser/plugins.py` | Plugin interfaces (BasePlugin, RegistryPlugin, URLPlugin, etc.) |
-| `src/license_normaliser/defaults.py` | Lazy-loading default plugin bundle |
-| `src/license_normaliser/_cache.py` | Module-level API delegating to `LicenseNormaliser` |
-| `src/license_normaliser/parsers/` | Parser classes implementing plugin interfaces |
-| `src/license_normaliser/cli/_main.py` | CLI with normalise, batch, update-data |
-| `src/license_normaliser/exceptions.py` | LicenseNormalisationError |
-| `src/license_normaliser/data/spdx/spdx.json` | **DO NOT MODIFY** Full SPDX license list (loaded at runtime) |
-| `src/license_normaliser/data/opendefinition/opendefinition.json` | **DO NOT MODIFY** Full OpenDefinition list (loaded at runtime) |
-| `src/license_normaliser/data/aliases/aliases.json` | Curated aliases with rich metadata |
-| `src/license_normaliser/data/prose/prose_patterns.json` | Curated prose regex patterns |
-| `src/license_normaliser/data/publishers/publishers.json` | Publisher URLs and shorthand aliases |
+| `src/licence_normaliser/_models.py` | Frozen dataclass hierarchy |
+| `src/licence_normaliser/_normaliser.py` | `LicenseNormaliser` class with plugin-based resolution |
+| `src/licence_normaliser/plugins.py` | Plugin interfaces (BasePlugin, RegistryPlugin, URLPlugin, etc.) |
+| `src/licence_normaliser/defaults.py` | Lazy-loading default plugin bundle |
+| `src/licence_normaliser/_cache.py` | Module-level API delegating to `LicenseNormaliser` |
+| `src/licence_normaliser/parsers/` | Parser classes implementing plugin interfaces |
+| `src/licence_normaliser/cli/_main.py` | CLI with normalise, batch, update-data |
+| `src/licence_normaliser/exceptions.py` | LicenseNormalisationError |
+| `src/licence_normaliser/data/spdx/spdx.json` | **DO NOT MODIFY** Full SPDX license list (loaded at runtime) |
+| `src/licence_normaliser/data/opendefinition/opendefinition.json` | **DO NOT MODIFY** Full OpenDefinition list (loaded at runtime) |
+| `src/licence_normaliser/data/aliases/aliases.json` | Curated aliases with rich metadata |
+| `src/licence_normaliser/data/prose/prose_patterns.json` | Curated prose regex patterns |
+| `src/licence_normaliser/data/publishers/publishers.json` | Publisher URLs and shorthand aliases |
 
 ---
 
-## 3. Using license-normaliser in Application Code
+## 3. Using licence-normaliser in Application Code
 
 ### Simple case
 
 ```python name=test_simple_case
-from license_normaliser import normalise_license
+from licence_normaliser import normalise_license
 
 v = normalise_license("MIT")
 str(v)  # "mit"
@@ -82,14 +82,14 @@ print(v.family.key)    # "cc"
 
 ```python name=test_strict_mode
 import pytest
-from license_normaliser import normalise_license, LicenseNotFoundError
+from licence_normaliser import normalise_license, LicenseNotFoundError
 
 # Would normally raise: License not found: 'unknown string'
 with pytest.raises(LicenseNotFoundError):
     v = normalise_license("unknown string", strict=True)
 
 # Batch strict
-from license_normaliser import normalise_licenses
+from licence_normaliser import normalise_licenses
 
 with pytest.raises(LicenseNotFoundError):
     results = normalise_licenses(
@@ -104,9 +104,9 @@ The `LicenseNormaliser` class lets you inject custom plugin classes for
 specialised use cases:
 
 ```python name=test_custom_plugins
-from license_normaliser import LicenseNormaliser
-from license_normaliser.parsers.spdx import SPDXParser
-from license_normaliser.parsers.alias import AliasParser
+from licence_normaliser import LicenseNormaliser
+from licence_normaliser.parsers.spdx import SPDXParser
+from licence_normaliser.parsers.alias import AliasParser
 
 # Use only SPDX + Alias plugins (no CC, no publisher URLs)
 ln = LicenseNormaliser(
@@ -126,8 +126,8 @@ assert str(ln.normalise_license("CC BY-NC-ND 4.0")) == "cc-by-nc-nd-4.0"
 To use all defaults, import from `defaults`:
 
 ```python name=test_defaults_usage
-from license_normaliser import LicenseNormaliser
-from license_normaliser.defaults import (
+from licence_normaliser import LicenseNormaliser
+from licence_normaliser.defaults import (
     get_default_registry,
     get_default_url,
     get_default_alias,
@@ -157,7 +157,7 @@ For caching, `LicenseNormaliser` wraps the resolution method with `lru_cache`.
 Disable it by passing `cache=False` for debugging:
 
 ```python name=test_caching
-from license_normaliser import LicenseNormaliser
+from licence_normaliser import LicenseNormaliser
 
 ln = LicenseNormaliser(cache=False)
 result = ln.normalise_license("MIT")
@@ -170,12 +170,12 @@ result = ln.normalise_license("MIT")
 SPDX and OpenDefinition data can be updated via the CLI:
 
 ```sh
-license-normaliser update-data --force
+licence-normaliser update-data --force
 ```
 
 This fetches fresh JSON from the authoritative upstream URLs and writes them to:
-- `src/license_normaliser/data/spdx/spdx.json`
-- `src/license_normaliser/data/opendefinition/opendefinition.json`
+- `src/licence_normaliser/data/spdx/spdx.json`
+- `src/licence_normaliser/data/opendefinition/opendefinition.json`
 
 ---
 
@@ -187,20 +187,20 @@ data sources, use the trace feature:
 **Via CLI:**
 
 ```sh
-license-normaliser normalise "MIT" --trace
-license-normaliser normalise "CC BY-NC-ND 3.0 igo" --trace
-license-normaliser batch MIT Apache --trace
+licence-normaliser normalise "MIT" --trace
+licence-normaliser normalise "CC BY-NC-ND 3.0 igo" --trace
+licence-normaliser batch MIT Apache --trace
 ```
 
 Or via environment variable:
 ```sh
-ENABLE_LICENSE_NORMALISER_TRACE=1 license-normaliser normalise "MIT"
+ENABLE_LICENCE_NORMALISER_TRACE=1 licence-normaliser normalise "MIT"
 ```
 
 **Via Python:**
 
 ```python name=test_trace
-from license_normaliser import normalise_license
+from licence_normaliser import normalise_license
 v = normalise_license("MIT", trace=True)
 print(v.explain())
 ```
@@ -220,12 +220,12 @@ This is essential for:
 
 ## 5. Adding a New Parser
 
-Parsers implement plugin interfaces and can be added to `src/license_normaliser/parsers/`:
+Parsers implement plugin interfaces and can be added to `src/licence_normaliser/parsers/`:
 
-1. Create `src/license_normaliser/parsers/my_parser.py` implementing one or more plugin interfaces:
+1. Create `src/licence_normaliser/parsers/my_parser.py` implementing one or more plugin interfaces:
 
 ```python name=test_adding_new_parser
-from license_normaliser.plugins import BasePlugin, RegistryPlugin, URLPlugin
+from licence_normaliser.plugins import BasePlugin, RegistryPlugin, URLPlugin
 
 class MyParser(BasePlugin, RegistryPlugin, URLPlugin):
     url = None  # or upstream URL for refresh
@@ -240,11 +240,11 @@ class MyParser(BasePlugin, RegistryPlugin, URLPlugin):
         return {}
 ```
 
-2. Register it in `src/license_normaliser/defaults.py`:
+2. Register it in `src/licence_normaliser/defaults.py`:
 
 <!-- continue: test_adding_new_parser -->
 ```python name=test_adding_new_parser_register
-from license_normaliser.parsers.spdx import SPDXParser
+from licence_normaliser.parsers.spdx import SPDXParser
 
 def _load_registry_plugins() -> list[type]:
     # ... other imports
@@ -322,7 +322,7 @@ uv run pytest path/to/test_something.py  # run specific test
 ### Test layout
 
 ```text
-src/license_normaliser/tests/
+src/licence_normaliser/tests/
     test_integration.py     - public API only (survives any rewrite)
     test_core.py            - end-to-end pipeline tests
     test_exceptions.py      - exception hierarchy and strict mode
@@ -367,11 +367,11 @@ assert isinstance(foo, Foo)
 - Changing the three-level hierarchy structure
 - Modifying the following files is strictly forbidden:
 
-  - `src/license_normaliser/data/creativecommons/creativecommons.json`
-  - `src/license_normaliser/data/opendefinition/opendefinition.json`
-  - `src/license_normaliser/data/osi/osi.json`
-  - `src/license_normaliser/data/scancode_licensedb/scancode_licensedb.json`
-  - `src/license_normaliser/data/spdx/spdx.json`
+  - `src/licence_normaliser/data/creativecommons/creativecommons.json`
+  - `src/licence_normaliser/data/opendefinition/opendefinition.json`
+  - `src/licence_normaliser/data/osi/osi.json`
+  - `src/licence_normaliser/data/scancode_licensedb/scancode_licensedb.json`
+  - `src/licence_normaliser/data/spdx/spdx.json`
 
-  Use `license-normaliser update-data --force` to refresh them from upstream
+  Use `licence-normaliser update-data --force` to refresh them from upstream
   sources.
