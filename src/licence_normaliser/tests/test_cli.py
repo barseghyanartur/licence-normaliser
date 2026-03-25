@@ -5,6 +5,7 @@ from unittest.mock import patch
 import pytest
 
 from licence_normaliser.cli._main import main
+from licence_normaliser.parsers.spdx import SPDXParser
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -169,8 +170,6 @@ class TestUpdateDataCommand:
     @patch("licence_normaliser.parsers.spdx.SPDXParser.refresh")
     @patch("licence_normaliser.cli._main.get_all_refreshable_plugins")
     def test_update_data_specific_parser(self, mock_get_plugins, mock_refresh, capsys):
-        from licence_normaliser.parsers.spdx import SPDXParser
-
         mock_get_plugins.return_value = [SPDXParser]
         mock_refresh.return_value = True
         with patch(
@@ -194,8 +193,6 @@ class TestUpdateDataCommand:
     @patch("licence_normaliser.parsers.spdx.SPDXParser.refresh")
     @patch("licence_normaliser.cli._main.get_all_refreshable_plugins")
     def test_update_data_failure_handling(self, mock_get_plugins, mock_refresh, capsys):
-        from licence_normaliser.parsers.spdx import SPDXParser
-
         mock_get_plugins.return_value = [SPDXParser]
         mock_refresh.return_value = False
         with patch(

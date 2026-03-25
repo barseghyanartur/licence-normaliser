@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional
 
+from licence_normaliser._trace import _should_trace
+
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
 __license__ = "MIT"
@@ -98,8 +100,8 @@ class LicenceVersion:
         if self._trace is not None:
             return str(self._trace)
 
+        # Lazy import to avoid circular import: _models -> _cache -> _models
         from licence_normaliser._cache import _default
-        from licence_normaliser._trace import _should_trace
 
         if not _should_trace():
             return "Trace disabled. Set ENABLE_LICENCE_NORMALISER_TRACE=1 to enable."

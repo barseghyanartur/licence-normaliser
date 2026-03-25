@@ -19,6 +19,10 @@ if TYPE_CHECKING:
     from licence_normaliser._models import LicenceVersion
     from licence_normaliser._trace import LicenceTrace
 
+from licence_normaliser._models import LicenceFamily, LicenceName, LicenceVersion
+from licence_normaliser._trace import LicenceTrace, LicenceTraceStage, _should_trace
+from licence_normaliser.exceptions import LicenceNotFoundError
+
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
 __license__ = "MIT"
@@ -154,8 +158,6 @@ class LicenceNormaliser:
 
     def _get_trace_mode(self, trace: bool | None) -> bool:
         """Determine if tracing is enabled: explicit > env var > default."""
-        from licence_normaliser._trace import _should_trace
-
         if trace is not None:
             return trace
         if self._trace_default is not None:
@@ -204,7 +206,6 @@ class LicenceNormaliser:
         self, raw: str, cleaned: str, strict: bool
     ) -> LicenceVersion:
         """Resolve with full pipeline tracing."""
-        from licence_normaliser._trace import LicenceTrace, LicenceTraceStage
 
         # Lazy load alias lines on first trace call
         if not self._alias_lines_loaded:
@@ -375,16 +376,12 @@ class LicenceNormaliser:
         Raises:
             LicenceNotFoundError: When ``strict=True`` and resolution fails.
         """
-        from licence_normaliser.exceptions import LicenceNotFoundError
-
         do_trace = self._get_trace_mode(trace)
 
         if not raw or not raw.strip():
             cleaned = "unknown"
             v = self._make_unknown(cleaned)
             if do_trace:
-                from licence_normaliser._trace import LicenceTrace, LicenceTraceStage
-
                 stages = [LicenceTraceStage("fallback", cleaned, cleaned, True)]
                 trace_obj = LicenceTrace(
                     raw,
@@ -413,8 +410,6 @@ class LicenceNormaliser:
 
         When ``strict=True``, raises on the first failure.
         """
-        from licence_normaliser.exceptions import LicenceNotFoundError
-
         results: list[LicenceVersion] = []
         for raw in raws:
             v = self.normalise_licence(raw, strict=False, trace=trace)
@@ -429,12 +424,6 @@ class LicenceNormaliser:
 
     def _make(self, key: str) -> LicenceVersion:
         """Factory: build a LicenceVersion from a resolved version_key."""
-        from licence_normaliser._models import (
-            LicenceFamily,
-            LicenceName,
-            LicenceVersion,
-        )
-
         k = key.lower().strip()
 
         # Get canonical key from registry
@@ -472,12 +461,6 @@ class LicenceNormaliser:
 
     def _make_unknown(self, key: str) -> LicenceVersion:
         """Factory: build an unknown LicenceVersion for unresolved input."""
-        from licence_normaliser._models import (
-            LicenceFamily,
-            LicenceName,
-            LicenceVersion,
-        )
-
         family = LicenceFamily(key="unknown")
         name = LicenceName(key=key, family=family)
         return LicenceVersion(key=key, url=None, licence=name)
