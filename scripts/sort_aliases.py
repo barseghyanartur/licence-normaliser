@@ -6,7 +6,7 @@ order. All other entries are sorted case-insensitively.
 
 Usage:
     uv run python scripts/sort_aliases.py
-    uv run python scripts/python sort_aliases.py --check
+    uv run python scripts/sort_aliases.py --check
     # exit 1 if file is not already sorted
 """
 

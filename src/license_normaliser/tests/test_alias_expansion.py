@@ -56,7 +56,7 @@ class TestIterEntries:
                 "version_key": "foo-bar",
                 "name_key": "foo-bar",
                 "family_key": "x",
-                "aliases": ["foo bar"],  # same as primary – should be skipped
+                "aliases": ["foo bar"],  # same as primary - should be skipped
             }
         }
         results = _iter_entries(data)
