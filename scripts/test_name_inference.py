@@ -16,9 +16,9 @@ import json
 import sys
 from pathlib import Path
 
-from license_normaliser import LicenseNormaliser
+from licence_normaliser import LicenseNormaliser
 
-DATA_DIR = Path(__file__).parent.parent / "src" / "license_normaliser" / "data"
+DATA_DIR = Path(__file__).parent.parent / "src" / "licence_normaliser" / "data"
 SCRIPTS_DIR = Path(__file__).parent
 
 _normaliser = LicenseNormaliser()

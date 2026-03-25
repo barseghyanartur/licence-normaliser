@@ -68,7 +68,7 @@ build-docs:
 	cd builddocs && zip -r ../builddocs.zip . -x ".*" && cd ..
 
 rebuild-docs:
-	uv run sphinx-apidoc . --full -o docs -H 'license-normaliser' -A 'Artur Barseghyan <artur.barseghyan@gmail.com>' -f -d 20
+	uv run sphinx-apidoc . --full -o docs -H 'licence-normaliser' -A 'Artur Barseghyan <artur.barseghyan@gmail.com>' -f -d 20
 	cp docs/conf.py.distrib docs/conf.py
 	cp docs/index.rst.distrib docs/index.rst
 
@@ -129,7 +129,7 @@ detect-secrets:
 clean-dev:
 	find . -name "*.orig" -exec rm -rf {} +
 	find . -name "__pycache__" -exec rm -rf {} +
-	rm -rf dist/ src/license-normaliser.egg-info/ .cache/ .mypy_cache/ .ruff_cache/
+	rm -rf dist/ src/licence-normaliser.egg-info/ .cache/ .mypy_cache/ .ruff_cache/
 
 clean-test:
 	find . -name "*.pyc" -exec rm -rf {} +
@@ -141,11 +141,11 @@ update-version:
 	@echo "Updating version in pyproject.toml and __init__.py"
 	@if [ "$(UNAME_S)" = "Darwin" ]; then \
 		gsed -i 's/^version = "[0-9.]\+"/version = "$(VERSION)"/' pyproject.toml; \
-		gsed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' src/license_normaliser/__init__.py; \
+		gsed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' src/licence_normaliser/__init__.py; \
 		gsed -i 's/^:Version: [0-9.]\+/:Version: $(VERSION)/' ARCHITECTURE.rst; \
 	else \
 		sed -i 's/^version = "[0-9.]\+"/version = "$(VERSION)"/' pyproject.toml; \
-		sed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' src/license_normaliser/__init__.py; \
+		sed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' src/licence_normaliser/__init__.py; \
 		sed -i 's/^:Version: [0-9.]\+/:Version: $(VERSION)/' ARCHITECTURE.rst; \
 	fi
 

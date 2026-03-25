@@ -12,15 +12,15 @@ sys.path.insert(0, os.path.abspath(os.path.join("..", "src")))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 try:
-    import license_normaliser
+    import licence_normaliser
 
-    version = license_normaliser.__version__
-    project = license_normaliser.__title__
-    copyright = license_normaliser.__copyright__
-    author = license_normaliser.__author__
+    version = licence_normaliser.__version__
+    project = licence_normaliser.__title__
+    copyright = licence_normaliser.__copyright__
+    author = licence_normaliser.__author__
 except ImportError:
     version = "0.1"
-    project = "license-normaliser"
+    project = "licence-normaliser"
     copyright = "2026, Artur Barseghyan <artur.barseghyan@gmail.com>"
     author = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 
@@ -84,6 +84,6 @@ epub_title = project
 epub_author = author
 epub_publisher = "GitHub"
 epub_copyright = copyright
-epub_identifier = "https://github.com/barseghyanartur/license_normaliser"  # URL or ISBN
+epub_identifier = "https://github.com/barseghyanartur/licence_normaliser"  # URL or ISBN
 epub_scheme = "URL"  # or "ISBN"
-epub_uid = "https://github.com/barseghyanartur/license_normaliser"
+epub_uid = "https://github.com/barseghyanartur/licence_normaliser"

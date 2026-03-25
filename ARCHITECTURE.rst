@@ -4,7 +4,7 @@
 
 :Version: 0.3.2
 :Author: Artur Barseghyan <artur.barseghyan@gmail.com>
-:Repository: https://github.com/barseghyanartur/license-normaliser
+:Repository: https://github.com/barseghyanartur/licence-normaliser
 
 .. contents::
    :local:
@@ -12,7 +12,7 @@
 Overview
 ========
 
-``license-normaliser`` is a Python package that resolves any licence
+``licence-normaliser`` is a Python package that resolves any licence
 representation -- SPDX tokens, URLs, or free-form prose -- to a single
 canonical three-level hierarchy.  The package has **zero runtime
 dependencies** and is extensible through data files without touching
@@ -296,7 +296,7 @@ Factory Methods
 Adding a New Parser
 ===================
 
-1. Create ``src/license_normaliser/parsers/my_parser.py`` implementing
+1. Create ``src/licence_normaliser/parsers/my_parser.py`` implementing
    plugin interfaces:
 
    .. pytestfixture: Any
@@ -304,7 +304,7 @@ Adding a New Parser
    .. code-block:: python
        :name: test_adding_new_parser
 
-       from license_normaliser.plugins import BasePlugin, RegistryPlugin, URLPlugin
+       from licence_normaliser.plugins import BasePlugin, RegistryPlugin, URLPlugin
 
        class MyParser(BasePlugin, RegistryPlugin, URLPlugin):
            url = None  # or "https://upstream.example.com/data.json"
@@ -318,14 +318,14 @@ Adding a New Parser
                # Return {"https://...": "version_key", ...}
                return {}
 
-2. Register it in ``src/license_normaliser/defaults.py``:
+2. Register it in ``src/licence_normaliser/defaults.py``:
 
    .. continue: test_adding_new_parser
 
    .. code-block:: python
       :name: test_adding_new_parser_register
 
-      from license_normaliser.parsers.spdx import SPDXParser
+      from licence_normaliser.parsers.spdx import SPDXParser
 
       def _load_registry_plugins() -> list[type]:
           # ... other imports
@@ -466,7 +466,7 @@ Directory Structure
 
 ::
 
-    src/license_normaliser/
+    src/licence_normaliser/
     ├── __init__.py              # Public API exports
     ├── _models.py               # Frozen dataclass hierarchy
     ├── _normaliser.py           # LicenseNormaliser class with plugin-based resolution

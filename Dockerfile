@@ -1,7 +1,7 @@
-# Build:  docker build -t license-normaliser-test .
-# Test:   docker run --rm license-normaliser-test
-# Env:    docker run --rm license-normaliser-test -e py312
-# Shell:  docker run --rm -it --entrypoint bash license-normaliser-test
+# Build:  docker build -t licence-normaliser-test .
+# Test:   docker run --rm licence-normaliser-test
+# Env:    docker run --rm licence-normaliser-test -e py312
+# Shell:  docker run --rm -it --entrypoint bash licence-normaliser-test
 
 FROM ubuntu:22.04
 
