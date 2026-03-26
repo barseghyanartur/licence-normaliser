@@ -6,7 +6,7 @@ licence-normaliser
    :alt: licence-normaliser logo
    :align: center
 
-Comprehensive licence normalsation with a three-level hierarchy.
+Robust licence normalisation with a three-level hierarchy for common licences.
 
 .. image:: https://img.shields.io/pypi/v/licence-normaliser.svg
    :target: https://pypi.python.org/pypi/licence-normaliser
@@ -36,15 +36,15 @@ Comprehensive licence normalsation with a three-level hierarchy.
     :target: https://coveralls.io/github/barseghyanartur/licence-normaliser?branch=main
     :alt: Coverage
 
-``licence-normaliser`` is a comprehensive licence normalisation library that
-maps any licence representation (SPDX tokens, URLs, prose descriptions) to a
-canonical three-level hierarchy.
+``licence-normaliser`` maps common licence representations (SPDX tokens,
+URLs, prose descriptions) to a canonical three-level hierarchy.
 
 Features
 ========
 
 - **Three-level hierarchy** - LicenceFamily → LicenceName → LicenceVersion.
-- **Wide format support** - SPDX tokens, URLs, prose descriptions.
+- **Wide format support** - SPDX tokens, URLs, and prose descriptions for
+  supported licences.
 - **Creative Commons support** - Full CC family with versions and IGO variants.
 - **Publisher-specific licences** - Springer, Nature, Elsevier, Wiley, ACS,
   and more.
@@ -202,9 +202,9 @@ specialised use cases:
 
 .. note::
 
-    Explicit plugin passing is optional — ``LicenceNormaliser()``
-    automatically loads defaults. Use the pattern above only if you need
-    custom plugins or reduce number of plugins loaded.
+    ``LicenceNormaliser()`` automatically loads the full default set of
+    parsers. To use a reduced set you must explicitly pass *all* six
+    plugin lists (registry, url, alias, family, name, prose).
 
 For caching, ``LicenceNormaliser`` wraps the resolution method
 with ``lru_cache``.

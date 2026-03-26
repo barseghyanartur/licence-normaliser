@@ -7,15 +7,23 @@
 
 ## 1. Project mission (never deviate)
 
-> Comprehensive licence normalisation with a three-level hierarchy - secure,
+> Robust licence normalisation with a three-level hierarchy for common SPDX,
+> Creative Commons, OSI-approved, ScanCode, and publisher licences - secure,
 > fast, and extensible.
 
-- Maps any licence representation to a canonical three-level hierarchy
+- Maps common licence representations (SPDX tokens, URLs, prose descriptions)
+  to a canonical three-level hierarchy
 - Supports SPDX tokens, URLs, prose descriptions
 - No external dependencies (only optional dev/test deps)
 - LRU caching for performance
 - Data-file-driven: parsers load from package data JSON files
 - `licence-normaliser update-data` CLI command to refresh SPDX + OpenDefinition data
+
+**Scope note**: The library covers the most common open-source, Creative
+Commons, and major-publisher licences. Any licence string not present in the
+curated data or upstream registries resolves to an "unknown" result (or raises
+in strict mode). Brand-new licence keys require updating upstream data sources
+first.
 
 ---
 
