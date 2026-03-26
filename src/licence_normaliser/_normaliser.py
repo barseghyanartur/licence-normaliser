@@ -98,8 +98,8 @@ class LicenceNormaliser:
         self._url_to_vkey: dict[str, str] = {}
         self._aliases: dict[str, str] = {}
         self._alias_lines: dict[str, tuple[str, int]] = {}
-        self._publisher_alias_lines: dict[str, tuple[str, int]] = {}
-        self._publisher_url_lines: dict[str, tuple[str, int]] = {}
+        self._url_plugin_alias_lines: dict[str, tuple[str, int]] = {}
+        self._url_plugin_url_lines: dict[str, tuple[str, int]] = {}
         self._prose_lines: list[tuple[re.Pattern[str], str, int]] = []
         self._alias_lines_loaded: bool = False
         self._family_overrides: dict[str, str] = {}
@@ -173,29 +173,22 @@ class LicenceNormaliser:
                     if version_key == self._aliases.get(alias_key):
                         self._alias_lines[alias_key] = (version_key, line_num)
 
-        for plugin_cls in self._alias_plugins:
-            if hasattr(plugin_cls, "load_aliases_with_lines"):
-                lines_data = plugin_cls().load_aliases_with_lines()
-                for alias_key, (version_key, line_num) in lines_data.items():
-                    if (
-                        version_key == self._aliases.get(alias_key)
-                        and alias_key not in self._alias_lines
-                    ):
-                        self._alias_lines[alias_key] = (version_key, line_num)
-
         for plugin_cls in self._url_plugins:
             if hasattr(plugin_cls, "load_aliases_with_lines"):
                 lines_data = plugin_cls().load_aliases_with_lines()
                 for alias_key, (version_key, line_num) in lines_data.items():
                     if version_key == self._aliases.get(alias_key):
-                        self._publisher_alias_lines[alias_key] = (version_key, line_num)
+                        self._url_plugin_alias_lines[alias_key] = (
+                            version_key,
+                            line_num,
+                        )
 
         for plugin_cls in self._url_plugins:
             if hasattr(plugin_cls, "load_urls_with_lines"):
                 lines_data = plugin_cls().load_urls_with_lines()
                 for url_key, (version_key, line_num) in lines_data.items():
                     if version_key == self._url_map.get(url_key):
-                        self._publisher_url_lines[url_key] = (version_key, line_num)
+                        self._url_plugin_url_lines[url_key] = (version_key, line_num)
 
         for plugin_cls in self._prose_plugins:
             if hasattr(plugin_cls, "load_prose_with_lines"):
@@ -263,8 +256,8 @@ class LicenceNormaliser:
             resolved = self._url_map[url_key]
             source_line = None
             source_file = None
-            if url_key in self._publisher_url_lines:
-                _, source_line = self._publisher_url_lines[url_key]
+            if url_key in self._url_plugin_url_lines:
+                _, source_line = self._url_plugin_url_lines[url_key]
                 source_file = "publishers.json"
             stages.append(
                 LicenceTraceStage(
