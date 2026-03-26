@@ -595,6 +595,15 @@ class LicenceNormaliser:
             )
         ):
             return "publisher-proprietary"
+
+        # "public-domain", "other-oa", and "open-access" are all defined in
+        # aliases.json with explicit family_key values.
+        # The resolution pipeline checks aliases first (before registry, URL,
+        # prose, and fallback).
+        # When these keys are encountered, they're resolved via the alias
+        # lookup and never reach _infer_family().
+        # _infer_family() is only called as a fallback when no plugin provides
+        # a family override.
         if k in ("public-domain", "other-oa", "open-access"):
             return "public-domain" if k == "public-domain" else "other-oa"
         return "unknown"
