@@ -196,7 +196,8 @@ class TestUpdateDataCommand:
         mock_get_plugins.return_value = [SPDXParser]
         mock_refresh.return_value = False
         with patch(
-            "sys.argv", ["licence-normaliser", "update-data", "--parser", "spdx"]
+            "sys.argv",
+            ["licence-normaliser", "update-data", "--parser", "spdx", "--force"],
         ):
             with pytest.raises(SystemExit) as exc_info:
                 main()
