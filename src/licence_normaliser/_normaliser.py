@@ -541,10 +541,8 @@ class LicenceNormaliser:
             return "cc"
         if k.startswith(("gpl-", "agpl-", "lgpl-")):
             return "copyleft"
-        if k.startswith(("odbl", "odc-by")):
-            return "open-data"
-        if k.startswith(("pddl-", "odc-")):
-            return "data"
+        if k.startswith(("pddl-", "odbl", "odc-")):
+            return "data" if k.startswith(("pddl-", "odc-")) else "open-data"
         if k.startswith(
             (
                 "elsevier-oa",
