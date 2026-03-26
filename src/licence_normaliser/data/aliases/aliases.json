@@ -9,7 +9,8 @@
     "aliases": [
       "aaas author reuse",
       "aaas-author-reuse",
-      "science author reuse"
+      "science author reuse",
+      "aaas reuse"
     ],
     "urls": [
       "https://www.science.org/content/page/science-licenses-journal-article-reuse",
@@ -22,7 +23,9 @@
     "name_key": "acs-authorchoice",
     "family_key": "publisher-oa",
     "aliases": [
-      "acs-authorchoice"
+      "acs-authorchoice",
+      "acs authorchoice",
+      "acs author choice"
     ],
     "urls": [
       "https://pubs.acs.org/page/policy/authorchoice_termsofuse.html",
@@ -46,6 +49,9 @@
     "version_key": "acs-authorchoice-ccbyncnd",
     "name_key": "acs-authorchoice-ccbyncnd",
     "family_key": "publisher-oa",
+    "aliases": [
+      "acs authorchoice cc by nc nd"
+    ],
     "urls": [
       "https://pubs.acs.org/page/policy/authorchoice_ccbyncnd_termsofuse.html"
     ]
@@ -55,6 +61,9 @@
     "version_key": "acs-authorchoice-nih",
     "name_key": "acs-authorchoice-nih",
     "family_key": "publisher-oa",
+    "aliases": [
+      "acs authorchoice nih"
+    ],
     "urls": [
       "https://pubs.acs.org/page/policy/acs_authorchoice_with_nih_addendum_termsofuse.html"
     ]
@@ -82,7 +91,8 @@
     "name_key": "aip-rights",
     "family_key": "publisher-proprietary",
     "aliases": [
-      "aip permissions"
+      "aip permissions",
+      "aip rights"
     ],
     "urls": [
       "https://publishing.aip.org/authors/rights-and-permissions"
@@ -94,7 +104,8 @@
     "name_key": "all-rights-reserved",
     "family_key": "publisher-proprietary",
     "aliases": [
-      "all-rights-reserved"
+      "all-rights-reserved",
+      "all rights reserved"
     ]
   },
 
@@ -120,7 +131,8 @@
     "name_key": "aps-default",
     "family_key": "publisher-proprietary",
     "aliases": [
-      "aps default license"
+      "aps default license",
+      "aps default"
     ],
     "urls": [
       "https://link.aps.org/licenses/aps-default-license"
@@ -132,7 +144,8 @@
     "name_key": "aps-tdm",
     "family_key": "publisher-tdm",
     "aliases": [
-      "aps text mining"
+      "aps text mining",
+      "aps tdm"
     ],
     "urls": [
       "https://link.aps.org/licenses/aps-default-text-mining-license"
@@ -144,7 +157,8 @@
     "name_key": "author-manuscript",
     "family_key": "publisher-oa",
     "aliases": [
-      "author-manuscript"
+      "author-manuscript",
+      "author manuscript"
     ]
   },
 
@@ -152,6 +166,10 @@
     "version_key": "bmj-copyright",
     "name_key": "bmj-copyright",
     "family_key": "publisher-proprietary",
+    "aliases": [
+      "bmj copyright",
+      "bmj permissions"
+    ],
     "urls": [
       "https://www.bmj.com/company/legal-stuff/copyright-notice",
       "https://group.bmj.com/group/rights-licensing/permissions"
@@ -816,7 +834,8 @@
     "name_key": "cup-terms",
     "family_key": "publisher-proprietary",
     "aliases": [
-      "cambridge terms"
+      "cambridge terms",
+      "cup terms"
     ],
     "urls": [
       "https://www.cambridge.org/core/terms"
@@ -828,7 +847,8 @@
     "name_key": "degruyter-terms",
     "family_key": "publisher-proprietary",
     "aliases": [
-      "de gruyter terms"
+      "de gruyter terms",
+      "degruyter terms"
     ],
     "urls": [
       "https://www.degruyter.com/dg/page/496"
@@ -854,7 +874,8 @@
     "family_key": "publisher-tdm",
     "aliases": [
       "elsevier tdmu",
-      "elsevier-tdm"
+      "elsevier-tdm",
+      "elsevier tdm"
     ],
     "urls": [
       "https://www.elsevier.com/tdm/userlicense/1.0"
@@ -905,7 +926,8 @@
     "family_key": "publisher-oa",
     "aliases": [
       "implied open access",
-      "implied-oa"
+      "implied-oa",
+      "implied oa"
     ]
   },
 
@@ -913,6 +935,9 @@
     "version_key": "iop-copyright",
     "name_key": "iop-copyright",
     "family_key": "publisher-proprietary",
+    "aliases": [
+      "iop copyright"
+    ],
     "urls": [
       "https://iopscience.iop.org/page/copyright"
     ]
@@ -923,7 +948,8 @@
     "name_key": "iop-tdm",
     "family_key": "publisher-tdm",
     "aliases": [
-      "iop text and data mining"
+      "iop text and data mining",
+      "iop tdm"
     ],
     "urls": [
       "https://iopscience.iop.org/info/page/text-and-data-mining"
@@ -944,7 +970,8 @@
     "name_key": "jama-cc-by",
     "family_key": "publisher-oa",
     "aliases": [
-      "jama open access"
+      "jama open access",
+      "jama cc by"
     ],
     "urls": [
       "https://jamanetwork.com/pages/cc-by-license-permissions"
@@ -1046,7 +1073,8 @@
     "name_key": "no-reuse",
     "family_key": "publisher-proprietary",
     "aliases": [
-      "no-reuse"
+      "no-reuse",
+      "no reuse"
     ]
   },
 
@@ -1085,6 +1113,9 @@
     "version_key": "oup-chorus",
     "name_key": "oup-chorus",
     "family_key": "publisher-oa",
+    "aliases": [
+      "oup chorus"
+    ],
     "urls": [
       "https://academic.oup.com/journals/pages/open_access/funder_policies/chorus/standard_publication_model"
     ]
@@ -1095,7 +1126,8 @@
     "name_key": "oup-terms",
     "family_key": "publisher-proprietary",
     "aliases": [
-      "oup standard publication"
+      "oup standard publication",
+      "oup terms"
     ],
     "urls": [
       "https://academic.oup.com/pages/standard-publication-reuse-rights"
@@ -1108,7 +1140,8 @@
     "family_key": "public-domain",
     "aliases": [
       "public domain",
-      "public-domain"
+      "public-domain",
+      "pd"
     ]
   },
 
@@ -1126,7 +1159,9 @@
     "name_key": "pnas-licenses",
     "family_key": "publisher-proprietary",
     "aliases": [
-      "pnas-licenses"
+      "pnas-licenses",
+      "pnas licenses",
+      "pnas terms"
     ],
     "urls": [
       "https://www.pnas.org/site/aboutpnas/licenses.xhtml"
@@ -1137,6 +1172,10 @@
     "version_key": "rsc-terms",
     "name_key": "rsc-terms",
     "family_key": "publisher-proprietary",
+    "aliases": [
+      "rsc terms",
+      "rsc copyright"
+    ],
     "urls": [
       "https://www.rsc.org/journals-books-databases/journal-authors-reviewers/licences-copyright-permissions",
       "https://www.rsc.org/help/disclaimer/pages/term3.aspx"
@@ -1147,6 +1186,9 @@
     "version_key": "sage-permissions",
     "name_key": "sage-permissions",
     "family_key": "publisher-proprietary",
+    "aliases": [
+      "sage permissions"
+    ],
     "urls": [
       "https://us.sagepub.com/en-us/nam/journals-permissions",
       "https://www.sagepub.com/journalspermissions.nav"
@@ -1158,7 +1200,8 @@
     "name_key": "springer-tdm",
     "family_key": "publisher-tdm",
     "aliases": [
-      "springer-tdm"
+      "springer-tdm",
+      "springer tdm"
     ],
     "urls": [
       "https://www.springer.com/tdm"
@@ -1184,7 +1227,8 @@
     "family_key": "publisher-proprietary",
     "aliases": [
       "taylor and francis terms",
-      "taylor francis terms"
+      "taylor francis terms",
+      "tandf terms"
     ],
     "urls": [
       "https://www.tandfonline.com/action/showcopyright",
@@ -1198,7 +1242,8 @@
     "name_key": "thieme-nlm",
     "family_key": "publisher-oa",
     "aliases": [
-      "thieme-nlm"
+      "thieme-nlm",
+      "thieme nlm"
     ]
   },
 
@@ -1213,7 +1258,8 @@
     "name_key": "unspecified-oa",
     "family_key": "other-oa",
     "aliases": [
-      "unspecified-oa"
+      "unspecified-oa",
+      "unspecified oa"
     ]
   },
 
@@ -1235,7 +1281,8 @@
     "name_key": "wiley-am",
     "family_key": "publisher-proprietary",
     "aliases": [
-      "wiley author manuscript"
+      "wiley author manuscript",
+      "wiley am"
     ],
     "urls": [
       "https://onlinelibrary.wiley.com/termsandconditions#am"
@@ -1247,7 +1294,8 @@
     "name_key": "wiley-tdm",
     "family_key": "publisher-tdm",
     "aliases": [
-      "wiley tdm license"
+      "wiley tdm license",
+      "wiley tdm"
     ],
     "urls": [
       "https://doi.wiley.com/10.1002/tdm_license_1"
@@ -1273,6 +1321,9 @@
     "version_key": "wiley-vor",
     "name_key": "wiley-vor",
     "family_key": "publisher-proprietary",
+    "aliases": [
+      "wiley vor"
+    ],
     "urls": [
       "https://onlinelibrary.wiley.com/termsandconditions#vor"
     ]
