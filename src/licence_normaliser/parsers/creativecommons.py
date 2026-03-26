@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
+import urllib.error
 import urllib.request
 from html.parser import HTMLParser
 from pathlib import Path
@@ -190,18 +192,19 @@ def _scrape() -> list[dict[str, str]]:
 
     Security note: All URLs in this function are hardcoded constants,
     ensuring safe use of urlopen in _fetch_html().
+
+    Raises:
+        Any exception from network operations or HTML parsing.
+        Caller must handle exceptions to avoid data loss.
     """
     pages = [
         "https://creativecommons.org/licenses/list.en",
         "https://creativecommons.org/publicdomain/list.en",
     ]
     all_deeds: set[str] = set()
-    try:
-        for page_url in pages:
-            html = _fetch_html(page_url)
-            all_deeds |= _extract_deeds(html)
-    except Exception:
-        pass
+    for page_url in pages:
+        html = _fetch_html(page_url)
+        all_deeds |= _extract_deeds(html)
 
     entries: list[dict[str, str]] = []
     seen_keys: set[str] = set()
@@ -258,15 +261,46 @@ class CreativeCommonsParser(BasePlugin, RegistryPlugin, URLPlugin):
 
     @classmethod
     def refresh(cls, force: bool = False) -> bool:
+        """Scrape Creative Commons license data and write to local JSON.
+
+        Returns True on success, False on failure.
+        On failure, existing data file is preserved.
+        """
         target = Path(__file__).parent.parent / cls.local_path
         if target.exists() and not force:
             return True
         try:
             data = _scrape()
+            if not data:
+                logging.warning(
+                    "refresh(%s): scrape returned empty data, aborting write",
+                    cls.__name__,
+                )
+                return False
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(
                 json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8"
             )
             return True
-        except Exception:
+        except urllib.error.URLError as exc:
+            logging.warning(
+                "refresh(%s): URLError during scrape - %s", cls.__name__, exc
+            )
+            return False
+        except urllib.error.HTTPError as exc:
+            logging.warning(
+                "refresh(%s): HTTPError %s during scrape", cls.__name__, exc.code
+            )
+            return False
+        except OSError as exc:
+            logging.error(
+                "refresh(%s): OSError writing %s - %s", cls.__name__, target, exc
+            )
+            return False
+        except Exception as exc:
+            logging.error(
+                "refresh(%s): unexpected error during scrape - %s",
+                cls.__name__,
+                exc,
+            )
             return False
