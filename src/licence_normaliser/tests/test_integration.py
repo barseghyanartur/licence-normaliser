@@ -44,8 +44,8 @@ LICENCE_MATRIX = [
     ("ISC License", "isc", "isc", "osi"),
     ("Unlicense", "unlicense", "unlicense", "osi"),
     ("unlicense", "unlicense", "unlicense", "osi"),
-    ("WTFPL", "wtfpl", "wtfpl", "osi"),
-    ("wtfpl", "wtfpl", "wtfpl", "osi"),
+    ("WTFPL", "wtfpl", "wtfpl", "public-domain"),
+    ("wtfpl", "wtfpl", "wtfpl", "public-domain"),
     ("Zlib", "zlib", "zlib", "osi"),
     ("zlib", "zlib", "zlib", "osi"),
     # === GPL / AGPL / LGPL (copyleft) ===

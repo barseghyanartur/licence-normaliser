@@ -1086,7 +1086,21 @@
       "open database license"
     ],
     "urls": [
-      "https://opendatacommons.org/licenses/odbl/1-0"
+      "https://opendatacommons.org/licenses/odbl/1-0",
+      "https://opendatacommons.org/licenses/odbl/1.0"
+    ]
+  },
+
+  "odbl 1.0": {
+    "version_key": "odbl",
+    "name_key": "odbl",
+    "family_key": "open-data",
+    "aliases": [
+      "open database license"
+    ],
+    "urls": [
+      "https://opendatacommons.org/licenses/odbl/1-0",
+      "https://opendatacommons.org/licenses/odbl/1.0"
     ]
   },
 
@@ -1095,15 +1109,17 @@
     "name_key": "odc-by",
     "family_key": "open-data",
     "urls": [
-      "https://opendatacommons.org/licenses/by/1-0"
+      "https://opendatacommons.org/licenses/by/1-0",
+      "https://opendatacommons.org/licenses/by/1.0"
     ]
   },
 
-  "odc-by-1.0": {
+  "odc-by 1.0": {
     "version_key": "odc-by-1.0",
     "name_key": "odc-by",
     "family_key": "open-data",
     "aliases": [
+      "odc-by-1.0",
       "odc by 1.0",
       "odc-by 1.0",
       "odc by-1.0",
@@ -1111,7 +1127,8 @@
       "open database license v1.0"
     ],
     "urls": [
-      "https://opendatacommons.org/licenses/by/1-0"
+      "https://opendatacommons.org/licenses/by/1-0",
+      "https://opendatacommons.org/licenses/by/1.0"
     ]
   },
 
@@ -1348,7 +1365,19 @@
   "wtfpl": {
     "version_key": "wtfpl",
     "name_key": "wtfpl",
-    "family_key": "osi"
+    "family_key": "public-domain"
+  },
+
+  "wtfpl 1.0": {
+    "version_key": "wtfpl-1.0",
+    "name_key": "wtfpl",
+    "family_key": "public-domain"
+  },
+
+  "wtfpl 2.0": {
+    "version_key": "wtfpl-2.0",
+    "name_key": "wtfpl",
+    "family_key": "public-domain"
   },
 
   "zlib": {
