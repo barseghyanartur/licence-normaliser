@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 from licence_normaliser._models import LicenceFamily, LicenceName, LicenceVersion
 from licence_normaliser._trace import LicenceTrace, LicenceTraceStage, _should_trace
-from licence_normaliser.exceptions import LicenceNotFoundError
+from licence_normaliser.exceptions import DataSourceError, LicenceNotFoundError
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2026 Artur Barseghyan"
@@ -95,11 +95,11 @@ class LicenceNormaliser:
     ) -> None:
         self._registry: dict[str, str] = {}
         self._url_map: dict[str, str] = {}
-        self._url_to_vkey: dict[str, str] = {}
+        self._vkey_to_url: dict[str, list[str]] = {}
         self._aliases: dict[str, str] = {}
         self._alias_lines: dict[str, tuple[str, int]] = {}
-        self._publisher_alias_lines: dict[str, tuple[str, int]] = {}
-        self._publisher_url_lines: dict[str, tuple[str, int]] = {}
+        self._url_plugin_alias_lines: dict[str, tuple[str, int]] = {}
+        self._url_plugin_url_lines: dict[str, tuple[str, int]] = {}
         self._prose_lines: list[tuple[re.Pattern[str], str, int]] = []
         self._alias_lines_loaded: bool = False
         self._family_overrides: dict[str, str] = {}
@@ -123,32 +123,91 @@ class LicenceNormaliser:
         self._prose_plugins = prose
 
         # Instantiate plugins and load their data
-        for plugin_cls in registry:
-            data = plugin_cls().load_registry()
-            self._registry.update(data)
+        try:
+            for plugin_cls in registry:
+                data = plugin_cls().load_registry()
+                self._registry.update(data)
+        except OSError as exc:
+            raise DataSourceError(
+                f"Failed to load registry from {plugin_cls.__name__}: {exc}"
+            ) from exc
+        except Exception as exc:
+            raise DataSourceError(
+                f"Error loading registry from {plugin_cls.__name__}: {exc}"
+            ) from exc
 
-        for plugin_cls in url:
-            data = plugin_cls().load_urls()
-            self._url_map.update(data)
+        try:
+            for plugin_cls in url:
+                data = plugin_cls().load_urls()
+                self._url_map.update(data)
+        except OSError as exc:
+            raise DataSourceError(
+                f"Failed to load URLs from {plugin_cls.__name__}: {exc}"
+            ) from exc
+        except Exception as exc:
+            raise DataSourceError(
+                f"Error loading URLs from {plugin_cls.__name__}: {exc}"
+            ) from exc
 
-        # Build inverted URL map: version_key -> cleaned_url (for LicenceVersion.url)
-        self._url_to_vkey = {v: k for k, v in self._url_map.items()}
+        # Build version_key -> list of URLs map (for LicenceVersion.url)
+        # For each version_key, collect all URLs; select shortest for cleaner display
+        self._vkey_to_url: dict[str, list[str]] = {}
+        for url, vkey in self._url_map.items():
+            if vkey not in self._vkey_to_url:
+                self._vkey_to_url[vkey] = []
+            self._vkey_to_url[vkey].append(url)
 
-        for plugin_cls in alias:
-            data = plugin_cls().load_aliases()
-            self._aliases.update(data)
+        try:
+            for plugin_cls in alias:
+                data = plugin_cls().load_aliases()
+                self._aliases.update(data)
+        except OSError as exc:
+            raise DataSourceError(
+                f"Failed to load aliases from {plugin_cls.__name__}: {exc}"
+            ) from exc
+        except Exception as exc:
+            raise DataSourceError(
+                f"Error loading aliases from {plugin_cls.__name__}: {exc}"
+            ) from exc
 
-        for plugin_cls in family:
-            data = plugin_cls().load_families()
-            self._family_overrides.update(data)
+        try:
+            for plugin_cls in family:
+                data = plugin_cls().load_families()
+                self._family_overrides.update(data)
+        except OSError as exc:
+            raise DataSourceError(
+                f"Failed to load families from {plugin_cls.__name__}: {exc}"
+            ) from exc
+        except Exception as exc:
+            raise DataSourceError(
+                f"Error loading families from {plugin_cls.__name__}: {exc}"
+            ) from exc
 
-        for plugin_cls in name:
-            data = plugin_cls().load_names()
-            self._name_overrides.update(data)
+        try:
+            for plugin_cls in name:
+                data = plugin_cls().load_names()
+                self._name_overrides.update(data)
+        except OSError as exc:
+            raise DataSourceError(
+                f"Failed to load names from {plugin_cls.__name__}: {exc}"
+            ) from exc
+        except Exception as exc:
+            raise DataSourceError(
+                f"Error loading names from {plugin_cls.__name__}: {exc}"
+            ) from exc
 
-        for plugin_cls in prose:
-            patterns = plugin_cls().load_prose()
-            self._prose_patterns.extend(patterns)
+        try:
+            for plugin_cls in prose:
+                patterns = plugin_cls().load_prose()
+                self._prose_patterns.extend(patterns)
+        except OSError as exc:
+            raise DataSourceError(
+                f"Failed to load prose patterns from {plugin_cls.__name__}: {exc}"
+            ) from exc
+        except Exception as exc:
+            raise DataSourceError(
+                f"Error loading prose patterns from {plugin_cls.__name__}: {exc}"
+            ) from exc
 
         # Set up cached resolution
         if self._cache:
@@ -166,41 +225,42 @@ class LicenceNormaliser:
 
     def _load_alias_lines(self):
         """Lazy load all source line numbers on first trace request."""
-        for plugin_cls in self._alias_plugins:
-            if hasattr(plugin_cls, "load_aliases_with_lines"):
-                lines_data = plugin_cls().load_aliases_with_lines()
-                for alias_key, (version_key, line_num) in lines_data.items():
-                    if version_key == self._aliases.get(alias_key):
-                        self._alias_lines[alias_key] = (version_key, line_num)
+        try:
+            for plugin_cls in self._alias_plugins:
+                if hasattr(plugin_cls, "load_aliases_with_lines"):
+                    lines_data = plugin_cls().load_aliases_with_lines()
+                    for alias_key, (version_key, line_num) in lines_data.items():
+                        if version_key == self._aliases.get(alias_key):
+                            self._alias_lines[alias_key] = (version_key, line_num)
 
-        for plugin_cls in self._alias_plugins:
-            if hasattr(plugin_cls, "load_aliases_with_lines"):
-                lines_data = plugin_cls().load_aliases_with_lines()
-                for alias_key, (version_key, line_num) in lines_data.items():
-                    if (
-                        version_key == self._aliases.get(alias_key)
-                        and alias_key not in self._alias_lines
-                    ):
-                        self._alias_lines[alias_key] = (version_key, line_num)
+            for plugin_cls in self._url_plugins:
+                if hasattr(plugin_cls, "load_aliases_with_lines"):
+                    lines_data = plugin_cls().load_aliases_with_lines()
+                    for alias_key, (version_key, line_num) in lines_data.items():
+                        if version_key == self._aliases.get(alias_key):
+                            self._url_plugin_alias_lines[alias_key] = (
+                                version_key,
+                                line_num,
+                            )
 
-        for plugin_cls in self._url_plugins:
-            if hasattr(plugin_cls, "load_aliases_with_lines"):
-                lines_data = plugin_cls().load_aliases_with_lines()
-                for alias_key, (version_key, line_num) in lines_data.items():
-                    if version_key == self._aliases.get(alias_key):
-                        self._publisher_alias_lines[alias_key] = (version_key, line_num)
+            for plugin_cls in self._url_plugins:
+                if hasattr(plugin_cls, "load_urls_with_lines"):
+                    lines_data = plugin_cls().load_urls_with_lines()
+                    for url_key, (version_key, line_num) in lines_data.items():
+                        if version_key == self._url_map.get(url_key):
+                            self._url_plugin_url_lines[url_key] = (
+                                version_key,
+                                line_num,
+                            )
 
-        for plugin_cls in self._url_plugins:
-            if hasattr(plugin_cls, "load_urls_with_lines"):
-                lines_data = plugin_cls().load_urls_with_lines()
-                for url_key, (version_key, line_num) in lines_data.items():
-                    if version_key == self._url_map.get(url_key):
-                        self._publisher_url_lines[url_key] = (version_key, line_num)
-
-        for plugin_cls in self._prose_plugins:
-            if hasattr(plugin_cls, "load_prose_with_lines"):
-                lines_data = plugin_cls().load_prose_with_lines()
-                self._prose_lines.extend(lines_data)
+            for plugin_cls in self._prose_plugins:
+                if hasattr(plugin_cls, "load_prose_with_lines"):
+                    lines_data = plugin_cls().load_prose_with_lines()
+                    self._prose_lines.extend(lines_data)
+        except OSError as exc:
+            raise DataSourceError(f"Failed to load trace line numbers: {exc}") from exc
+        except Exception as exc:
+            raise DataSourceError(f"Error loading trace line numbers: {exc}") from exc
 
     def _resolve_with_trace(
         self, raw: str, cleaned: str, strict: bool
@@ -263,9 +323,9 @@ class LicenceNormaliser:
             resolved = self._url_map[url_key]
             source_line = None
             source_file = None
-            if url_key in self._publisher_url_lines:
-                _, source_line = self._publisher_url_lines[url_key]
-                source_file = "publishers.json"
+            if url_key in self._url_plugin_url_lines:
+                _, source_line = self._url_plugin_url_lines[url_key]
+                source_file = "aliases.json"
             stages.append(
                 LicenceTraceStage(
                     "url", url_key, resolved, True, source_line, source_file
@@ -327,10 +387,13 @@ class LicenceNormaliser:
         self, v: LicenceVersion, trace: LicenceTrace
     ) -> LicenceVersion:
         """Create a LicenceVersion with trace attached."""
-
-        # Reconstruct with trace using object.__setattr__ (frozen dataclass)
-        object.__setattr__(v, "_trace", trace)
-        return v
+        # Create new instance with trace (proper way for frozen dataclass)
+        return LicenceVersion(
+            key=v.key,
+            url=v.url,
+            licence=v.licence,
+            _trace=trace,
+        )
 
     def _resolve_impl(self, cleaned: str) -> LicenceVersion:
         # 1. Alias lookup
@@ -429,8 +492,10 @@ class LicenceNormaliser:
         # Get canonical key from registry
         canonical = self._registry.get(k) or k
 
-        # Get URL via inverted map: version_key -> cleaned_url
-        url = self._url_to_vkey.get(canonical) or self._url_to_vkey.get(k)
+        # Get URL via version_key -> URL list map
+        # Select shortest URL for cleaner display
+        url_list = self._vkey_to_url.get(canonical) or self._vkey_to_url.get(k)
+        url = min(url_list) if url_list else None
 
         # Infer name:
         # - For CC licences, use override only if it's different from canonical
@@ -476,10 +541,8 @@ class LicenceNormaliser:
             return "cc"
         if k.startswith(("gpl-", "agpl-", "lgpl-")):
             return "copyleft"
-        if k.startswith(("odbl", "odc-by")):
-            return "open-data"
-        if k.startswith(("pddl-", "odc-")):
-            return "data"
+        if k.startswith(("pddl-", "odbl", "odc-")):
+            return "data" if k.startswith("pddl-") else "open-data"
         if k.startswith(
             (
                 "elsevier-oa",
@@ -532,6 +595,15 @@ class LicenceNormaliser:
             )
         ):
             return "publisher-proprietary"
+
+        # "public-domain", "other-oa", and "open-access" are all defined in
+        # aliases.json with explicit family_key values.
+        # The resolution pipeline checks aliases first (before registry, URL,
+        # prose, and fallback).
+        # When these keys are encountered, they're resolved via the alias
+        # lookup and never reach _infer_family().
+        # _infer_family() is only called as a fallback when no plugin provides
+        # a family override.
         if k in ("public-domain", "other-oa", "open-access"):
             return "public-domain" if k == "public-domain" else "other-oa"
         return "unknown"

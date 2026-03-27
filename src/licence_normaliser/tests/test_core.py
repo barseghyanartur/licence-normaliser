@@ -71,12 +71,12 @@ class TestDirectLookup:
     def test_unlicense(self):
         v = normalise_licence("unlicense")
         assert v.key == "unlicense"
-        assert v.family.key == "osi"
+        assert v.family.key == "public-domain"
 
     def test_wtfpl(self):
         v = normalise_licence("wtfpl")
         assert v.key == "wtfpl"
-        assert v.family.key == "osi"
+        assert v.family.key == "public-domain"
 
     def test_zlib(self):
         v = normalise_licence("zlib")

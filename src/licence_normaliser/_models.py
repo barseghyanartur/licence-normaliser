@@ -67,6 +67,18 @@ class LicenceVersion:
     licence: LicenceName
     _trace: Optional[object] = field(default=None, repr=False)
 
+    def __init__(
+        self,
+        key: str,
+        url: Optional[str],
+        licence: LicenceName,
+        _trace: Optional[object] = None,
+    ):
+        object.__setattr__(self, "key", key)
+        object.__setattr__(self, "url", url)
+        object.__setattr__(self, "licence", licence)
+        object.__setattr__(self, "_trace", _trace)
+
     @property
     def family(self) -> LicenceFamily:
         return self.licence.family

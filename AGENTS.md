@@ -7,15 +7,23 @@
 
 ## 1. Project mission (never deviate)
 
-> Comprehensive licence normalisation with a three-level hierarchy - secure,
+> Robust licence normalisation with a three-level hierarchy for common SPDX,
+> Creative Commons, OSI-approved, ScanCode, and publisher licences - secure,
 > fast, and extensible.
 
-- Maps any licence representation to a canonical three-level hierarchy
+- Maps common licence representations (SPDX tokens, URLs, prose descriptions)
+  to a canonical three-level hierarchy
 - Supports SPDX tokens, URLs, prose descriptions
 - No external dependencies (only optional dev/test deps)
 - LRU caching for performance
 - Data-file-driven: parsers load from package data JSON files
 - `licence-normaliser update-data` CLI command to refresh SPDX + OpenDefinition data
+
+**Scope note**: The library covers the most common open-source, Creative
+Commons, and major-publisher licences. Any licence string not present in the
+curated data or upstream registries resolves to an "unknown" result (or raises
+in strict mode). Brand-new licence keys require updating upstream data sources
+first.
 
 ---
 
@@ -48,12 +56,11 @@
 | `src/licence_normaliser/_cache.py` | Module-level API delegating to `LicenceNormaliser` |
 | `src/licence_normaliser/parsers/` | Parser classes implementing plugin interfaces |
 | `src/licence_normaliser/cli/_main.py` | CLI with normalise, batch, update-data |
-| `src/licence_normaliser/exceptions.py` | LicenceNormalisationError |
+| `src/licence_normaliser/exceptions.py` | Exception hierarchy: LicenceNormaliserError (base), LicenceNotFoundError |
 | `src/licence_normaliser/data/spdx/spdx.json` | **DO NOT MODIFY** Full SPDX licence list (loaded at runtime) |
 | `src/licence_normaliser/data/opendefinition/opendefinition.json` | **DO NOT MODIFY** Full OpenDefinition list (loaded at runtime) |
-| `src/licence_normaliser/data/aliases/aliases.json` | Curated aliases with rich metadata |
+| `src/licence_normaliser/data/aliases/aliases.json` | Curated aliases with rich metadata (includes migrated URLs and shorthand aliases) |
 | `src/licence_normaliser/data/prose/prose_patterns.json` | Curated prose regex patterns |
-| `src/licence_normaliser/data/publishers/publishers.json` | Publisher URLs and shorthand aliases |
 
 ---
 
@@ -208,7 +215,7 @@ print(v.explain())
 The trace shows:
 - Each resolution stage attempted (alias → registry → url → prose → fallback)
 - Whether it matched (✓) or didn't (-)
-- Source file and line number for curated sources (aliases.json, publishers.json, prose_patterns.json)
+- Source file and line number for curated sources (aliases.json, prose_patterns.json)
 - Final result with version_key, name_key, family_key
 
 This is essential for:
@@ -281,7 +288,7 @@ Run linting: `make ruff` or `make pre-commit`
    - New SPDX/OD licence → update SPDX/OpenDefinition JSON files (run `update-data`)
    - New alias or family override → add to `data/aliases/aliases.json`
    - **Use `--trace` to find the exact line that defines an alias**
-   - New URL mapping → add to `data/publishers/publishers.json`
+   - New URL mapping → add to `data/aliases/aliases.json` (under `urls` key)
    - New prose pattern → add to `data/prose/prose_patterns.json`
    - New parser → `parsers/my_parser.py` + `defaults.py`
    - Core pipeline change → `_normaliser.py` or `_cache.py`
