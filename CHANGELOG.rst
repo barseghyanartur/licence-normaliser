@@ -23,10 +23,43 @@ are used for versioning (schema follows below):
 ---
 2026-03-27
 
-- Merge url_map.json and publisher.json into aliases.json.
-- Simplify lookups.
-- Fix wrongly categorised licences.
-- Various fixes.
+**Major refactoring and data consolidation**
+
+This release significantly simplifies the data model and maintenance while
+preserving full backwards compatibility for the public API.
+
+- **Merged** `url_map.json` and `publishers.json` into a single
+  unified `aliases/aliases.json` file.
+
+  - All URL mappings and publisher-specific shorthand aliases are now stored
+    together with rich metadata (including `urls` arrays and `aliases` lists).
+  - Removed separate `data/urls/` and `data/publishers/` directories (and
+    their parsers).
+  - Updated all documentation, tests, scripts, and contributing guidelines
+    accordingly.
+
+- **Simplified internal lookups**:
+
+  - Consolidated URL handling: `LicenceNormaliser` now builds a
+    single `_vkey_to_url` map (version_key → list of URLs) and selects the
+    shortest/cleanest URL for display.
+  - Alias and URL resolution now use the same `AliasParser` (which also
+    implements `URLPlugin`).
+  - Trace output now consistently points to `aliases.json` with correct line
+    numbers for both aliases and URLs.
+
+- **Improved family categorisation**:
+
+  - Fixed wrongly categorised licences (notably `unlicense`, `wtfpl`, and
+    several others now correctly map to `public-domain` where appropriate).
+  - Updated fallback logic in `_infer_family()` and related tests.
+
+- **Other fixes and cleanups**:
+
+  - Minor improvements to error handling and DataSourceError wrapping.
+  - Updated exception hierarchy documentation (kept `LicenceNormalisationError`
+    for backwards compatibility).
+  - Cleaned up unused/deprecated references across the codebase.
 
 0.4
 ---
