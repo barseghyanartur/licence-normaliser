@@ -5,6 +5,10 @@ Compares (license_key, category) from scancode_licensedb.json with
 Reports:
   - Licenses in ScanCode but missing from aliases
   - Licenses where family_key doesn't match expected family from ScanCode category
+
+::
+
+    uv run python scripts/compare_scancode_categories.py
 """
 
 from __future__ import annotations
