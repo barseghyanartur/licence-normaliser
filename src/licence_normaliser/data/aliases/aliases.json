@@ -1099,6 +1099,22 @@
     ]
   },
 
+  "odc-by-1.0": {
+    "version_key": "odc-by-1.0",
+    "name_key": "odc-by",
+    "family_key": "open-data",
+    "aliases": [
+      "odc by 1.0",
+      "odc-by 1.0",
+      "odc by-1.0",
+      "open database license 1.0",
+      "open database license v1.0"
+    ],
+    "urls": [
+      "https://opendatacommons.org/licenses/by/1-0"
+    ]
+  },
+
   "other-oa": {
     "version_key": "other-oa",
     "name_key": "other-oa",

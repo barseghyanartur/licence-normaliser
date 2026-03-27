@@ -325,7 +325,7 @@ class LicenceNormaliser:
             source_file = None
             if url_key in self._url_plugin_url_lines:
                 _, source_line = self._url_plugin_url_lines[url_key]
-                source_file = "publishers.json"
+                source_file = "aliases.json"
             stages.append(
                 LicenceTraceStage(
                     "url", url_key, resolved, True, source_line, source_file
@@ -542,7 +542,7 @@ class LicenceNormaliser:
         if k.startswith(("gpl-", "agpl-", "lgpl-")):
             return "copyleft"
         if k.startswith(("pddl-", "odbl", "odc-")):
-            return "data" if k.startswith(("pddl-", "odc-")) else "open-data"
+            return "data" if k.startswith("pddl-") else "open-data"
         if k.startswith(
             (
                 "elsevier-oa",
