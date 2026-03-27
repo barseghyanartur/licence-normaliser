@@ -1,7 +1,8 @@
 """licence_normaliser.exceptions - public exception hierarchy.
 
-These are the only exceptions that cross the public API boundary.
-All internal errors are wrapped before propagation.
+These are the only exceptions that should cross the public API boundary.
+Internal errors from data loading (JSONDecodeError, OSError, FileNotFoundError)
+are wrapped in DataSourceError during plugin initialization.
 """
 
 from __future__ import annotations
@@ -37,5 +38,10 @@ class DataSourceError(LicenceNormaliserError):
     """Raised when a data source file cannot be loaded or parsed."""
 
 
-class LicenceNormalisationError(ValueError):
-    """Raised when ``strict=True`` and no canonical licence could be resolved."""
+class LicenceNormalisationError(LicenceNormaliserError):
+    """Raised when licence normalisation fails.
+
+    .. deprecated::
+        Use :class:`LicenceNotFoundError` instead. This exception is kept for
+        backwards compatibility but is no longer raised by the library.
+    """

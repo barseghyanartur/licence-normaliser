@@ -176,7 +176,7 @@ class TestTracePublisherURL:
         )
         output = v.explain()
         assert "url" in output
-        assert "publishers.json" in output
+        assert "aliases.json" in output
 
     def test_trace_publisher_alias_with_line(self):
         v = normalise_licence("Elsevier User License", trace=True)
