@@ -99,6 +99,37 @@ LICENCE_MATRIX = [
     ("cc-by-nc-nd-4.0", "cc-by-nc-nd-4.0", "cc-by-nc-nd", "cc"),
     ("CC BY-NC-ND 3.0", "cc-by-nc-nd-3.0", "cc-by-nc-nd", "cc"),
     ("cc by-nc-nd 3.0", "cc-by-nc-nd-3.0", "cc-by-nc-nd", "cc"),
+    # Prose patterns for CC licences
+    (
+        "This is an open access article under the CC BY-NC-ND license.",
+        "cc-by-nc-nd",
+        "cc-by-nc-nd",
+        "cc",
+    ),
+    (
+        "This is an open access article under the CC BY IGO license.",
+        "cc-by",
+        "cc-by",
+        "cc",
+    ),
+    (
+        "This is an open access article under the CC BY-NC-ND IGO license.",
+        "cc-by-nc-nd",
+        "cc-by-nc-nd",
+        "cc",
+    ),
+    (
+        "This is an open access article under the CC BY-NC license.",
+        "cc-by-nc",
+        "cc-by-nc",
+        "cc",
+    ),
+    (
+        "This is an open access article under the CC BY license.",
+        "cc-by",
+        "cc-by",
+        "cc",
+    ),
     ("CC BY-ND 4.0", "cc-by-nd-4.0", "cc-by-nd", "cc"),
     ("cc by-nd 4.0", "cc-by-nd-4.0", "cc-by-nd", "cc"),
     ("cc-by-nd-4.0", "cc-by-nd-4.0", "cc-by-nd", "cc"),
