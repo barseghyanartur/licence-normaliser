@@ -42,7 +42,7 @@ first.
 1. **Alias table** - cleaned lowercase key matches `ALIASES` (loaded from `data/aliases/aliases.json`)
 2. **Direct registry lookup** - hit in `REGISTRY` (SPDX, OpenDefinition, OSI, CC, ScanCode licence keys)
 3. **URL map** - hit in `URL_MAP` (loaded from SPDX + OpenDefinition + publisher data)
-4. **Prose pattern scan** - regex patterns from `data/aliases/aliases.json` (patterns field) and `data/prose/prose_patterns.json` (for strings >20 chars)
+4. **Prose pattern scan** - regex patterns from `data/aliases/aliases.json` (patterns field) for strings >20 chars
 5. **Fallback** - key = cleaned string, family = unknown
 
 ### Key files
@@ -60,7 +60,6 @@ first.
 | `src/licence_normaliser/data/spdx/spdx.json` | **DO NOT MODIFY** Full SPDX licence list (loaded at runtime) |
 | `src/licence_normaliser/data/opendefinition/opendefinition.json` | **DO NOT MODIFY** Full OpenDefinition list (loaded at runtime) |
 | `src/licence_normaliser/data/aliases/aliases.json` | Curated aliases with rich metadata (includes URLs, shorthand aliases, and prose regex patterns) |
-| `src/licence_normaliser/data/prose/prose_patterns.json` | Additional prose regex patterns (combined with aliases.json patterns) |
 
 ---
 
@@ -215,7 +214,7 @@ print(v.explain())
 The trace shows:
 - Each resolution stage attempted (alias → registry → url → prose → fallback)
 - Whether it matched (✓) or didn't (-)
-- Source file and line number for curated sources (aliases.json, prose_patterns.json)
+- Source file and line number for curated sources (aliases.json)
 - Final result with version_key, name_key, family_key
 
 This is essential for:
@@ -289,7 +288,7 @@ Run linting: `make ruff` or `make pre-commit`
    - New alias or family override → add to `data/aliases/aliases.json`
    - **Use `--trace` to find the exact line that defines an alias**
    - New URL mapping → add to `data/aliases/aliases.json` (under `urls` key)
-   - New prose pattern → add to `data/aliases/aliases.json` (under `patterns` key) or `data/prose/prose_patterns.json`
+   - New prose pattern → add to `data/aliases/aliases.json` (under `patterns` key)
    - New parser → `parsers/my_parser.py` + `defaults.py`
    - Core pipeline change → `_normaliser.py` or `_cache.py`
 3. **Write tests** covering both success and error cases

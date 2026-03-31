@@ -12,9 +12,7 @@ Structure
 
     data/
     ├── aliases/
-    │   └── aliases.json             # Alias string → metadata dict (includes URLs and shorthand aliases)
-    ├── prose/
-    │   └── prose_patterns.json      # Ordered regex patterns for long text scanning
+    │   └── aliases.json             # Alias string → metadata dict (includes URLs, shorthand aliases, and prose regex patterns)
     ├── spdx/
     │   └── spdx.json                # SPDX licence list (auto-refreshed)
     ├── opendefinition/
@@ -85,11 +83,8 @@ normalised at lookup time (http→https, trailing slash stripped).
 How to Add a New Prose Pattern
 ------------------------------
 
-Prose patterns (regex patterns for matching licence references in longer
-text strings) can be added to either location:
-
-1. **Recommended**: Add to ``aliases/aliases.json`` using the ``patterns``
-   field:
+Add prose patterns (regex patterns for matching licence references in longer
+text strings) to ``aliases/aliases.json`` using the ``patterns`` field:
 
 .. code:: json
 
@@ -103,30 +98,15 @@ text strings) can be added to either location:
      ]
    }
 
-2. Or add to ``prose/prose_patterns.json``:
-
-.. code:: json
-
-   [
-     {"pattern": "my very specific phrase",
-      "version_key": "my-licence-1.0",
-      "name_key": "my-licence",
-      "family_key": "publisher-oa"},
-     ...
-   ]
-
 Patterns are Python regular expressions matched case-insensitively.
-More-specific patterns must come first. Patterns from both sources are
-combined, with ``prose_patterns.json`` processed first to maintain
-ordering.
+More-specific patterns must come first within each entry.
 
 How to add a brand-new licence
 ------------------------------
 
-1. Add entries to one or more JSON data files (``aliases/aliases.json``,
-   ``urls/url_map.json``, ``prose/prose_patterns.json``, or
-   ``publishers/publishers.json``). Each entry maps a key to a dict with
-   ``version_key``, ``name_key``, and ``family_key``.
+1. Add entries to one or more JSON data files (``aliases/aliases.json``).
+   Each entry maps a key to a dict with ``version_key``, ``name_key``,
+   and ``family_key``.
 
 2. If the ``family_key`` is not covered by the regex fallback table in
    ``_registry.py``, add an explicit ``family_key`` value in the JSON

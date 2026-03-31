@@ -232,7 +232,7 @@
       "creative commons by"
     ],
     "patterns": [
-      "creative\\s+commons\\s+by",
+      "creative\\s+commons\\s+by(?!\\s*-nc|\\s*-nd|\\s*-sa)",
       "\\bcc-?\\s*by\\b(?!\\s*-)"
     ]
   },
@@ -339,12 +339,8 @@
       "creative commons by-nc"
     ],
     "patterns": [
-      "cc-?\\s*by-nc-nd(?!\\s*\\d)",
-      "cc-?\\s*by-nc-sa(?!\\s*\\d)",
-      "creative\\s+commons\\s+by-nc-nd",
-      "creative\\s+commons\\s+by-nc-sa",
-      "creative\\s+commons\\s+by-nc",
-      "cc-?\\s*by-nc(?!\\s*\\d)",
+      "creative\\s+commons\\s+by-nc(?!\\s*-)",
+      "cc-?\\s*by-nc(?!\\s*-|\\s*\\d)",
       "attribution.{0,30}non.?commercial"
     ]
   },
