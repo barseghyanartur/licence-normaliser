@@ -40,7 +40,8 @@ Optional fields:
 
 - ``aliases`` – list of alternative lookup strings
 - ``urls`` – list of licence URLs
-- ``patterns`` – list of regex patterns for prose matching (strings ≥20 chars)
+- ``patterns`` – list of regex patterns for prose matching (prose matching is
+  only performed on input strings of length ≥20)
 
 How to add a new licence alias
 ------------------------------
