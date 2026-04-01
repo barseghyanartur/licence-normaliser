@@ -19,6 +19,24 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.6
+---
+2026-04-01
+
+.. note::
+
+    Release dedicated to my beloved son Raffi, who turned 21 recently.
+    Happy birthday, my dear!
+
+**Minor refactoring and data consolidation**
+
+This release continues simplification of the data model and maintenance while
+preserving full backwards compatibility for the public API.
+
+- Merged `prose.json` into `aliases/aliases.json` file.
+- Added more prose pattern tests.
+- Added documentation auto-correction into AGENTS.md workflow.
+
 0.5
 ---
 2026-03-27
