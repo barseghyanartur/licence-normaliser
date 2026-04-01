@@ -294,9 +294,9 @@ Run linting: `make ruff` or `make pre-commit`
 3. **Write tests** covering both success and error cases
 4. **Update README.rst**, **AGENTS.md**, **ARCHITECTURE.rst**
    and **CONTRIBUTING.rst** if the API changed
-5. **Suggest running**: `make test-env ENV=py312` then `make test`
+5. **Suggest running**: `uv run pytest`
 6. **Must run**: `make pre-commit`
-
+7. **Must run**: `make test-env ENV=py312` then `make test`
 ---
 
 ## 8. Testing rules
