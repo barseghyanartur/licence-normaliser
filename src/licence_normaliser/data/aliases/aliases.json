@@ -232,8 +232,8 @@
       "creative commons by"
     ],
     "patterns": [
-      "creative\\s+commons\\s+by(?!\\s*-nc|\\s*-nd|\\s*-sa)",
-      "\\bcc-?\\s*by\\b(?!\\s*-)"
+      "creative\\s+commons\\s+by(?!\\s*(?:-nc|-nd|-sa|\\d))",
+      "\\bcc-?\\s*by\\b(?!\\s*(?:-nc|-nd|-sa|\\d))"
     ]
   },
 
@@ -274,6 +274,10 @@
     "aliases": [
       "cc-by-3.0",
       "cc-by-3",
+      "cc by 3.0",
+      "cc-by 3.0",
+      "cc by 3",
+      "cc-by 3",
       "creative commons attribution 3.0"
     ],
     "urls": [
@@ -281,7 +285,8 @@
       "https://creativecommons.org/licenses/by/3.0/deed.en_us"
     ],
     "patterns": [
-      "cc-?\\s*by\\s*3\\.0"
+      "cc-?\\s*by\\s*3\\.0(?!\\s*(?:igo|international))",
+      "cc-?\\s*by\\s*3\\.0\\s*(?:igo|international)"
     ]
   },
 
@@ -305,6 +310,26 @@
     ]
   },
 
+  "cc by 4.0-igo": {
+    "version_key": "cc-by-4.0-igo",
+    "name_key": "cc-by",
+    "family_key": "cc",
+    "aliases": [
+      "cc-by-4.0-igo",
+      "cc by 4.0 igo",
+      "cc-by 4.0 igo",
+      "cc by 4.0-igo",
+      "cc-by 4.0-igo",
+      "creative commons attribution 4.0 igo",
+      "creative commons attribution 4.0 international",
+      "creative commons attribution 4.0 international license",
+      "creative commons by 4.0 igo"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/by/4.0/igo"
+    ]
+  },
+
   "cc by 4.0": {
     "version_key": "cc-by-4.0",
     "name_key": "cc-by",
@@ -314,6 +339,10 @@
       "cc by 4",
       "cc-by 4",
       "cc-by-4",
+      "cc by 4.0",
+      "cc-by 4.0",
+      "cc by 4.0",
+      "cc-by 4.0",
       "creative commons attribution 4.0",
       "creative commons attribution 4.0 international",
       "creative commons attribution 4.0 international license",
@@ -323,7 +352,8 @@
       "https://creativecommons.org/licenses/by/4.0"
     ],
     "patterns": [
-      "cc-?\\s*by\\s*4\\.0"
+      "cc-?\\s*by\\s*4\\.0(?!\\s*(?:igo|international))",
+      "cc-?\\s*by\\s*4\\.0\\s*(?:igo|international)"
     ]
   },
 
