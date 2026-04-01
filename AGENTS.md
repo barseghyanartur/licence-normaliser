@@ -276,6 +276,13 @@ def _load_registry_plugins() -> list[type]:
   necessary (e.g., breaking circular dependencies or optional runtime
   dependencies). Lazy imports harm readability and make dependencies unclear.
 
+### Documentation conventions
+
+- RST files: keep lines under 80 characters
+- Always add blank lines before and after bullet lists
+- Use spaces (not tabs) for indentation
+- Run `make pre-commit` before committing to catch doc8 issues
+
 Run linting: `make ruff` or `make pre-commit`
 
 ---
