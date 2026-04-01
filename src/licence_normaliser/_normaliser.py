@@ -346,12 +346,10 @@ class LicenceNormaliser:
 
         # 4. Prose matching (only for longer strings)
         if len(cleaned) >= 20:
-            for i, (pattern, vkey) in enumerate(self._prose_patterns):
+            for pattern, vkey in self._prose_patterns:
                 if pattern.search(cleaned):
                     source_line = None
-                    source_file = "aliases.json"
-                    if self._prose_lines and i < len(self._prose_lines):
-                        _, _, source_line = self._prose_lines[i]
+                    source_file = None
                     stages.append(
                         LicenceTraceStage(
                             "prose", cleaned, vkey, True, source_line, source_file
