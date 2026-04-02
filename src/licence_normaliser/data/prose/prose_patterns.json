@@ -18,6 +18,7 @@
   {"pattern": "cc[- ]+by[- ]+nc[- ]+sa\\b", "version_key": "cc-by-nc-sa", "name_key": "cc-by-nc-sa", "family_key": "cc"},
 
   {"pattern": "cc[- ]+by[- ]+nc[- ]+4\\.0\\b", "version_key": "cc-by-nc-4.0", "name_key": "cc-by-nc", "family_key": "cc"},
+  {"pattern": "cc[- ]+by[- ]+nc[- ]+3\\.0[- ]*igo\\b", "version_key": "cc-by-nc-3.0-igo", "name_key": "cc-by-nc", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+3\\.0\\b", "version_key": "cc-by-nc-3.0", "name_key": "cc-by-nc", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+2\\.5\\b", "version_key": "cc-by-nc-2.5", "name_key": "cc-by-nc", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+2\\.0\\b", "version_key": "cc-by-nc-2.0", "name_key": "cc-by-nc", "family_key": "cc"},
@@ -27,6 +28,7 @@
   {"pattern": "cc[- ]+by[- ]+nc\\b", "version_key": "cc-by-nc", "name_key": "cc-by-nc", "family_key": "cc"},
 
   {"pattern": "cc[- ]+by[- ]+nd[- ]+4\\.0\\b", "version_key": "cc-by-nd-4.0", "name_key": "cc-by-nd", "family_key": "cc"},
+  {"pattern": "cc[- ]+by[- ]+nd[- ]+3\\.0[- ]*igo\\b", "version_key": "cc-by-nd-3.0-igo", "name_key": "cc-by-nd", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nd[- ]+3\\.0\\b", "version_key": "cc-by-nd-3.0", "name_key": "cc-by-nd", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nd[- ]+2\\.5\\b", "version_key": "cc-by-nd-2.5", "name_key": "cc-by-nd", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nd[- ]+2\\.0\\b", "version_key": "cc-by-nd-2.0", "name_key": "cc-by-nd", "family_key": "cc"},
@@ -34,6 +36,7 @@
   {"pattern": "cc[- ]+by[- ]+nd\\b", "version_key": "cc-by-nd", "name_key": "cc-by-nd", "family_key": "cc"},
 
   {"pattern": "cc[- ]+by[- ]+sa[- ]+4\\.0\\b", "version_key": "cc-by-sa-4.0", "name_key": "cc-by-sa", "family_key": "cc"},
+  {"pattern": "cc[- ]+by[- ]+sa[- ]+3\\.0[- ]*igo\\b", "version_key": "cc-by-sa-3.0-igo", "name_key": "cc-by-sa", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+sa[- ]+3\\.0\\b", "version_key": "cc-by-sa-3.0", "name_key": "cc-by-sa", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+sa[- ]+2\\.5\\b", "version_key": "cc-by-sa-2.5", "name_key": "cc-by-sa", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+sa[- ]+2\\.0\\b", "version_key": "cc-by-sa-2.0", "name_key": "cc-by-sa", "family_key": "cc"},
