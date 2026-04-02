@@ -108,6 +108,114 @@ LICENCE_MATRIX = [
     ("CC BY-SA 3.0", "cc-by-sa-3.0", "cc-by-sa", "cc"),
     ("cc-by-3.0-igo", "cc-by-3.0-igo", "cc-by", "cc"),
     ("cc-by-nc-nd-3.0-igo", "cc-by-nc-nd-3.0-igo", "cc-by-nc-nd", "cc"),
+    # === NEW: CC licence prose patterns (2025-04-02) ===
+    # cc by variants
+    ("Article published under CC by license.", "cc-by", "cc-by", "cc"),
+    ("Article published under CC by 1.0 license.", "cc-by-1.0", "cc-by", "cc"),
+    ("Article published under CC by 2.0 license.", "cc-by-2.0", "cc-by", "cc"),
+    ("Article published under CC by 2.5 license.", "cc-by-2.5", "cc-by", "cc"),
+    ("Article published under CC by 3.0 license.", "cc-by-3.0", "cc-by", "cc"),
+    ("Article published under CC by 3.0-igo license.", "cc-by-3.0-igo", "cc-by", "cc"),
+    ("Article published under CC by 4.0-igo license.", "cc-by-4.0-igo", "cc-by", "cc"),
+    ("Article published under CC by 4.0 license.", "cc-by-4.0", "cc-by", "cc"),
+    # cc by-nc variants
+    ("Article published under CC by-nc license.", "cc-by-nc", "cc-by-nc", "cc"),
+    ("Article published under CC by-nc 2.0 license.", "cc-by-nc-2.0", "cc-by-nc", "cc"),
+    ("Article published under CC by-nc 2.5 license.", "cc-by-nc-2.5", "cc-by-nc", "cc"),
+    ("Article published under CC by-nc 3.0 license.", "cc-by-nc-3.0", "cc-by-nc", "cc"),
+    ("Article published under CC by-nc 4.0 license.", "cc-by-nc-4.0", "cc-by-nc", "cc"),
+    (
+        "Article published under CC by-nc-igo license.",
+        "cc-by-nc-igo",
+        "cc-by-nc-igo",
+        "cc",
+    ),
+    # cc by-nc-nd variants
+    (
+        "Article published under CC by-nc-nd license.",
+        "cc-by-nc-nd",
+        "cc-by-nc-nd",
+        "cc",
+    ),
+    (
+        "Article published under CC by-nc-nd 2.0 license.",
+        "cc-by-nc-nd-2.0",
+        "cc-by-nc-nd",
+        "cc",
+    ),
+    (
+        "Article published under CC by-nc-nd 2.5 license.",
+        "cc-by-nc-nd-2.5",
+        "cc-by-nc-nd",
+        "cc",
+    ),
+    (
+        "Article published under CC by-nc-nd 3.0 license.",
+        "cc-by-nc-nd-3.0",
+        "cc-by-nc-nd",
+        "cc",
+    ),
+    (
+        "Article published under CC by-nc-nd 3.0 igo license.",
+        "cc-by-nc-nd-3.0-igo",
+        "cc-by-nc-nd",
+        "cc",
+    ),
+    (
+        "Article published under CC by-nc-nd 4.0 license.",
+        "cc-by-nc-nd-4.0",
+        "cc-by-nc-nd",
+        "cc",
+    ),
+    # cc by-nc-sa variants
+    (
+        "Article published under CC by-nc-sa license.",
+        "cc-by-nc-sa",
+        "cc-by-nc-sa",
+        "cc",
+    ),
+    (
+        "Article published under CC by-nc-sa 2.0 license.",
+        "cc-by-nc-sa-2.0",
+        "cc-by-nc-sa",
+        "cc",
+    ),
+    (
+        "Article published under CC by-nc-sa 2.5 license.",
+        "cc-by-nc-sa-2.5",
+        "cc-by-nc-sa",
+        "cc",
+    ),
+    (
+        "Article published under CC by-nc-sa 3.0 license.",
+        "cc-by-nc-sa-3.0",
+        "cc-by-nc-sa",
+        "cc",
+    ),
+    (
+        "Article published under CC by-nc-sa 3.0 igo license.",
+        "cc-by-nc-sa-3.0-igo",
+        "cc-by-nc-sa",
+        "cc",
+    ),
+    (
+        "Article published under CC by-nc-sa 4.0 license.",
+        "cc-by-nc-sa-4.0",
+        "cc-by-nc-sa",
+        "cc",
+    ),
+    # cc by-nd variants
+    ("Article published under CC by-nd license.", "cc-by-nd", "cc-by-nd", "cc"),
+    ("Article published under CC by-nd 2.0 license.", "cc-by-nd-2.0", "cc-by-nd", "cc"),
+    ("Article published under CC by-nd 3.0 license.", "cc-by-nd-3.0", "cc-by-nd", "cc"),
+    ("Article published under CC by-nd 4.0 license.", "cc-by-nd-4.0", "cc-by-nd", "cc"),
+    # cc by-sa variants
+    ("Article published under CC by-sa license.", "cc-by-sa", "cc-by-sa", "cc"),
+    ("Article published under CC by-sa 2.0 license.", "cc-by-sa-2.0", "cc-by-sa", "cc"),
+    ("Article published under CC by-sa 2.5 license.", "cc-by-sa-2.5", "cc-by-sa", "cc"),
+    ("Article published under CC by-sa 3.0 license.", "cc-by-sa-3.0", "cc-by-sa", "cc"),
+    ("Article published under CC by-sa 4.0 license.", "cc-by-sa-4.0", "cc-by-sa", "cc"),
+    # === END NEW CC licence prose patterns ===
     # Prose patterns for CC licences
     (
         "This is an open access article under the CC BY-NC-ND license.",

@@ -1,4 +1,6 @@
 [
+  {"pattern": "cc[- ]+by[- ]+nc[- ]+nd[- ]+4\\.0[- ]*igo\\b", "version_key": "cc-by-nc-nd-4.0-igo", "name_key": "cc-by-nc-nd", "family_key": "cc"},
+  {"pattern": "cc[- ]+by[- ]+nc[- ]+nd[- ]+3\\.0[- ]*igo\\b", "version_key": "cc-by-nc-nd-3.0-igo", "name_key": "cc-by-nc-nd", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+nd[- ]+4\\.0\\b", "version_key": "cc-by-nc-nd-4.0", "name_key": "cc-by-nc-nd", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+nd[- ]+3\\.0\\b", "version_key": "cc-by-nc-nd-3.0", "name_key": "cc-by-nc-nd", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+nd[- ]+2\\.5\\b", "version_key": "cc-by-nc-nd-2.5", "name_key": "cc-by-nc-nd", "family_key": "cc"},
@@ -6,6 +8,8 @@
   {"pattern": "cc[- ]+by[- ]+nc[- ]+nd[- ]+1\\.0\\b", "version_key": "cc-by-nc-nd-1.0", "name_key": "cc-by-nc-nd", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+nd\\b", "version_key": "cc-by-nc-nd", "name_key": "cc-by-nc-nd", "family_key": "cc"},
 
+  {"pattern": "cc[- ]+by[- ]+nc[- ]+sa[- ]+4\\.0[- ]*igo\\b", "version_key": "cc-by-nc-sa-4.0-igo", "name_key": "cc-by-nc-sa", "family_key": "cc"},
+  {"pattern": "cc[- ]+by[- ]+nc[- ]+sa[- ]+3\\.0[- ]*igo\\b", "version_key": "cc-by-nc-sa-3.0-igo", "name_key": "cc-by-nc-sa", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+sa[- ]+4\\.0\\b", "version_key": "cc-by-nc-sa-4.0", "name_key": "cc-by-nc-sa", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+sa[- ]+3\\.0\\b", "version_key": "cc-by-nc-sa-3.0", "name_key": "cc-by-nc-sa", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+sa[- ]+2\\.5\\b", "version_key": "cc-by-nc-sa-2.5", "name_key": "cc-by-nc-sa", "family_key": "cc"},
@@ -18,6 +22,8 @@
   {"pattern": "cc[- ]+by[- ]+nc[- ]+2\\.5\\b", "version_key": "cc-by-nc-2.5", "name_key": "cc-by-nc", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+2\\.0\\b", "version_key": "cc-by-nc-2.0", "name_key": "cc-by-nc", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+1\\.0\\b", "version_key": "cc-by-nc-1.0", "name_key": "cc-by-nc", "family_key": "cc"},
+  {"pattern": "cc[- ]+by[- ]+nc[- ]*igo\\b", "version_key": "cc-by-nc-igo", "name_key": "cc-by-nc-igo", "family_key": "cc"},
+  {"pattern": "cc[- ]+by[- ]+nc\\b", "version_key": "cc-by-nc", "name_key": "cc-by-nc", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc\\b", "version_key": "cc-by-nc", "name_key": "cc-by-nc", "family_key": "cc"},
 
   {"pattern": "cc[- ]+by[- ]+nd[- ]+4\\.0\\b", "version_key": "cc-by-nd-4.0", "name_key": "cc-by-nd", "family_key": "cc"},
@@ -34,7 +40,9 @@
   {"pattern": "cc[- ]+by[- ]+sa[- ]+1\\.0\\b", "version_key": "cc-by-sa-1.0", "name_key": "cc-by-sa", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+sa\\b", "version_key": "cc-by-sa", "name_key": "cc-by-sa", "family_key": "cc"},
 
+  {"pattern": "cc[- ]+by[- ]+4\\.0[- ]*igo\\b", "version_key": "cc-by-4.0-igo", "name_key": "cc-by", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+4\\.0\\b", "version_key": "cc-by-4.0", "name_key": "cc-by", "family_key": "cc"},
+  {"pattern": "cc[- ]+by[- ]+3\\.0[- ]*igo\\b", "version_key": "cc-by-3.0-igo", "name_key": "cc-by", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+3\\.0\\b", "version_key": "cc-by-3.0", "name_key": "cc-by", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+2\\.5\\b", "version_key": "cc-by-2.5", "name_key": "cc-by", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+2\\.0\\b", "version_key": "cc-by-2.0", "name_key": "cc-by", "family_key": "cc"},
