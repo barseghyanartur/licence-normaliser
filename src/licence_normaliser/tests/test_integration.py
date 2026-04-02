@@ -116,6 +116,7 @@ LICENCE_MATRIX = [
     ("Article published under CC by 2.5 license.", "cc-by-2.5", "cc-by", "cc"),
     ("Article published under CC by 3.0 license.", "cc-by-3.0", "cc-by", "cc"),
     ("Article published under CC by 3.0-igo license.", "cc-by-3.0-igo", "cc-by", "cc"),
+    ("Paper licensed cc-by 3.0 igo.", "cc-by-3.0-igo", "cc-by", "cc"),
     ("Article published under CC by 4.0-igo license.", "cc-by-4.0-igo", "cc-by", "cc"),
     ("Article published under CC by 4.0 license.", "cc-by-4.0", "cc-by", "cc"),
     # cc by-nc variants
