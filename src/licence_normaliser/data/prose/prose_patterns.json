@@ -17,6 +17,7 @@
   {"pattern": "cc[- ]+by[- ]+nc[- ]+sa[- ]+1\\.0\\b", "version_key": "cc-by-nc-sa-1.0", "name_key": "cc-by-nc-sa", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+sa\\b", "version_key": "cc-by-nc-sa", "name_key": "cc-by-nc-sa", "family_key": "cc"},
 
+  {"pattern": "cc[- ]+by[- ]+nc[- ]+4\\.0[- ]*igo\\b", "version_key": "cc-by-nc-4.0-igo", "name_key": "cc-by-nc", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+4\\.0\\b", "version_key": "cc-by-nc-4.0", "name_key": "cc-by-nc", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+3\\.0[- ]*igo\\b", "version_key": "cc-by-nc-3.0-igo", "name_key": "cc-by-nc", "family_key": "cc"},
   {"pattern": "cc[- ]+by[- ]+nc[- ]+3\\.0\\b", "version_key": "cc-by-nc-3.0", "name_key": "cc-by-nc", "family_key": "cc"},
