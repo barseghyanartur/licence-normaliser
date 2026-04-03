@@ -65,21 +65,18 @@ class TestBuiltinAliases:
 
 
 class TestUrlLookup:
-    def test_cc_by_https(self):
-        v = normalise_licence("https://creativecommons.org/licenses/by/4.0/")
-        assert v.key == "cc-by-4.0"
-
-    def test_cc_by_http(self):
-        v = normalise_licence("http://creativecommons.org/licenses/by/4.0/")
-        assert v.key == "cc-by-4.0"
-
-    def test_cc_by_no_trailing_slash(self):
-        v = normalise_licence("https://creativecommons.org/licenses/by/4.0")
-        assert v.key == "cc-by-4.0"
-
-    def test_mit_url(self):
-        v = normalise_licence("https://opensource.org/licenses/MIT")
-        assert v.key == "mit"
+    @pytest.mark.parametrize(
+        "input_str,expected_key",
+        [
+            ("https://creativecommons.org/licenses/by/4.0/", "cc-by-4.0"),
+            ("http://creativecommons.org/licenses/by/4.0/", "cc-by-4.0"),
+            ("https://creativecommons.org/licenses/by/4.0", "cc-by-4.0"),
+            ("https://opensource.org/licenses/MIT", "mit"),
+        ],
+    )
+    def test_url_lookup(self, input_str: str, expected_key: str) -> None:
+        v = normalise_licence(input_str)
+        assert v.key == expected_key
 
 
 class TestFamilyInference:
