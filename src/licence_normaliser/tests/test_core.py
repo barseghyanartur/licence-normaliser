@@ -80,39 +80,39 @@ class TestUrlLookup:
 
 
 class TestFamilyInference:
-    def test_cc_family(self):
-        v = normalise_licence("cc-by-4.0")
-        assert v.family.key == "cc"
-
-    def test_cc0_family(self):
-        v = normalise_licence("cc0-1.0")
-        assert v.family.key == "cc0"
-
-    def test_copyleft_family(self):
-        assert normalise_licence("gpl-3.0").family.key == "copyleft"
-        assert normalise_licence("agpl-3.0").family.key == "copyleft"
-        assert normalise_licence("lgpl-2.1").family.key == "copyleft"
-
-    def test_osi_family(self):
-        assert normalise_licence("mit").family.key == "osi"
-        assert normalise_licence("apache-2.0").family.key == "osi"
-        assert normalise_licence("bsd-3-clause").family.key == "osi"
-
-    def test_data_family(self):
-        assert normalise_licence("pddl-1.0").family.key == "data"
+    @pytest.mark.parametrize(
+        "input_str,expected_family",
+        [
+            ("cc-by-4.0", "cc"),
+            ("cc0-1.0", "cc0"),
+            ("gpl-3.0", "copyleft"),
+            ("agpl-3.0", "copyleft"),
+            ("lgpl-2.1", "copyleft"),
+            ("mit", "osi"),
+            ("apache-2.0", "osi"),
+            ("bsd-3-clause", "osi"),
+            ("pddl-1.0", "data"),
+        ],
+    )
+    def test_family_inference(self, input_str: str, expected_family: str) -> None:
+        assert normalise_licence(input_str).family.key == expected_family
 
 
 class TestNameInference:
-    def test_cc_name_strips_version(self):
-        assert normalise_licence("cc-by-4.0").licence.key == "cc-by"
-        assert normalise_licence("cc-by-nc-nd-4.0").licence.key == "cc-by-nc-nd"
-        assert normalise_licence("cc-by-sa-3.0").licence.key == "cc-by-sa"
-        assert normalise_licence("cc0-1.0").licence.key == "cc0"
-        assert normalise_licence("cc-by-nc-sa-4.0").licence.key == "cc-by-nc-sa"
-
-    def test_non_cc_keeps_key(self):
-        assert normalise_licence("mit").licence.key == "mit"
-        assert normalise_licence("gpl-3.0").licence.key == "gpl-3"
+    @pytest.mark.parametrize(
+        "input_str,expected_name",
+        [
+            ("cc-by-4.0", "cc-by"),
+            ("cc-by-nc-nd-4.0", "cc-by-nc-nd"),
+            ("cc-by-sa-3.0", "cc-by-sa"),
+            ("cc0-1.0", "cc0"),
+            ("cc-by-nc-sa-4.0", "cc-by-nc-sa"),
+            ("mit", "mit"),
+            ("gpl-3.0", "gpl-3"),
+        ],
+    )
+    def test_name_inference(self, input_str: str, expected_name: str) -> None:
+        assert normalise_licence(input_str).licence.key == expected_name
 
 
 class TestHierarchyNavigation:
