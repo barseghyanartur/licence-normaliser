@@ -130,8 +130,7 @@ class LicenceNormaliser:
                 self._registry.update(data)
                 lines_data = plugin_cls().load_registry_lines()
                 for key, line_info in lines_data.items():
-                    if key not in self._registry_lines:
-                        self._registry_lines[key] = line_info
+                    self._registry_lines[key] = line_info
         except OSError as exc:
             raise DataSourceError(
                 f"Failed to load registry from {plugin_cls.__name__}: {exc}"

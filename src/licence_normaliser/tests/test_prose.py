@@ -68,6 +68,11 @@ class TestProsePatternMatching:
         assert v.key == "acs-authorchoice-ccby"
         assert v.family.key == "publisher-oa"
 
+    def test_acs_authorchoice_cc_by_4_0_prose(self):
+        v = normalise_licence("ACS AuthorChoice CC BY 4.0 article")
+        assert v.key == "acs-authorchoice-ccby"
+        assert v.family.key == "publisher-oa"
+
     def test_cc_by_nc_3_0_igo_prose(self):
         v = normalise_licence("Article published under CC by-nc 3.0-igo license.")
         assert v.key == "cc-by-nc-3.0-igo"
