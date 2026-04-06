@@ -56,7 +56,8 @@ first.
 | `src/licence_normaliser/_cache.py` | Module-level API delegating to `LicenceNormaliser` |
 | `src/licence_normaliser/parsers/` | Parser classes implementing plugin interfaces |
 | `src/licence_normaliser/cli/_main.py` | CLI with normalise, batch, update-data |
-| `src/licence_normaliser/exceptions.py` | Exception hierarchy: LicenceNormaliserError (base), LicenceNotFoundError |
+| `src/licence_normaliser/exceptions.py` | Exception hierarchy: LicenceNormaliserError (base), LicenceNotFoundError, DataSourceError |
+| `src/licence_normaliser/_trace.py` | `LicenceTrace`, `LicenceTraceStage` for resolution tracing |
 | `src/licence_normaliser/data/spdx/spdx.json` | **DO NOT MODIFY** Full SPDX licence list (loaded at runtime) |
 | `src/licence_normaliser/data/opendefinition/opendefinition.json` | **DO NOT MODIFY** Full OpenDefinition list (loaded at runtime) |
 | `src/licence_normaliser/data/aliases/aliases.json` | Curated aliases with rich metadata (includes migrated URLs and shorthand aliases) |
@@ -89,7 +90,7 @@ print(v.family.key)    # "cc"
 
 ```python name=test_strict_mode
 import pytest
-from licence_normaliser import normalise_licence, LicenceNotFoundError
+from licence_normaliser import normalise_licence, LicenceNotFoundError, LicenceTrace, LicenceTraceStage
 
 # Would normally raise: Licence not found: 'unknown string'
 with pytest.raises(LicenceNotFoundError):
@@ -183,10 +184,13 @@ licence-normaliser update-data --force
 This fetches fresh JSON from the authoritative upstream URLs and writes them to:
 - `src/licence_normaliser/data/spdx/spdx.json`
 - `src/licence_normaliser/data/opendefinition/opendefinition.json`
+- `src/licence_normaliser/data/osi/osi.json`
+- `src/licence_normaliser/data/creativecommons/creativecommons.json`
+- `src/licence_normaliser/data/scancode_licensedb/scancode_licensedb.json`
 
 ---
 
-## 4a. Trace / Explain
+## 5. Trace / Explain
 
 When debugging why a licence resolves a certain way, or aligning curated
 data sources, use the trace feature:
@@ -208,6 +212,7 @@ ENABLE_LICENCE_NORMALISER_TRACE=1 licence-normaliser normalise "MIT"
 
 ```python name=test_trace
 from licence_normaliser import normalise_licence
+
 v = normalise_licence("MIT", trace=True)
 print(v.explain())
 ```
@@ -225,7 +230,7 @@ This is essential for:
 
 ---
 
-## 5. Adding a new parser
+## 6. Adding a new parser
 
 Parsers implement plugin interfaces and can be added to `src/licence_normaliser/parsers/`:
 
@@ -266,7 +271,7 @@ def _load_registry_plugins() -> list[type]:
 
 ---
 
-## 6. Coding conventions
+## 7. Coding conventions
 
 - Line length: **88 characters** (ruff)
 - Every non-test module must have `__all__`, `__author__`, `__copyright__`, `__license__`
@@ -281,7 +286,7 @@ Run linting: `make ruff` or `make pre-commit`
 
 ---
 
-## 7. Agent workflow: adding features or fixing bugs
+## 8. Agent workflow: adding features or fixing bugs
 
 1. **Check the mission** - does the change preserve the no-dependencies policy and three-level hierarchy?
 2. **Identify the correct location**:
@@ -299,7 +304,7 @@ Run linting: `make ruff` or `make pre-commit`
 
 ---
 
-## 8. Testing rules
+## 9. Testing rules
 
 > [!NOTE]
 > Python 3.15 is being tested on GitHub CI, but not inside a local Docker image.
@@ -337,8 +342,9 @@ src/licence_normaliser/tests/
     test_models.py          - LicenceFamily, LicenceName, LicenceVersion
     test_aliases.py         - non-CC aliases (Apache, MIT, BSD, GPL, etc.)
     test_alias_expansion.py - explicit aliases array expansion feature
-    test_publisher.py       - publisher URLs and shorthand aliases
     test_prose.py           - prose pattern matching
+    test_trace.py           - resolution tracing and explain functionality
+    test_cache.py           - caching behavior tests
 ```
 
 ### Documentation snippet conventions
@@ -367,7 +373,7 @@ assert isinstance(foo, Foo)
 
 ---
 
-## 9. Forbidden
+## 10. Forbidden
 
 - Adding external dependencies is strictly forbidden
 - Removing existing normalisation coverage is strictly forbidden
