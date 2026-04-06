@@ -22,6 +22,7 @@ When `sync-documentation` is invoked:
 ### Step 1: Extract Ground Truth from Code
 
 Scan source code to identify:
+
 - **Public API**: Exports from `__all__` in `__init__.py`
 - **Parser classes**: All classes in `parsers/` directory
 - **CLI commands**: Subcommands defined in `cli/_main.py`
@@ -31,6 +32,7 @@ Scan source code to identify:
 ### Step 2: Scan Documentation Files
 
 Read and analyze:
+
 - `README.rst` - Public API, CLI, quick start
 - `AGENTS.md` - Architecture, code patterns, examples
 - `ARCHITECTURE.rst` - Plugin interfaces, parser classes
@@ -41,6 +43,7 @@ Read and analyze:
 ### Step 3: Identify Misalignments
 
 Compare code ground truth against documentation:
+
 - Missing parsers in tables
 - Undocumented CLI commands
 - Missing API exports
@@ -50,6 +53,7 @@ Compare code ground truth against documentation:
 ### Step 4: Auto-Fix Documentation
 
 **The agent directly edits documentation files** to align with code:
+
 - Add missing entries to tables
 - Update code examples
 - Fix file references
@@ -60,6 +64,7 @@ Compare code ground truth against documentation:
 ### Step 5: Report Changes
 
 After fixing, report:
+
 - Which files were modified
 - What changes were made
 - Any issues that couldn't be auto-fixed
@@ -215,6 +220,7 @@ AGENTS.md uses executable code blocks with `name=<test_name>` attributes:
 ````
 
 When adding examples:
+
 - Use descriptive names: `test_<feature>_<scenario>`
 - Use `<!-- continue: <name> -->` to chain related blocks
 - Ensure imports are at the top of the first block
@@ -271,87 +277,7 @@ Instead, document the `licence-normaliser update-data --force` command in README
 
 ---
 
-## Documentation Validator Tool (Separate from Agent Sync)
-
-**Note**: The `documentation-validator` is a Python script (separate from this
-agent-based skill) that can be run manually or in CI. It performs similar
-checks but does NOT auto-fix documentation.
-
-The `documentation-validator` tool validates documentation against source code
-ground truth. Use it for CI validation or manual checking, but for automatic
-syncing, use the agent-based `sync-documentation` approach described above.
-
-### What It Checks
-
-The tool performs these automated checks:
-
-| Check | Description |
-| ----- | ----------- |
-| **File paths** | All referenced files (e.g., `src/licence_normaliser/...`) exist |
-| **Public API** | `__all__` exports in `__init__.py` are documented |
-| **Parser classes** | All parsers in `parsers/` are listed in tables |
-| **CLI commands** | All CLI subcommands are documented |
-| **Code blocks** | Python code blocks have `:name:` attributes |
-| **Cross-references** | Internal doc links are valid |
-
-### Usage
-
-```sh
-# Check all documentation
-uv run python scripts/documentation_validator.py
-
-# Check with verbose output
-uv run python scripts/documentation_validator.py -v
-
-# Output JSON report (for CI)
-uv run python scripts/documentation_validator.py --json
-
-# Auto-fix issues where possible (not yet implemented)
-uv run python scripts/documentation_validator.py --fix
-```
-
-### Exit Codes
-
-| Code | Meaning |
-|------|---------|
-| 0 | All documentation in validated |
-| 1 | One or more mismatches found |
-
-### When to Use Agent-Based Sync vs Validator Script
-
 **Use Agent-Based Sync (`sync-documentation`) when:**
 - User explicitly asks to "sync documentation"
 - You need documentation auto-fixed, not just validated
 - You want an interactive, conversational workflow
-
-**Use Validator Script (`documentation-validator`) when:**
-- Running in CI/CD pipelines
-- You want a non-zero exit code on validation failures
-- You need JSON output for programmatic processing
-- You prefer running a standalone script
-
-### When to Run Validator Script
-
-Run `documentation-validator`:
-
-- After adding new parsers or plugins
-- After adding new CLI commands
-- After changing the public API (`__all__`)
-- Before committing documentation changes
-- In CI to ensure docs stay validated against source code
-
-### Interpreting Output
-
-The tool categorizes findings by severity:
-
-- 🔴 **Error** - Documentation is incorrect or misleading (e.g., missing CLI command)
-- 🟡 **Warning** - Documentation is incomplete (e.g., undocumented parser)
-- 🔵 **Info** - Suggested improvements (e.g., missing code block name)
-
-### Implementation
-
-The tool is implemented in `scripts/documentation_validator.py` and uses:
-
-- **AST parsing** for reliable source code extraction
-- **Regex patterns** for RST/Markdown parsing
-- **Modular checks** that can be extended for new validation rules
