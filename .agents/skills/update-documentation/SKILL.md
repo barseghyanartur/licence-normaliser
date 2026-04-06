@@ -1,11 +1,70 @@
 ---
 name: update-documentation
-description: Update project documentation when implementing new features. Use when adding parsers, aliases, prose patterns, API changes, or any feature that affects user-facing behavior. Always check and update README.rst, AGENTS.md, ARCHITECTURE.rst, CONTRIBUTING.rst, and data README files as appropriate.
+description: Sync project documentation with source code. Use when user asks to sync-documentation or when code changes may have caused docs to become stale. Scans code and docs, finds misalignments, and auto-fixes them. Pure agent-based - no Python scripts involved.
 ---
 
 # Update Documentation Skill
 
-Guidelines for updating licence-normaliser documentation when implementing new features.
+**Operation mode**: Pure agent-based documentation synchronization.
+
+When the user asks to `sync-documentation`, the agent:
+1. Scans source code to extract ground truth (public API, parsers, CLI commands, exceptions)
+2. Scans all documentation files
+3. Identifies misalignments between code and docs
+4. **Auto-fixes documentation** to match code (reports what was changed)
+
+**This is NOT a Python script** - the agent performs all analysis and edits directly.
+
+## Agent-Based Sync Process
+
+When `sync-documentation` is invoked:
+
+### Step 1: Extract Ground Truth from Code
+
+Scan source code to identify:
+- **Public API**: Exports from `__all__` in `__init__.py`
+- **Parser classes**: All classes in `parsers/` directory
+- **CLI commands**: Subcommands defined in `cli/_main.py`
+- **Exceptions**: Exception classes in `exceptions.py`
+- **Model classes**: Dataclasses in `_models.py`
+
+### Step 2: Scan Documentation Files
+
+Read and analyze:
+- `README.rst` - Public API, CLI, quick start
+- `AGENTS.md` - Architecture, code patterns, examples
+- `ARCHITECTURE.rst` - Plugin interfaces, parser classes
+- `CONTRIBUTING.rst` - Contribution workflow
+- `src/licence_normaliser/data/README.rst` - Data file formats
+- `scripts/README.rst` - Utility scripts
+
+### Step 3: Identify Misalignments
+
+Compare code ground truth against documentation:
+- Missing parsers in tables
+- Undocumented CLI commands
+- Missing API exports
+- Broken file path references
+- Missing code block names
+
+### Step 4: Auto-Fix Documentation
+
+**The agent directly edits documentation files** to align with code:
+- Add missing entries to tables
+- Update code examples
+- Fix file references
+- Add missing sections
+
+**SKILL.md is NOT modified** - it remains the source of truth for the skill behavior.
+
+### Step 5: Report Changes
+
+After fixing, report:
+- Which files were modified
+- What changes were made
+- Any issues that couldn't be auto-fixed
+
+---
 
 ## Documentation Files Overview
 
@@ -212,12 +271,15 @@ Instead, document the `licence-normaliser update-data --force` command in README
 
 ---
 
-## Documentation Validator Tool
+## Documentation Validator Tool (Separate from Agent Sync)
 
-The `documentation-validator` tool automatically validates documentation against
-source code ground truth. It extracts actual API exports, parser classes, CLI
-commands, and exceptions from the source code, then checks that documentation
-files accurately reflect them.
+**Note**: The `documentation-validator` is a Python script (separate from this
+agent-based skill) that can be run manually or in CI. It performs similar
+checks but does NOT auto-fix documentation.
+
+The `documentation-validator` tool validates documentation against source code
+ground truth. Use it for CI validation or manual checking, but for automatic
+syncing, use the agent-based `sync-documentation` approach described above.
 
 ### What It Checks
 
@@ -255,7 +317,20 @@ uv run python scripts/documentation_validator.py --fix
 | 0 | All documentation in validated |
 | 1 | One or more mismatches found |
 
-### When to Run
+### When to Use Agent-Based Sync vs Validator Script
+
+**Use Agent-Based Sync (`sync-documentation`) when:**
+- User explicitly asks to "sync documentation"
+- You need documentation auto-fixed, not just validated
+- You want an interactive, conversational workflow
+
+**Use Validator Script (`documentation-validator`) when:**
+- Running in CI/CD pipelines
+- You want a non-zero exit code on validation failures
+- You need JSON output for programmatic processing
+- You prefer running a standalone script
+
+### When to Run Validator Script
 
 Run `documentation-validator`:
 
