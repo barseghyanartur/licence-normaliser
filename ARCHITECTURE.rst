@@ -140,6 +140,20 @@ Step 3 -- URL map
 * Open Definition data source -- official reference URLs.
 * OSI data source -- HTML reference URLs.
 * Creative Commons scraped data -- multilingual deed URLs.
+* ``data/aliases/aliases.json`` -- each entry may include a ``urls`` array
+  listing additional URLs that resolve to that licence.
+
+Each entry in ``aliases.json`` may include a ``urls`` array::
+
+    "my alias": {
+        "version_key": "my-licence-1.0",
+        "name_key": "my-licence",
+        "family_key": "osi",
+        "urls": [
+            "https://example.org/licenses/my-licence-1.0",
+            "https://example.com/my-licence"
+        ]
+    }
 
 URLs are **normalised once at registry-build time**:
 
@@ -376,8 +390,8 @@ All keys in the ``aliases`` array inherit the same ``version_key``,
 Adding a new URL
 ----------------
 
-Optionally, add an ``urls`` array to define additional lookup variants
-(e.g. hyphen vs space forms) that all resolve to the same target:
+Edit ``data/aliases/aliases.json``.  Each entry may include a ``urls``
+array listing additional URLs that resolve to that licence:
 
 .. code-block:: json
 
@@ -395,6 +409,10 @@ Optionally, add an ``urls`` array to define additional lookup variants
         ]
       }
     }
+
+All URLs in the ``urls`` array are normalised (scheme forced to ``https``,
+trailing slash stripped, lowercased) and added to the ``URL_MAP`` during
+registry build time.
 
 Adding a prose pattern
 ----------------------
