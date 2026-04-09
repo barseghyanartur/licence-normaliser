@@ -331,6 +331,18 @@
     ]
   },
 
+  "cc by nc 1.0": {
+    "version_key": "cc-by-nc-1.0",
+    "name_key": "cc-by-nc",
+    "family_key": "cc",
+    "aliases": [
+      "cc-by-nc-1.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/by-nc/1.0/"
+    ]
+  },
+
   "cc by nc sa 1.0": {
     "version_key": "cc-by-nc-sa-1.0",
     "name_key": "cc-by-nc-sa",
@@ -340,6 +352,42 @@
     ],
     "urls": [
       "https://creativecommons.org/licenses/by-nc-sa/1.0/"
+    ]
+  },
+
+  "cc by nd 1.0": {
+    "version_key": "cc-by-nd-1.0",
+    "name_key": "cc-by-nd",
+    "family_key": "cc",
+    "aliases": [
+      "cc-by-nd-1.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/by-nd/1.0/"
+    ]
+  },
+
+  "cc by nd 2.5": {
+    "version_key": "cc-by-nd-2.5",
+    "name_key": "cc-by-nd",
+    "family_key": "cc",
+    "aliases": [
+      "cc-by-nd-2.5"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/by-nd/2.5/"
+    ]
+  },
+
+  "cc by sa 1.0": {
+    "version_key": "cc-by-sa-1.0",
+    "name_key": "cc-by-sa",
+    "family_key": "cc",
+    "aliases": [
+      "cc-by-sa-1.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/by-sa/1.0/"
     ]
   },
 
@@ -879,6 +927,114 @@
     ],
     "urls": [
       "https://creativecommons.org/licenses/by-sa/4.0"
+    ]
+  },
+
+  "cc devnations 2.0": {
+    "version_key": "cc-devnations-2.0",
+    "name_key": "cc-devnations",
+    "family_key": "cc",
+    "aliases": [
+      "cc-devnations-2.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/devnations/2.0/"
+    ]
+  },
+
+  "cc nc 1.0": {
+    "version_key": "cc-nc-1.0",
+    "name_key": "cc-nc",
+    "family_key": "cc",
+    "aliases": [
+      "cc-nc-1.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/nc/1.0/"
+    ]
+  },
+
+  "cc nc sa 1.0": {
+    "version_key": "cc-nc-sa-1.0",
+    "name_key": "cc-nc-sa",
+    "family_key": "cc",
+    "aliases": [
+      "cc-nc-sa-1.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/nc-sa/1.0/"
+    ]
+  },
+
+  "cc nc sampling plus 1.0": {
+    "version_key": "cc-nc-sampling-plus-1.0",
+    "name_key": "cc-nc-sampling-plus",
+    "family_key": "cc",
+    "aliases": [
+      "cc-nc-sampling-plus-1.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/nc-sampling+/1.0/"
+    ]
+  },
+
+  "cc nd 1.0": {
+    "version_key": "cc-nd-1.0",
+    "name_key": "cc-nd",
+    "family_key": "cc",
+    "aliases": [
+      "cc-nd-1.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/nd/1.0/"
+    ]
+  },
+
+  "cc nd nc 1.0": {
+    "version_key": "cc-nd-nc-1.0",
+    "name_key": "cc-nd-nc",
+    "family_key": "cc",
+    "aliases": [
+      "cc-nd-nc-1.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/nd-nc/1.0/"
+    ]
+  },
+
+  "cc sa 1.0": {
+    "version_key": "cc-sa-1.0",
+    "name_key": "cc-sa",
+    "family_key": "cc",
+    "aliases": [
+      "cc-sa-1.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/sa/1.0/"
+    ]
+  },
+
+  "cc sampling 1.0": {
+    "version_key": "cc-sampling-1.0",
+    "name_key": "cc-sampling",
+    "family_key": "cc",
+    "aliases": [
+      "cc-sampling-1.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/sampling/1.0/"
+    ]
+  },
+
+  "cc sampling plus 1.0": {
+    "version_key": "cc-sampling-plus-1.0",
+    "name_key": "cc-sampling-plus",
+    "family_key": "cc",
+    "aliases": [
+      "cc-sampling-plus-1.0"
+    ],
+    "urls": [
+      "https://creativecommons.org/licenses/sampling+/1.0/"
     ]
   },
 
