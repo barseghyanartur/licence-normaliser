@@ -133,7 +133,7 @@ LICENCE_MATRIX = [
     (
         "Article published under CC by-nc-igo license.",
         "cc-by-nc-igo",
-        "cc-by-nc-igo",
+        "cc-by-nc",
         "cc",
     ),
     # cc by-nc-nd variants
@@ -231,13 +231,13 @@ LICENCE_MATRIX = [
     ),
     (
         "This is an open access article under the CC BY IGO license.",
-        "cc-by",
+        "cc-by-igo",
         "cc-by",
         "cc",
     ),
     (
         "This is an open access article under the CC BY-NC-ND IGO license.",
-        "cc-by-nc-nd",
+        "cc-by-nc-nd-igo",
         "cc-by-nc-nd",
         "cc",
     ),
@@ -256,13 +256,13 @@ LICENCE_MATRIX = [
     # Hyphenated CC licence forms in prose (CC-BY-NC-ND style)
     (
         "This is an open access article CC-BY-NC-ND IGO",
-        "cc-by-nc-nd",
+        "cc-by-nc-nd-igo",
         "cc-by-nc-nd",
         "cc",
     ),
     (
         "This is an open access article CC-BY-NC-ND-IGO",
-        "cc-by-nc-nd",
+        "cc-by-nc-nd-igo",
         "cc-by-nc-nd",
         "cc",
     ),
