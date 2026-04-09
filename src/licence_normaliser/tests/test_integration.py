@@ -133,7 +133,7 @@ LICENCE_MATRIX = [
     (
         "Article published under CC by-nc-igo license.",
         "cc-by-nc-igo",
-        "cc-by-nc-igo",
+        "cc-by-nc",
         "cc",
     ),
     # cc by-nc-nd variants
