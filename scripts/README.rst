@@ -4,7 +4,7 @@ Scripts
 **Actively used ones are:**
 
 - sort_aliases.py
-- add_alias_variations.py
+- add_aliases_variations.py
 - diff_creativecommons_and_aliases.py
 - find_alias_duplicates.py
 
