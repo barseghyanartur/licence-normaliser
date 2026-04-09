@@ -206,7 +206,7 @@ def interactive_add(
                     aliases_data[ek]["aliases"].extend(miss)
                     to_add_count += len(miss)
                 print("\nAdded all variants")
-                break
+                return to_add_count
             elif response == "q":
                 print("\nQuitting...")
                 return to_add_count
