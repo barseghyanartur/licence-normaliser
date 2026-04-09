@@ -264,6 +264,18 @@
       "https://creativecommons.org/licenses/by/3.0/deed.en_us"
     ]
   },
+  "cc by igo": {
+    "version_key": "cc-by-igo",
+    "name_key": "cc-by",
+    "family_key": "cc",
+    "aliases": [
+      "cc-by-igo",
+      "cc by igo",
+      "cc-by igo",
+      "cc by-igo",
+      "cc-by-igo"
+    ]
+  },
   "cc by 3.0-igo": {
     "version_key": "cc-by-3.0-igo",
     "name_key": "cc-by",
@@ -658,6 +670,31 @@
       "https://creativecommons.org/licenses/by-nc-nd/3.0/igo"
     ],
     "justification": "IGO is a jurisdiction tag not a rights modifier. Rights profile (Attribution + NonCommercial + NoDerivatives) is identical to base instrument. Enforcement differs (international arbitration vs domestic courts) but does not affect license type."
+  },
+  "cc by-nc-nd igo": {
+    "version_key": "cc-by-nc-nd-igo",
+    "name_key": "cc-by-nc-nd",
+    "family_key": "cc",
+    "aliases": [
+      "cc-by-nc-nd-igo",
+      "cc by nc-nd igo",
+      "cc-by nc-nd igo",
+      "cc by nc-nd-igo",
+      "cc-by nc-nd-igo",
+      "cc-by-nc-nd igo",
+      "creative commons attribution-noncommercial-noderivatives igo",
+      "creative commons by-nc-nd igo",
+      "cc by nc nd igo",
+      "cc by nc-nd-igo",
+      "cc by-nc nd igo",
+      "cc by-nc nd-igo",
+      "cc by-nc-nd-igo",
+      "cc-by nc nd igo",
+      "cc-by nc nd-igo",
+      "cc-by nc-nd-igo",
+      "cc-by-nc nd igo",
+      "cc-by-nc nd-igo"
+    ]
   },
   "cc by-nc-nd 4.0": {
     "version_key": "cc-by-nc-nd-4.0",
