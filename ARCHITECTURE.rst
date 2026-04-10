@@ -56,12 +56,10 @@ three objects that form a chain.
    * - Version
      - ``LicenceVersion``
      - ``"cc-by-4.0"``, ``"mit"``, ``"wiley-tdm-1.1"``
-   * - Version (jurisdiction)
-     - ``LicenceVersion.jurisdiction``
-     - ``"uk"``, ``"au"`` (optional)
-   * - Version (scope)
-     - ``LicenceVersion.scope``
-     - ``"igo"`` (optional)
+
+``LicenceVersion`` also has optional ``jurisdiction`` attributes
+(e.g., ``"uk"``, ``"au"``) and ``scope`` (e.g., ``"igo"``) for
+Creative Commons licences.
 
 Class relationships
 -------------------
@@ -71,8 +69,6 @@ Class relationships
 - ``LicenceVersion.family`` delegates to ``licence.family``.
 - All three classes are **immutable** (frozen dataclasses), implement
   ``__str__``, ``__eq__``, and ``__hash__``.
-- ``LicenceVersion`` has optional ``jurisdiction`` (e.g., ``"uk"``, ``"au"``)
-  and ``scope`` (e.g., ``"igo"``) fields for Creative Commons licences.
 
 Resolution pipeline
 ===================

@@ -1,4 +1,4 @@
-.PHONY: build test test-env shell shell-env \
+.PHONY: build test test-env shell shell-env quick-test ipython \
         doc8 ruff mypy clean-dev clean-test clean pre-commit
 
 VERSION := 0.6
