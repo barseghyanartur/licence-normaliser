@@ -111,8 +111,8 @@ LICENCE_MATRIX = [
     ("cc by-sa 4.0", "cc-by-sa-4.0", "cc-by-sa", "cc"),
     ("cc-by-sa-4.0", "cc-by-sa-4.0", "cc-by-sa", "cc"),
     ("CC BY-SA 3.0", "cc-by-sa-3.0", "cc-by-sa", "cc"),
-    ("cc-by-3.0-igo", "cc-by-3.0-igo", "cc-by", "cc"),
-    ("cc-by-nc-nd-3.0-igo", "cc-by-nc-nd-3.0-igo", "cc-by-nc-nd", "cc"),
+    ("cc-by-3.0-igo", "cc-by-3.0-igo", "cc-by", "cc", None, "igo"),
+    ("cc-by-nc-nd-3.0-igo", "cc-by-nc-nd-3.0-igo", "cc-by-nc-nd", "cc", None, "igo"),
     # === NEW: CC licence prose patterns (2025-04-02) ===
     # cc by variants
     ("Article published under CC by license.", "cc-by", "cc-by", "cc"),
@@ -120,9 +120,23 @@ LICENCE_MATRIX = [
     ("Article published under CC by 2.0 license.", "cc-by-2.0", "cc-by", "cc"),
     ("Article published under CC by 2.5 license.", "cc-by-2.5", "cc-by", "cc"),
     ("Article published under CC by 3.0 license.", "cc-by-3.0", "cc-by", "cc"),
-    ("Article published under CC by 3.0-igo license.", "cc-by-3.0-igo", "cc-by", "cc"),
-    ("Paper licensed cc-by 3.0 igo.", "cc-by-3.0-igo", "cc-by", "cc"),
-    ("Article published under CC by 4.0-igo license.", "cc-by-4.0-igo", "cc-by", "cc"),
+    (
+        "Article published under CC by 3.0-igo license.",
+        "cc-by-3.0-igo",
+        "cc-by",
+        "cc",
+        None,
+        "igo",
+    ),
+    ("Paper licensed cc-by 3.0 igo.", "cc-by-3.0-igo", "cc-by", "cc", None, "igo"),
+    (
+        "Article published under CC by 4.0-igo license.",
+        "cc-by-4.0-igo",
+        "cc-by",
+        "cc",
+        None,
+        "igo",
+    ),
     ("Article published under CC by 4.0 license.", "cc-by-4.0", "cc-by", "cc"),
     # cc by-nc variants
     ("Article published under CC by-nc license.", "cc-by-nc", "cc-by-nc", "cc"),
@@ -135,6 +149,8 @@ LICENCE_MATRIX = [
         "cc-by-nc-igo",
         "cc-by-nc",
         "cc",
+        None,
+        "igo",
     ),
     # cc by-nc-nd variants
     (
@@ -166,6 +182,8 @@ LICENCE_MATRIX = [
         "cc-by-nc-nd-3.0-igo",
         "cc-by-nc-nd",
         "cc",
+        None,
+        "igo",
     ),
     (
         "Article published under CC by-nc-nd 4.0 license.",
@@ -203,6 +221,8 @@ LICENCE_MATRIX = [
         "cc-by-nc-sa-3.0-igo",
         "cc-by-nc-sa",
         "cc",
+        None,
+        "igo",
     ),
     (
         "Article published under CC by-nc-sa 4.0 license.",
@@ -234,12 +254,16 @@ LICENCE_MATRIX = [
         "cc-by-igo",
         "cc-by",
         "cc",
+        None,
+        "igo",
     ),
     (
         "This is an open access article under the CC BY-NC-ND IGO license.",
         "cc-by-nc-nd-igo",
         "cc-by-nc-nd",
         "cc",
+        None,
+        "igo",
     ),
     (
         "This is an open access article under the CC BY-NC license.",
@@ -259,12 +283,16 @@ LICENCE_MATRIX = [
         "cc-by-nc-nd-igo",
         "cc-by-nc-nd",
         "cc",
+        None,
+        "igo",
     ),
     (
         "This is an open access article CC-BY-NC-ND-IGO",
         "cc-by-nc-nd-igo",
         "cc-by-nc-nd",
         "cc",
+        None,
+        "igo",
     ),
     (
         "This is an open access article CC-BY-NC-ND",
@@ -373,12 +401,16 @@ LICENCE_MATRIX = [
         "cc-by-nc-nd-3.0-igo",
         "cc-by-nc-nd",
         "cc",
+        None,
+        "igo",
     ),
     (
         "https://creativecommons.org/licenses/by/3.0/igo/",
         "cc-by-3.0-igo",
         "cc-by",
         "cc",
+        None,
+        "igo",
     ),
     ("https://creativecommons.org/publicdomain/zero/1.0/", "cc0-1.0", "cc0", "cc0"),
     ("http://creativecommons.org/publicdomain/zero/1.0/", "cc0-1.0", "cc0", "cc0"),
@@ -533,9 +565,17 @@ LICENCE_MATRIX = [
 
 
 @pytest.mark.parametrize(
-    "raw,expected_key,expected_licence,expected_family", LICENCE_MATRIX
+    "raw,expected_key,expected_licence,expected_family,expected_jurisdiction,expected_scope",
+    [(*row, *([None] * (6 - len(row)))) for row in LICENCE_MATRIX],
 )
-def test_licence_matrix(raw, expected_key, expected_licence, expected_family):
+def test_licence_matrix(
+    raw,
+    expected_key,
+    expected_licence,
+    expected_family,
+    expected_jurisdiction,
+    expected_scope,
+):
     v = normalise_licence(raw)
     assert v.key == expected_key, f"input: {raw!r}  key: {v.key!r} != {expected_key!r}"
     assert v.licence.key == expected_licence, (
@@ -544,6 +584,15 @@ def test_licence_matrix(raw, expected_key, expected_licence, expected_family):
     assert v.family.key == expected_family, (
         f"input: {raw!r}  family: {v.family.key!r} != {expected_family!r}"
     )
+    if expected_jurisdiction is not None:
+        assert v.jurisdiction == expected_jurisdiction, (
+            f"input: {raw!r}  "
+            f"jurisdiction: {v.jurisdiction!r} != {expected_jurisdiction!r}"
+        )
+    if expected_scope is not None:
+        assert v.scope == expected_scope, (
+            f"input: {raw!r}  scope: {v.scope!r} != {expected_scope!r}"
+        )
 
 
 def test_strict_mode_unknown_raises():
