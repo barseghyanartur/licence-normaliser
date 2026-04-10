@@ -19,6 +19,22 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.6
+---
+2026-04-11
+
+- Added jurisdiction and scope detection for Creative Commons license URLs
+  (e.g., ``http://creativecommons.org/licenses/by-nc/2.0/uk`` →
+  jurisdiction "uk", ``http://creativecommons.org/licenses/by-nc/3.0/igo`` →
+  scope "igo").
+- Added ``jurisdiction`` and ``scope`` optional fields to ``LicenceVersion``
+  model.
+- Added 10 jurisdiction test cases to LICENCE_MATRIX covering au, ca, nz, us,
+  ph, ug, mt, uk.
+- Fixed bug where jurisdiction/scope extracted from URLs wasn't being included
+  in the resolved key.
+
+
 0.5.2
 -----
 2026-04-10
