@@ -1,6 +1,6 @@
 # AGENTS.md - licence-normaliser
 
-**Repository**: https://github.com/barseghyanartur/licence-normaliser
+**Repository**: <https://github.com/barseghyanartur/licence-normaliser>
 **Maintainer**: Artur Barseghyan <artur.barseghyan@gmail.com>
 
 ---
@@ -97,7 +97,7 @@ from licence_normaliser import normalise_licence
 
 # UK jurisdiction
 v = normalise_licence("http://creativecommons.org/licenses/by-nc/2.0/uk")
-print(v.key)           # "cc-by-nc-2.0"
+print(v.key)           # "cc-by-nc-2.0-uk"
 print(v.jurisdiction)  # "uk"
 print(v.scope)         # None
 
@@ -204,6 +204,7 @@ licence-normaliser update-data --force
 ```
 
 This fetches fresh JSON from the authoritative upstream URLs and writes them to:
+
 - `src/licence_normaliser/data/spdx/spdx.json`
 - `src/licence_normaliser/data/opendefinition/opendefinition.json`
 - `src/licence_normaliser/data/osi/osi.json`
@@ -226,6 +227,7 @@ licence-normaliser batch MIT Apache --trace
 ```
 
 Or via environment variable:
+
 ```sh
 ENABLE_LICENCE_NORMALISER_TRACE=1 licence-normaliser normalise "MIT"
 ```
@@ -240,12 +242,14 @@ print(v.explain())
 ```
 
 The trace shows:
+
 - Each resolution stage attempted (alias → registry → url → prose → fallback)
 - Whether it matched (✓) or didn't (-)
 - Source file and line number for curated sources (aliases.json, prose_patterns.json, spdx.json, etc.)
 - Final result with version_key, name_key, family_key
 
 This is essential for:
+
 - Understanding why a license resolves unexpectedly
 - Finding the source line that defines an alias when curating data
 - Debugging resolution order issues
@@ -274,7 +278,7 @@ class MyParser(BasePlugin, RegistryPlugin, URLPlugin):
         return {}
 ```
 
-2. Register it in `src/licence_normaliser/defaults.py`:
+1. Register it in `src/licence_normaliser/defaults.py`:
 
 <!-- continue: test_adding_new_parser -->
 ```python name=test_adding_new_parser_register
