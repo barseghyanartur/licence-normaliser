@@ -77,7 +77,7 @@ class LicenceVersion:
         jurisdiction: Optional[str] = None,
         scope: Optional[str] = None,
         _trace: Optional[object] = None,
-    ):
+    ) -> None:
         object.__setattr__(self, "key", key)
         object.__setattr__(self, "url", url)
         object.__setattr__(self, "licence", licence)
