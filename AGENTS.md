@@ -404,6 +404,13 @@ assert isinstance(foo, Foo)
 - Adding external dependencies is strictly forbidden
 - Removing existing normalisation coverage is strictly forbidden
 - Changing the three-level hierarchy structure is strictly forbidden
+- Adding end-anchors (`$` or `\Z`) to the Creative Commons URL patterns
+  in `data/prose/prose_patterns.json` is strictly forbidden. These patterns
+  are intentionally unanchored/prefix-matching: they extract only the base
+  version key (e.g. `cc-by-sa-3.0`) and rely on `_extract_jurisdiction_and_scope()`
+  in `_normaliser.py` to handle `/igo/` and two-letter jurisdiction suffixes
+  separately. Anchoring them breaks the prose-fallback resolution path for all
+  jurisdiction- and scope-bearing CC URLs.
 - Modifying the following files is strictly forbidden:
 
   - `src/licence_normaliser/data/creativecommons/creativecommons.json`
