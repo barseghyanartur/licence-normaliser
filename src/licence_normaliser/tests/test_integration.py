@@ -740,15 +740,14 @@ def test_licence_matrix(
     assert v.family.key == expected_family, (
         f"input: {raw!r}  family: {v.family.key!r} != {expected_family!r}"
     )
-    if expected_jurisdiction is not None:
-        assert v.jurisdiction == expected_jurisdiction, (
-            f"input: {raw!r}  "
-            f"jurisdiction: {v.jurisdiction!r} != {expected_jurisdiction!r}"
-        )
-    if expected_scope is not None:
-        assert v.scope == expected_scope, (
-            f"input: {raw!r}  scope: {v.scope!r} != {expected_scope!r}"
-        )
+
+    assert v.jurisdiction == expected_jurisdiction, (
+        f"input: {raw!r}  jurisdiction: {v.jurisdiction!r} != {expected_jurisdiction!r}"
+    )
+
+    assert v.scope == expected_scope, (
+        f"input: {raw!r}  scope: {v.scope!r} != {expected_scope!r}"
+    )
 
 
 def test_strict_mode_unknown_raises():
