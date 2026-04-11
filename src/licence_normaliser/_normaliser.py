@@ -336,7 +336,7 @@ class LicenceNormaliser:
         stages.append(LicenceTraceStage("registry", cleaned, "", False))
 
         # 3. URL lookup
-        is_url = cleaned.startswith("http://") or cleaned.startswith("https://")
+        is_url = cleaned.startswith(("http://", "https://"))
         if (jurisdiction or scope) and is_url:
             raw_key = cleaned.rstrip("/").lower()
             if raw_key.startswith("http://"):
@@ -393,7 +393,7 @@ class LicenceNormaliser:
             return self._make_with_trace(v, trace)
 
         # Try raw URL if normalized didn't match
-        if cleaned.startswith("http://") or cleaned.startswith("https://"):
+        if cleaned.startswith(("http://", "https://")):
             raw_key = cleaned.rstrip("/").lower()
             if raw_key in self._url_map:
                 resolved = self._url_map[raw_key]
@@ -508,7 +508,7 @@ class LicenceNormaliser:
             return self._make_with_jurisdiction_scope(v, jurisdiction, scope)
 
         # 3. URL lookup
-        is_url = cleaned.startswith("http://") or cleaned.startswith("https://")
+        is_url = cleaned.startswith(("http://", "https://"))
         extracted_jur, extracted_scope = self._extract_jurisdiction_and_scope(cleaned)
         if (extracted_jur or extracted_scope) and is_url:
             raw_key = cleaned.rstrip("/").lower()
@@ -529,7 +529,7 @@ class LicenceNormaliser:
             return self._make_with_jurisdiction_scope(v, jurisdiction, scope)
 
         # Try raw URL if normalized didn't match
-        if cleaned.startswith("http://") or cleaned.startswith("https://"):
+        if cleaned.startswith(("http://", "https://")):
             raw_key = cleaned.rstrip("/").lower()
             if raw_key.startswith("http://"):
                 raw_key = "https://" + raw_key[7:]
@@ -671,7 +671,7 @@ class LicenceNormaliser:
         # - For CC licences, use override only if it's different from canonical
         # - For non-CC (GPL, AGPL, OSI, etc.), always return canonical (no stripping)
         override_name = self._name_overrides.get(canonical)
-        if canonical.startswith("cc-") or canonical.startswith("cc0"):
+        if canonical.startswith(("cc-", "cc0")):
             # CC licences: use override if present, otherwise fallback to _infer_name
             name_key = override_name if override_name else self._infer_name(canonical)
         else:
@@ -813,7 +813,7 @@ class LicenceNormaliser:
         - "http://creativecommons.org/licenses/by-nc/2.0/uk" -> ("uk", None)
         - "http://creativecommons.org/licenses/by-nc/3.0/igo" -> (None, "igo")
         """
-        if key.startswith("http://") or key.startswith("https://"):
+        if key.startswith(("http://", "https://")):
             parts = key.split("/")
             cc_types = {"by", "nc", "nd", "sa"}
             for part in parts:
