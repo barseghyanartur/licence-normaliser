@@ -337,6 +337,7 @@ class LicenceNormaliser:
 
         # 3. URL lookup
         is_url = cleaned.startswith(("http://", "https://"))
+        jurisdiction, scope = self._extract_jurisdiction_and_scope(cleaned)
         if (jurisdiction or scope) and is_url:
             raw_key = cleaned.rstrip("/").lower()
             if raw_key.startswith("http://"):
