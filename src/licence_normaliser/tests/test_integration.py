@@ -570,6 +570,22 @@ LICENCE_MATRIX = [
     ),
     ("https://creativecommons.org/publicdomain/zero/1.0/", "cc0-1.0", "cc0", "cc0"),
     ("http://creativecommons.org/publicdomain/zero/1.0/", "cc0-1.0", "cc0", "cc0"),
+    (
+        "https://www.creativecommons.org/licenses/by-sa/3.0/igo/",
+        "cc-by-sa-3.0-igo",
+        "cc-by-sa",
+        "cc",
+        None,
+        "igo",
+    ),
+    (
+        "https://www.creativecommons.org/licenses/by-nc-nd/3.0/au/",
+        "cc-by-nc-nd-3.0-au",
+        "cc-by-nc-nd",
+        "cc",
+        "au",
+        None,
+    ),
     # CC prose
     ("licensed under cc by-nc-nd 4.0 terms", "cc-by-nc-nd-4.0", "cc-by-nc-nd", "cc"),
     (
