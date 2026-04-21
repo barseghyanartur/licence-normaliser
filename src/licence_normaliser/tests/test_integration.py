@@ -690,6 +690,17 @@ LICENCE_MATRIX = [
     ("author manuscript", "author-manuscript", "author-manuscript", "publisher-oa"),
     ("open access", "other-oa", "other-oa", "other-oa"),
     ("other-oa", "other-oa", "other-oa", "other-oa"),
+    ("Open Government Licence v3.0", "ogl-uk-3.0", "ogl-uk", "ogl"),
+    (
+        "This article is made available under the Open Government License (OGL).",
+        "ogl-uk-3.0",
+        "ogl-uk",
+        "ogl",
+    ),
+    ("licensed under the OGL terms", "ogl-uk-3.0", "ogl-uk", "ogl"),
+    ("under the Open Government Licence", "ogl-uk-3.0", "ogl-uk", "ogl"),
+    ("Open Government Licence 1.0", "ogl-uk-1.0", "ogl-uk", "ogl"),
+    ("Open Government Licence 2.0", "ogl-uk-2.0", "ogl-uk", "ogl"),
     (
         "all rights reserved",
         "all-rights-reserved",

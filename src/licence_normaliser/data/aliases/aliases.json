@@ -1804,6 +1804,16 @@
     "name_key": "wtfpl",
     "family_key": "public-domain"
   },
+  "ogl": {
+    "version_key": "ogl",
+    "name_key": "ogl",
+    "family_key": "ogl",
+    "aliases": [
+      "ogl",
+      "open government licence",
+      "open government license"
+    ]
+  },
   "zlib": {
     "version_key": "zlib",
     "name_key": "zlib",

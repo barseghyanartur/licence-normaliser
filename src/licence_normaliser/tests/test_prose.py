@@ -129,21 +129,21 @@ class TestProsePatternMatching:
         v = normalise_licence(
             "This article is made available under the Open Government License (OGL)."
         )
-        assert v.key == "other-oa"
-        assert v.licence.key == "other-oa"
-        assert v.family.key == "other-oa"
+        assert v.key == "ogl-uk-3.0"
+        assert v.licence.key == "ogl-uk"
+        assert v.family.key == "ogl"
 
     def test_ogl_abbreviation_matched(self) -> None:
         v = normalise_licence("licensed under the OGL terms")
-        assert v.key == "other-oa"
-        assert v.licence.key == "other-oa"
-        assert v.family.key == "other-oa"
+        assert v.key == "ogl-uk-3.0"
+        assert v.licence.key == "ogl-uk"
+        assert v.family.key == "ogl"
 
     def test_open_government_licence_matched(self) -> None:
         v = normalise_licence("under the Open Government Licence")
-        assert v.key == "other-oa"
-        assert v.licence.key == "other-oa"
-        assert v.family.key == "other-oa"
+        assert v.key == "ogl-uk-3.0"
+        assert v.licence.key == "ogl-uk"
+        assert v.family.key == "ogl"
 
     def test_ogl_prose_already_working(self) -> None:
         v = normalise_licence(
@@ -152,3 +152,21 @@ class TestProsePatternMatching:
         assert v.key == "other-oa"
         assert v.licence.key == "other-oa"
         assert v.family.key == "other-oa"
+
+    def test_ogl_v3_prose_matched(self) -> None:
+        v = normalise_licence("Open Government Licence v3.0")
+        assert v.key == "ogl-uk-3.0"
+        assert v.licence.key == "ogl-uk"
+        assert v.family.key == "ogl"
+
+    def test_ogl_v2_prose_matched(self) -> None:
+        v = normalise_licence("under Open Government License v2.0")
+        assert v.key == "ogl-uk-2.0"
+        assert v.licence.key == "ogl-uk"
+        assert v.family.key == "ogl"
+
+    def test_ogl_v1_prose_matched(self) -> None:
+        v = normalise_licence("Open Government Licence 1.0")
+        assert v.key == "ogl-uk-1.0"
+        assert v.licence.key == "ogl-uk"
+        assert v.family.key == "ogl"
