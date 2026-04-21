@@ -8,6 +8,7 @@ description: Sync project documentation with source code. Use when user asks to 
 **Operation mode**: Pure agent-based documentation synchronization.
 
 When the user asks to `sync-documentation`, the agent:
+
 1. Scans source code to extract ground truth (public API, parsers, CLI commands, exceptions)
 2. Scans all documentation files
 3. Identifies misalignments between code and docs
@@ -296,6 +297,7 @@ Before finishing documentation updates:
 ## What NOT to Document
 
 Do NOT modify:
+
 - `src/licence_normaliser/data/spdx/spdx.json` (auto-refreshed)
 - `src/licence_normaliser/data/opendefinition/opendefinition.json` (auto-refreshed)
 - `src/licence_normaliser/data/osi/osi.json` (auto-refreshed)
@@ -307,6 +309,7 @@ Instead, document the `licence-normaliser update-data --force` command in README
 ---
 
 **Use Agent-Based Sync (`sync-documentation`) when:**
+
 - User explicitly asks to "sync documentation"
 - You need documentation auto-fixed, not just validated
 - You want an interactive, conversational workflow

@@ -28,6 +28,10 @@ Robust licence normalisation with a three-level hierarchy for common licences.
     :target: https://licence-normaliser.readthedocs.io/en/latest/llms.txt
     :alt: llms.txt - documentation for LLMs
 
+.. image:: https://deepwiki.com/badge.svg
+    :target: https://deepwiki.com/barseghyanartur/licence-normaliser
+    :alt: Ask DeepWiki
+
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://github.com/barseghyanartur/licence-normaliser/#Licence
    :alt: MIT
