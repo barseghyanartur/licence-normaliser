@@ -672,11 +672,9 @@ class LicenceNormaliser:
         # - For CC licences, use override only if it's different from canonical
         # - For non-CC (GPL, AGPL, OSI, etc.), always return canonical (no stripping)
         override_name = self._name_overrides.get(canonical)
-        if canonical.startswith(("cc-", "cc0")):
-            # CC licences: use override if present, otherwise fallback to _infer_name
+        if canonical.startswith(("cc-", "cc0")) or canonical.startswith("ogl-"):
             name_key = override_name if override_name else self._infer_name(canonical)
         else:
-            # Non-CC: use override if present and different, otherwise canonical
             name_key = (
                 override_name
                 if override_name and override_name != canonical
@@ -721,6 +719,8 @@ class LicenceNormaliser:
             return "copyleft"
         if k.startswith(("pddl-", "odbl", "odc-")):
             return "data" if k.startswith("pddl-") else "open-data"
+        if k.startswith("ogl"):
+            return "ogl"
         if k.startswith(
             (
                 "elsevier-oa",
@@ -797,6 +797,12 @@ class LicenceNormaliser:
                 if part.replace(".", "").isdigit():
                     return "-".join(parts[:i])
             return "-".join(parts[:2])
+        if k.startswith("ogl-"):
+            parts = k.split("-")
+            for i, part in enumerate(parts):
+                if part.replace(".", "").isdigit():
+                    return "-".join(parts[:i])
+            return k
         # For all other licences (GPL, AGPL, OSI, etc.), keep the key as-is
         return k
 

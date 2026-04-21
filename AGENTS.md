@@ -355,7 +355,8 @@ uv run pytest               # run all tests
 uv run pytest path/to/test_something.py  # run specific test
 ```
 
-**Important**: If you encounter tooling errors with local testing, fall back to Docker-based testing which is the canonical environment.
+**Important**: If you encounter tooling errors with local testing, fall back
+to Docker-based testing which is the canonical environment.
 
 ### Test layout
 
