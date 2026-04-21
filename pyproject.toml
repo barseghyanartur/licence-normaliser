@@ -50,7 +50,6 @@ dev = [
     "mypy",
     "ruff",
     "uv",
-    "markdownlint-cli",
 ]
 test = [
     "pytest",
